@@ -1,0 +1,152 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SCS\IMG\almacen.png" />
+    <None Remove="SCS\IMG\barras.png" />
+    <None Remove="SCS\IMG\barritas.png" />
+    <None Remove="SCS\IMG\casa.png" />
+    <None Remove="SCS\IMG\cerrar.png" />
+    <None Remove="SCS\IMG\circle-info-solid.png" />
+    <None Remove="SCS\IMG\close.png" />
+    <None Remove="SCS\IMG\config.png" />
+    <None Remove="SCS\IMG\dashboard.png" />
+    <None Remove="SCS\IMG\engrane.png" />
+    <None Remove="SCS\IMG\equis.png" />
+    <None Remove="SCS\IMG\gear-solid.png" />
+    <None Remove="SCS\IMG\hamburguesa.png" />
+    <None Remove="SCS\IMG\home.png" />
+    <None Remove="SCS\IMG\info.png" />
+    <None Remove="SCS\IMG\inventario.png" />
+    <None Remove="SCS\IMG\mini.png" />
+    <None Remove="SCS\IMG\minimize-solid.png" />
+    <None Remove="SCS\IMG\minus.png" />
+    <None Remove="SCS\IMG\productos.png" />
+    <None Remove="SCS\IMG\registro.png" />
+    <None Remove="SCS\IMG\usuario.png" />
+    <None Remove="SCS\IMG\usuarioF.png" />
+    <None Remove="SCS\IMG\usuarios.png" />
+    <None Remove="SCS\IMG\venta.png" />
+    <None Remove="SCS\IMG\ventaccfn.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SCS\IMG\almacen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\barras.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\barritas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\casa.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\cerrar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\circle-info-solid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\config.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\dashboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\engrane.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\equis.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\gear-solid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\hamburguesa.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\info.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\inventario.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\mini.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\minimize-solid.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\minus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\productos.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\registro.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\usuario.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\usuarioF.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\usuarios.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\venta.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\ventaccfn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
+    <PackageReference Include="itextsharp.xmlworker" Version="5.5.13.4" />
+    <PackageReference Include="MySql.Data" Version="9.0.0" />
+    <PackageReference Include="MySqlConnector" Version="2.3.7" />
+    <PackageReference Include="PdfiumViewer" Version="2.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Capa Entidad\Capa Entidad.csproj" />
+    <ProjectReference Include="..\Capa Negocio\Capa Negocio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
