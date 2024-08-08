@@ -33,5 +33,10 @@ namespace Capa_Negocio.Venta
         {
             objDatos.ventaDetalleLive(detalle);
         }
+
+        public void insertarVentaPago(CE_VentaPagos ventaPago)
+        {
+            objDatos.ventaPagos(ventaPago);
+        }
     }
 }

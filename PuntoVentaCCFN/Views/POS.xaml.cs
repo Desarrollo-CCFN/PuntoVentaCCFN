@@ -35,7 +35,7 @@ namespace PuntoVentaCCFN.Views
         readonly CN_Clientes objeto_CN_Clientes = new CN_Clientes();
         readonly CN_TipoCambio objeto_CN_TipoCambio = new CN_TipoCambio();
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
-        CN_Venta venta = new CN_Venta();
+        readonly CN_Venta venta = new CN_Venta();
         CE_VentaHeader ventaI = new CE_VentaHeader();
         BasePrinter printer  = new SerialPrinter(portName: "COM8", baudRate: 9600);
 
@@ -172,6 +172,14 @@ namespace PuntoVentaCCFN.Views
                 pagado += ingresar.Efectivo;
                 saldo();
             }
+            CE_VentaPagos ventaPago = new CE_VentaPagos();
+            ventaPago.Payform = "EF";
+            ventaPago.Currency = "MXN";
+            ventaPago.Rate = 1;
+            ventaPago.AmountPay = ingresar.Efectivo;
+            ventaPago.BalAmout = cambio;
+            ventaPago.IdHeader = ventaI.Id;
+            venta.insertarVentaPago(ventaPago);
         }
 
         private void Tarjeta(object sender, RoutedEventArgs e)
@@ -184,6 +192,15 @@ namespace PuntoVentaCCFN.Views
                 pagado += ingresar.Efectivo;
                 saldo();
             }
+
+            CE_VentaPagos ventaPago = new CE_VentaPagos();
+            ventaPago.Payform = "Deb";
+            ventaPago.Currency = "MXN";
+            ventaPago.Rate = 1;
+            ventaPago.AmountPay = ingresar.Efectivo;
+            ventaPago.BalAmout = cambio;
+            ventaPago.IdHeader = ventaI.Id;
+            venta.insertarVentaPago(ventaPago);
 
         }
         private void buscarClBtn_Click(object sender, RoutedEventArgs e)

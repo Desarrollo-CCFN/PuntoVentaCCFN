@@ -10,6 +10,7 @@ namespace Capa_Datos.Venta
         private readonly CD_Conexion conn = new CD_Conexion();
 
         private readonly CE_VentaHeader ce = new CE_VentaHeader();
+        private readonly CE_VentaPagos ceP = new CE_VentaPagos();
 
         #region ventaHeader
         public void ventaHeader(string numTck, DateTime fecha, decimal total, string usuario)
@@ -77,6 +78,21 @@ namespace Capa_Datos.Venta
             conm.Parameters.Clear();
             conn.CerrarConexion();
 
+        }
+
+        public void ventaPagos(CE_VentaPagos ventaPago)
+        {
+            MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
+            conm.CommandType = CommandType.StoredProcedure;
+            conm.Parameters.Add("Payform", MySqlDbType.VarChar).Value = ventaPago.Payform;
+            conm.Parameters.Add("Currency", MySqlDbType.VarChar).Value = ventaPago.Currency;
+            conm.Parameters.Add("Rate", MySqlDbType.Decimal).Value = ventaPago.Rate;
+            conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
+            conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
+            conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
+            conm.ExecuteNonQuery();
+            conm.Parameters.Clear();
+            conn.CerrarConexion();
         }
     }
 }

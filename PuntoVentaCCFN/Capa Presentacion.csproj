@@ -20,6 +20,7 @@
     <None Remove="SCS\IMG\config.png" />
     <None Remove="SCS\IMG\dashboard.png" />
     <None Remove="SCS\IMG\engrane.png" />
+    <None Remove="SCS\IMG\entrada.png" />
     <None Remove="SCS\IMG\equis.png" />
     <None Remove="SCS\IMG\gear-solid.png" />
     <None Remove="SCS\IMG\hamburguesa.png" />
@@ -29,6 +30,7 @@
     <None Remove="SCS\IMG\mini.png" />
     <None Remove="SCS\IMG\minimize-solid.png" />
     <None Remove="SCS\IMG\minus.png" />
+    <None Remove="SCS\IMG\product.png" />
     <None Remove="SCS\IMG\productos.png" />
     <None Remove="SCS\IMG\registro.png" />
     <None Remove="SCS\IMG\usuario.png" />
@@ -69,6 +71,9 @@
     <Content Include="SCS\IMG\engrane.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SCS\IMG\entrada.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SCS\IMG\equis.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -94,6 +99,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\minus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\product.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\productos.png">

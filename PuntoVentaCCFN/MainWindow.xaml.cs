@@ -34,7 +34,7 @@ namespace PuntoVentaCCFN
 
         private void PreviewMouseLeftButtonDownBG(object sender, MouseButtonEventArgs e)
         {
-            BtnShowHide.IsChecked = false;
+            //BtnShowHide.IsChecked = false;
         }
 
         private void Minimizar(object sender, RoutedEventArgs e)
