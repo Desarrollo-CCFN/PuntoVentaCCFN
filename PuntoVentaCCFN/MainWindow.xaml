@@ -241,6 +241,9 @@
         <DataTemplate x:Name="Productos" DataType="{x:Type viewmodels:Productos}">
             <viewmodels:Productos DataContext="{Binding}"/>
         </DataTemplate>
+        <DataTemplate x:Name="EntradaRecibo" DataType="{x:Type viewmodels:EntradaRecibo}">
+            <viewmodels:EntradaRecibo DataContext="{Binding}"/>
+        </DataTemplate>
         <!--#endregion-->
     </Window.Resources>
     <!--#region PROYECTO-->
@@ -479,7 +482,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Header="Entradas" Template="{StaticResource Item_Template}">
+                            <MenuItem Click="EntradaClick" Header="Entradas" Template="{StaticResource Item_Template}">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/entrada.png"></Image>
                                 </MenuItem.Icon>

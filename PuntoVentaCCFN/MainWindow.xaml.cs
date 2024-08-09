@@ -77,5 +77,10 @@ namespace PuntoVentaCCFN
             var configuracion = new configuracionApp();
             configuracion.Show();
         }
+
+        private void EntradaClick(object sender, RoutedEventArgs e)
+        {
+            DataContext = new EntradaRecibo();
+        }
     }
 }

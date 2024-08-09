@@ -25,6 +25,7 @@ using Capa_Negocio.Clientes;
 using Capa_Entidad.Venta;
 using System.Threading;
 using MessageBox = System.Windows.Forms.MessageBox;
+using System.Configuration;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -38,12 +39,26 @@ namespace PuntoVentaCCFN.Views
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
         readonly CN_Venta venta = new CN_Venta();
         CE_VentaHeader ventaI = new CE_VentaHeader();
-        BasePrinter printer = new SerialPrinter(portName: "COM8", baudRate: 9600); //TODO obtener puerto de archivo de configuracion
-        public int listPrecios = 13; //obtener lista de precios default de archivo de configuracion
+        Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        BasePrinter printer;
+        public int listPrecios;
+        public string cardCode;
+        public string whsCode;
 
         public POS()
         {
             InitializeComponent();
+            IniciarConfiguracion();
+        }
+
+        void IniciarConfiguracion()
+        {
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            
+            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+            listPrecios = SettingSection.PriceList;
+            cardCode = SettingSection.CardCode;
+            whsCode = SettingSection.Sucursal;
         }
 
         #region consulta del tipo de cambio
@@ -58,7 +73,7 @@ namespace PuntoVentaCCFN.Views
         #region consulta inicial del cliente default
         public void ConsultarCliente()
         {
-            var clienteDatos = objeto_CN_Clientes.Consulta("C00000024"); //TODO obtener cliente default dependiendo la sucursal de archivo de configuracion
+            var clienteDatos = objeto_CN_Clientes.Consulta(cardCode);
             tbCodigoCliente.Text = clienteDatos.CardCode.ToString();
             tbNombreCliente.Text = clienteDatos.CardName.ToString();
         }
@@ -67,7 +82,7 @@ namespace PuntoVentaCCFN.Views
         #region consulta inicial de lista de precio default
         public void ConsultarListaPrecio()
         {
-            var listaPrecio = objeto_CN_ListaPrecios.Consulta(13); //TODO Enviar lista de precios defualt de archivo de configuracion
+            var listaPrecio = objeto_CN_ListaPrecios.Consulta(listPrecios); 
             tbListaPrecio.Text = listaPrecio.ListName.ToString();
         }
         #endregion
@@ -100,7 +115,7 @@ namespace PuntoVentaCCFN.Views
                 ce_Detalle.Cantidad = Convert.ToDecimal(row[7]);
                 ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
                 ce_Detalle.Monto = Convert.ToDecimal(row[5]);
-                ce_Detalle.WhsCode = "S23"; //TODO obtener sucursal de archivo de configuracion
+                ce_Detalle.WhsCode = whsCode;
                 ce_Detalle.CodeBars = tbCodigoProducto.Text;
                 ce_Detalle.PriceList = listPrecios;
                 venta.insertarDetalleLive(ce_Detalle);
@@ -320,7 +335,7 @@ namespace PuntoVentaCCFN.Views
                 vf.Usuario = "Cajero A"; //TODO obtener usuario de conf
                 vf.DocCur = "MXN"; //TODO obtener currency de documento de lista de currencies
                 vf.PriceList = listPrecios;
-                vf.Filler = "S24"; //TODO Obtener filler de conf
+                vf.Filler = whsCode;
                 vf.Comments = "";
                 cN_Venta.insertarHeaderFinal(vf);
                 Imprimir(ventaI.NumTck);
