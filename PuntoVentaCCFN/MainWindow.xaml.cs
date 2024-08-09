@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Configuration;
 using Capa_Presentacion;
 using Capa_Presentacion.SCS.Boxes;
+using System.Windows.Media.Animation;
 
 namespace PuntoVentaCCFN
 {
@@ -81,6 +82,12 @@ namespace PuntoVentaCCFN
         private void EntradaClick(object sender, RoutedEventArgs e)
         {
             DataContext = new EntradaRecibo();
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation animation = new DoubleAnimation(0, 1,
+                                        (Duration)TimeSpan.FromSeconds(1));
+            this.BeginAnimation(UIElement.OpacityProperty, animation);
         }
     }
 }

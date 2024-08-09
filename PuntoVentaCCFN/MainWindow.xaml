@@ -246,6 +246,17 @@
         </DataTemplate>
         <!--#endregion-->
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="(Window.Opacity)"
+                                 From="0.0" To="1.0" Duration="0:0:1"
+                                 AutoReverse="False"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <!--#region PROYECTO-->
     <Border CornerRadius="10" Background="GhostWhite">
         <Grid Name="Principal" Background="Transparent">

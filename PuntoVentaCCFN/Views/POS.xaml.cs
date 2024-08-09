@@ -44,7 +44,7 @@ namespace PuntoVentaCCFN.Views
         public int listPrecios;
         public string cardCode;
         public string whsCode;
-
+        public string nombreCaja;
         public POS()
         {
             InitializeComponent();
@@ -59,6 +59,8 @@ namespace PuntoVentaCCFN.Views
             listPrecios = SettingSection.PriceList;
             cardCode = SettingSection.CardCode;
             whsCode = SettingSection.Sucursal;
+            nombreCaja = SettingSection.NombreCaja;
+
         }
 
         #region consulta del tipo de cambio
@@ -99,7 +101,7 @@ namespace PuntoVentaCCFN.Views
 
                 if (ventaI.Id.Equals(0))
                 {
-                    ventaI = venta.insertarVenta("S23", "C666", tbCodigoCliente.Text.ToString(), 1, 102); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                    ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1, 102); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
                 }
 
                 DataTable dt;
@@ -332,7 +334,7 @@ namespace PuntoVentaCCFN.Views
             {
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
-                vf.Usuario = "Cajero A"; //TODO obtener usuario de conf
+                vf.Usuario = nombreCaja;
                 vf.DocCur = "MXN"; //TODO obtener currency de documento de lista de currencies
                 vf.PriceList = listPrecios;
                 vf.Filler = whsCode;

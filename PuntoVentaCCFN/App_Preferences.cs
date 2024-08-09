@@ -36,5 +36,12 @@ namespace Capa_Presentacion
             get { return (string)this["sucursal"]; }
             set { this["sucursal"] = value; }
         }
+
+        [ConfigurationProperty("nombrecaja", DefaultValue = "Caja 1")]
+        public string NombreCaja
+        {
+            get { return (string)this["nombrecaja"]; }
+            set { this["nombrecaja"] = value; }
+        }
     }
 }
