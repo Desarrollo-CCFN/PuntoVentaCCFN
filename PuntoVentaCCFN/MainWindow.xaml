@@ -243,13 +243,10 @@
         <DataTemplate x:Name="Productos" DataType="{x:Type viewmodels:Productos}">
             <viewmodels:Productos DataContext="{Binding}"/>
         </DataTemplate>
-<<<<<<< HEAD
+
         <DataTemplate x:Name="EntradaRecibo" DataType="{x:Type viewmodels:EntradaRecibo}">
             <viewmodels:EntradaRecibo DataContext="{Binding}"/>
         </DataTemplate>
-=======
-         
->>>>>>> Joaquin
         <!--#endregion-->
     </Window.Resources>
     <Window.Triggers>
