@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
       
              mc:Ignorable="d" 
-             d:DesignHeight="865" d:DesignWidth="1425" KeyDown="Window_KeyDown" Unloaded="UserControl_Unloaded">
+             d:DesignHeight="865" d:DesignWidth="1425" KeyDown="Window_KeyDown" Unloaded="UserControl_Unloaded" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
@@ -343,7 +343,7 @@
                 Grid.Row="13"
                 Grid.Column="2"
                 x:Name="tbCodigoProducto"
-                Style="{DynamicResource tbStyle}" Grid.ColumnSpan="3" Margin="0,5,190,8" TextChanged="buscarProducto"/>
+                Style="{DynamicResource tbStyle}" Grid.ColumnSpan="3" Margin="0,5,190,8" KeyDown="tbCodigoProducto_KeyDown"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
@@ -460,7 +460,7 @@
                 Grid.Column="9" 
                 Margin="440,132,10,4" 
                 Grid.Row="14"
-                Style="{DynamicResource btnSide}" Click="Pagar">
+                Style="{DynamicResource btnSide}" Click="PagoFinal">
                 <TextBlock Text="Pagar" Foreground="White"/>
             </Button>
             <TextBlock Grid.Row="1"

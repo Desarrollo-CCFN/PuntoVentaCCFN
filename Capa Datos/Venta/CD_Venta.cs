@@ -27,7 +27,7 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        #region ventaDetalle
+        #region ventaDetalle(no es live)
         public void ventaDetalle(string numTck, string itemCode, decimal cantidad, decimal monto)
         {
             MySqlCommand conm = new MySqlCommand("SP_V_VentaDetalle", conn.AbrirConexion());
@@ -42,12 +42,15 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        public CE_VentaHeader Venta(string sucursal, string caja)
+        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int slpCode)
         {
             MySqlDataAdapter da = new MySqlDataAdapter("SP_V_Venta", conn.AbrirConexion());
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             da.SelectCommand.Parameters.Add("Sucursal", MySqlDbType.VarChar).Value=sucursal;
             da.SelectCommand.Parameters.Add("CodCaja", MySqlDbType.VarChar).Value = caja;
+            da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
+            da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
+            da.SelectCommand.Parameters.Add("SlpCode_", MySqlDbType.Int32).Value = slpCode;
             DataSet ds = new DataSet();
             ds.Clear();
             da.Fill(ds);
@@ -59,6 +62,21 @@ namespace Capa_Datos.Venta
 
             return ce;
 
+        }
+
+        public void ventaFinal(CE_VentaHeader ventaFinal)
+        {
+            MySqlCommand conm = new MySqlCommand("SP_V_VentaFinal", conn.AbrirConexion());
+            conm.CommandType = CommandType.StoredProcedure;
+            conm.Parameters.Add("Id_", MySqlDbType.Int32).Value = ventaFinal.Id;
+            conm.Parameters.Add("Usuario_", MySqlDbType.VarChar).Value = ventaFinal.Usuario;
+            conm.Parameters.Add("DocCur_", MySqlDbType.VarChar).Value = ventaFinal.DocCur;
+            conm.Parameters.Add("PriceList_", MySqlDbType.Int32).Value = ventaFinal.PriceList;
+            conm.Parameters.Add("Filler_", MySqlDbType.VarChar).Value = ventaFinal.Filler;
+            conm.Parameters.Add("Comments_", MySqlDbType.VarChar).Value = ventaFinal.Comments;
+            conm.ExecuteNonQuery();
+            conm.Parameters.Clear();
+            conn.CerrarConexion();
         }
 
         public void ventaDetalleLive(CE_VentaDetalle detalle)

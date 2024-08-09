@@ -1,14 +1,9 @@
 ﻿using PuntoVentaCCFN.Views;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Configuration;
+using Capa_Presentacion;
+using Capa_Presentacion.SCS.Boxes;
 
 namespace PuntoVentaCCFN
 {
@@ -17,9 +12,16 @@ namespace PuntoVentaCCFN
     /// </summary>
     public partial class MainWindow : Window
     {
+        Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         public MainWindow()
         {
             InitializeComponent();
+
+            if (AppConfig.Sections["App_Preferences"] is null)
+            {
+                AppConfig.Sections.Add("App_Preferences", new App_Preferences());
+                AppConfig.Save();
+            }
         }
 
         private void TBShow(object sender, RoutedEventArgs e)
@@ -68,6 +70,12 @@ namespace PuntoVentaCCFN
             {
                 DragMove();
             }
+        }
+
+        private void BtnCuenta_Click(object sender, RoutedEventArgs e)
+        {
+            var configuracion = new configuracionApp();
+            configuracion.Show();
         }
     }
 }

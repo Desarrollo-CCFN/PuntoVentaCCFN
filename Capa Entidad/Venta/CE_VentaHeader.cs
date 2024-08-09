@@ -6,7 +6,7 @@
         private string _NumTck;
         private DateTime _Fecha;
         private decimal _Total;
-        private string _USuario;
+        private string _Usuario;
         private string _CardCode;
         private string _CardName;
         private decimal _VatPercent;
@@ -15,7 +15,7 @@
         private decimal _DiscPrcnt;
         private decimal _DiscSum;
         private decimal _DiscSumFC;
-        private decimal _DocCur;
+        private string _DocCur;
         private decimal _DocRate;
         private decimal _DocTotal;
         private decimal _DocTotalFC;
@@ -34,7 +34,7 @@
         public string NumTck { get => _NumTck; set => _NumTck = value; }
         public DateTime Fecha { get => _Fecha; set => _Fecha = value; }
         public decimal Total { get => _Total; set => _Total = value; }
-        public string USuario { get => _USuario; set => _USuario = value; }
+        public string Usuario { get => _Usuario; set => _Usuario = value; }
         public string CardCode { get => _CardCode; set => _CardCode = value; }
         public string CardName { get => _CardName; set => _CardName = value; }
         public decimal VatPercent { get => _VatPercent; set => _VatPercent = value; }
@@ -43,7 +43,7 @@
         public decimal DiscPrcnt { get => _DiscPrcnt; set => _DiscPrcnt = value; }
         public decimal DiscSum { get => _DiscSum; set => _DiscSum = value; }
         public decimal DiscSumFC { get => _DiscSumFC; set => _DiscSumFC = value; }
-        public decimal DocCur { get => _DocCur; set => _DocCur = value; }
+        public string DocCur { get => _DocCur; set => _DocCur = value; }
         public decimal DocRate { get => _DocRate; set => _DocRate = value; }
         public decimal DocTotal { get => _DocTotal; set => _DocTotal = value; }
         public decimal DocTotalFC { get => _DocTotalFC; set => _DocTotalFC = value; }

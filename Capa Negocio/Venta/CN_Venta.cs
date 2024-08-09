@@ -11,12 +11,18 @@ namespace Capa_Negocio.Venta
 
 
         #region insert venta headerInical
-        public CE_VentaHeader insertarVenta(string sucursal, string caja)
+        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash, int slpCode)
         {
-            return objDatos.Venta(sucursal, caja);
+            return objDatos.Venta(sucursal, caja, cardCode, idCash, slpCode);
         }
         #endregion
 
+        #region insertar venta HeaderFinal
+        public void insertarHeaderFinal(CE_VentaHeader ce)
+        {
+            objDatos.ventaFinal(ce);
+        }
+        #endregion
         #region insertar venta headerFinal
         public void insertarHeader(string numTck, DateTime fecha, decimal total, string usuario)
         {
