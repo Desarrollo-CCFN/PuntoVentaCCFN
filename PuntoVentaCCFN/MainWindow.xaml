@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PuntoVentaCCFN" xmlns:viewmodels="clr-namespace:PuntoVentaCCFN.Views"
+        xmlns:local="clr-namespace:PuntoVentaCCFN" 
+        xmlns:viewmodels="clr-namespace:PuntoVentaCCFN.Views"
         mc:Ignorable="d"
         Title="Punto De Venta CCFN" Height="900" Width="1500"
 
@@ -232,6 +233,7 @@
         </Style>
         <!--#endregion-->
         <!--#region  DATATEMPLATE USUARIOS-->
+        
         <DataTemplate x:Name="Usuarios" DataType="{x:Type viewmodels:Usuarios}">
             <viewmodels:Usuarios DataContext="{Binding}"/>
         </DataTemplate>
@@ -241,9 +243,13 @@
         <DataTemplate x:Name="Productos" DataType="{x:Type viewmodels:Productos}">
             <viewmodels:Productos DataContext="{Binding}"/>
         </DataTemplate>
+<<<<<<< HEAD
         <DataTemplate x:Name="EntradaRecibo" DataType="{x:Type viewmodels:EntradaRecibo}">
             <viewmodels:EntradaRecibo DataContext="{Binding}"/>
         </DataTemplate>
+=======
+         
+>>>>>>> Joaquin
         <!--#endregion-->
     </Window.Resources>
     <!--#region PROYECTO-->
