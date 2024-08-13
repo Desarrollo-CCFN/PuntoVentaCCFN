@@ -5,10 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="865" d:DesignWidth="1425">
 
     <Border Background="Aqua" CornerRadius="10">
-        <Grid>
+        <Grid Margin="0,0,0,-10" Height="865" VerticalAlignment="Bottom">
+            <DataGrid x:Name="GridSt" d:ItemsSource="{d:SampleData ItemCount=5}" Height="400" VerticalAlignment="Bottom" Margin="0,0,0,346" FontSize="10" GridLinesVisibility="None" SelectionMode="Single" SelectionUnit="Cell" Grid.ColumnSpan="7"/>
+            <Label x:Name="lb_tsr" Content="Numero TSR:" HorizontalAlignment="Left" Margin="65,61,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="tb_tsr" HorizontalAlignment="Left" Height="26" Margin="10,61,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="131" RenderTransformOrigin="-0.113,0.822" AutoWordSelection="True" KeyDown="tb_tsr_KeyDown" Grid.ColumnSpan="5" Grid.Column="2"/>
+            <Button x:Name="btn_Consultar" HorizontalAlignment="Left" Height="26" Margin="144,70,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.032,0.822" Background="Blue" Content="Buscar" Click="btn_Consultar_Click" Foreground="#FFF9FBFB" FontWeight="Black" Grid.Column="6"/>
+            <Button x:Name="BtnProcesar" Content="Procesar Entrada" HorizontalAlignment="Left" Height="44" Margin="625,56,0,0" VerticalAlignment="Top" Width="124" Background="Blue" Foreground="#FFF9FBFB" FontSize="10" FontWeight="Bold" Click="BtnProcesar_Click" Grid.Column="6"/>
 
         </Grid>
     </Border>
