@@ -259,7 +259,7 @@
                     Cursor="Hand"
                     Width="100"
                     x:Name="BtnBuscar"
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Left" Click="BtnBuscar_Click">
                 <TextBlock Text="Buscar"
                            Foreground="White"
                            FontSize="15"

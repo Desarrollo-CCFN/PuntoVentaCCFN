@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using Capa_Negocio.Productos;
+using System.Data;
 namespace PuntoVentaCCFN.Views
 {
     /// <summary>
@@ -30,7 +31,15 @@ namespace PuntoVentaCCFN.Views
 
         void CargarDatos()
         {
+          //  DataTable dt = new objeto_CN_Productos.CargarProductos();
+
             GridDatos.ItemsSource = objeto_CN_Productos.CargarProductos().DefaultView;
+            
+        }
+
+        private void BtnBuscar_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
