@@ -42,59 +42,157 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int slpCode)
+        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_V_Venta", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("Sucursal", MySqlDbType.VarChar).Value=sucursal;
-            da.SelectCommand.Parameters.Add("CodCaja", MySqlDbType.VarChar).Value = caja;
-            da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
-            da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
-            da.SelectCommand.Parameters.Add("SlpCode_", MySqlDbType.Int32).Value = slpCode;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = new DataTable();
-            dt = ds.Tables[0];
-            DataRow row = dt.Rows[0];
-            ce.Id = Convert.ToInt32(row[0]);
-            ce.NumTck = Convert.ToString(row[1]);
+            string sItemCode = "";
 
-            return ce;
+            try
+            {
+                sItemCode = "SP_V_Venta";
+
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_V_Venta", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("Sucursal", MySqlDbType.VarChar).Value = sucursal;
+                da.SelectCommand.Parameters.Add("CodCaja", MySqlDbType.VarChar).Value = caja;
+                da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
+                da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
+
+
+                MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("ErrorMessage_", MySqlDbType.Text);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorMessage);
+
+                MySqlParameter outIdHeader = new MySqlParameter("IdHeader_", MySqlDbType.Int32);
+                outIdHeader.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outIdHeader);
+
+                MySqlParameter outNumTck = new MySqlParameter("NumTck_", MySqlDbType.VarChar);
+                outNumTck.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outNumTck);
+
+                da.SelectCommand.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    ce.Id = -1;
+                    ce.Comments = outErrorMessage.Value.ToString();
+                    return ce;
+                }
+
+                da.SelectCommand.Parameters.Clear();
+
+                ce.Id = Convert.ToInt32(outIdHeader.Value);
+                ce.NumTck = outNumTck.Value.ToString();
+
+                return ce;
+            }
+            catch (Exception ex1)
+            {
+                ce.Id = -1;
+                ce.Comments = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+
+                return ce;
+            }
+           
 
         }
 
-        public void ventaFinal(CE_VentaHeader ventaFinal)
+        public bool ventaFinal(CE_VentaHeader ventaFinal, int _userId, ref string sMensaje)
         {
-            MySqlCommand conm = new MySqlCommand("SP_V_VentaFinal", conn.AbrirConexion());
-            conm.CommandType = CommandType.StoredProcedure;
-            conm.Parameters.Add("Id_", MySqlDbType.Int32).Value = ventaFinal.Id;
-            conm.Parameters.Add("Usuario_", MySqlDbType.VarChar).Value = ventaFinal.Usuario;
-            conm.Parameters.Add("DocCur_", MySqlDbType.VarChar).Value = ventaFinal.DocCur;
-            conm.Parameters.Add("PriceList_", MySqlDbType.Int32).Value = ventaFinal.PriceList;
-            conm.Parameters.Add("Filler_", MySqlDbType.VarChar).Value = ventaFinal.Filler;
-            conm.Parameters.Add("Comments_", MySqlDbType.VarChar).Value = ventaFinal.Comments;
-            conm.ExecuteNonQuery();
-            conm.Parameters.Clear();
-            conn.CerrarConexion();
+            string sItemCode = "";
+            try
+            {
+                sItemCode = "SP_V_VentaCierre";
+                MySqlCommand conm = new MySqlCommand("SP_V_VentaCierre", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = ventaFinal.Id;
+                conm.Parameters.Add("UserId_", MySqlDbType.VarChar).Value = _userId;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
+                conm.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                    return false;
+                }
+
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+
+            }
+            catch (Exception ex1)
+            {
+                sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                return false;
+            }
+
+            return true;
+
         }
 
-        public void ventaDetalleLive(CE_VentaDetalle detalle)
+        public bool ventaDetalleLive(CE_VentaDetalle detalle, ref string sMensaje)
         {
-            MySqlCommand conm = new MySqlCommand("SP_V_VentaDetalle", conn.AbrirConexion());
-            conm.CommandType = CommandType.StoredProcedure;
-            conm.Parameters.Add("NumTck", MySqlDbType.VarChar).Value = detalle.NumTck;
-            conm.Parameters.Add("ItemCode", MySqlDbType.VarChar).Value = detalle.ItemCode;
-            conm.Parameters.Add("Cantidad", MySqlDbType.Decimal).Value = detalle.Cantidad;
-            conm.Parameters.Add("Monto", MySqlDbType.Decimal).Value = detalle.Monto;
-            conm.Parameters.Add("WhsCode", MySqlDbType.VarChar).Value = detalle.WhsCode;
-            conm.Parameters.Add("Moneda", MySqlDbType.VarChar).Value = detalle.Currency;
-            conm.Parameters.Add("CodeBars", MySqlDbType.VarChar).Value = detalle.CodeBars;
-            conm.Parameters.Add("PriceList", MySqlDbType.Int32).Value = detalle.PriceList;
-            conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = detalle.IdHeader;
-            conm.ExecuteNonQuery();
-            conm.Parameters.Clear();
-            conn.CerrarConexion();
+
+            string sItemCode = "";
+            try
+            {
+
+                sItemCode = "SP_V_VentaDetalle";
+
+                MySqlCommand conm = new MySqlCommand("SP_V_VentaDetalle", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_ItemCode", MySqlDbType.VarChar).Value = detalle.ItemCode;
+                conm.Parameters.Add("_Cantidad", MySqlDbType.Decimal).Value = detalle.Cantidad;
+                conm.Parameters.Add("_Monto", MySqlDbType.Decimal).Value = detalle.Monto;
+                conm.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = detalle.WhsCode;
+                conm.Parameters.Add("_Moneda", MySqlDbType.VarChar).Value = detalle.Currency;
+                conm.Parameters.Add("_CodeBars", MySqlDbType.VarChar).Value = detalle.CodeBars;
+                conm.Parameters.Add("_PriceNum", MySqlDbType.Decimal).Value = detalle.PriceList;
+                conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = detalle.IdHeader;
+                conm.Parameters.Add("_UomEntry", MySqlDbType.Int32).Value = detalle.UomEntry;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
+                conm.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                    return false;
+                }
+
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex1)
+            {
+                sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                return false;
+            }
+
+            return true;
+
 
         }
 

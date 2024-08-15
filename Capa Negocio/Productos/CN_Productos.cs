@@ -14,5 +14,12 @@ namespace Capa_Negocio.Productos
             return objDatos.CargarProductos();
         }
         #endregion
+
+        #region busqueda producto x nombre
+        public DataTable BusquedaProducto(string busqueda)
+        {
+            return objDatos.ConsultaProducto(busqueda);
+        }
+        #endregion
     }
 }

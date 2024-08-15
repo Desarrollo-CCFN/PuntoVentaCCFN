@@ -47,6 +47,7 @@ namespace PuntoVentaCCFN.Views
         public string cardCode;
         public string whsCode;
         public string nombreCaja;
+        public string sMensaje = null;
         public POS()
         {
             InitializeComponent();
@@ -56,8 +57,8 @@ namespace PuntoVentaCCFN.Views
         void IniciarConfiguracion()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            
-            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+
+            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
             listPrecios = SettingSection.PriceList;
             cardCode = SettingSection.CardCode;
             whsCode = SettingSection.Sucursal;
@@ -103,7 +104,12 @@ namespace PuntoVentaCCFN.Views
 
                 if (ventaI.Id.Equals(0))
                 {
-                    ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1, 102); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                    ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                }
+
+                if(ventaI.Id.Equals(-1)) {
+                    MessageBox.Show(ventaI.Comments);
+                    return;
                 }
 
                 DataTable dt;
@@ -113,16 +119,19 @@ namespace PuntoVentaCCFN.Views
                 saldo();
                 DataRow row = dt.Rows[0];
                 CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
-                ce_Detalle.NumTck = ventaI.NumTck;
                 ce_Detalle.IdHeader = ventaI.Id;
                 ce_Detalle.ItemCode = Convert.ToString(row[0]);
-                ce_Detalle.Cantidad = Convert.ToDecimal(row[7]);
+                ce_Detalle.Cantidad = Convert.ToDecimal(row[8]);
                 ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
-                ce_Detalle.Monto = Convert.ToDecimal(row[5]);
+                ce_Detalle.Monto = Convert.ToDecimal(row[6]);
                 ce_Detalle.WhsCode = whsCode;
                 ce_Detalle.CodeBars = tbCodigoProducto.Text;
                 ce_Detalle.PriceList = listPrecios;
-                venta.insertarDetalleLive(ce_Detalle);
+                ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
+                if(!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
+                {
+                    MessageBox.Show(sMensaje);
+                }
                 tbCodigoProducto.Text = "";
             }
         }
@@ -234,6 +243,14 @@ namespace PuntoVentaCCFN.Views
         }
         #endregion
 
+        #region busqueda de producto
+        private void buscarProd_Click(object sender, RoutedEventArgs e)
+        {
+            var busquedaProducto = new modalProductos();
+            busquedaProducto.ShowDialog();
+        }
+        #endregion
+
         #region teclas rapidas
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
@@ -319,8 +336,7 @@ namespace PuntoVentaCCFN.Views
             if (GridDatos.Items.Count >= 1)
             {
                 ventaFinal();
-                pagado = 0;
-                saldo();
+
             } else
             {
                 System.Windows.MessageBox.Show("No se han agregado productos!");
@@ -336,15 +352,12 @@ namespace PuntoVentaCCFN.Views
             {
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
-                vf.Usuario = nombreCaja;
-                vf.DocCur = "MXN"; //TODO obtener currency de documento de lista de currencies
-                vf.PriceList = listPrecios;
-                vf.Filler = whsCode;
-                vf.Comments = "";
-                cN_Venta.insertarHeaderFinal(vf);
+                cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje);
                 Imprimir(ventaI.NumTck);
                 GridDatos.Items.Clear();
                 ventaI.Id = 0;
+                pagado = 0;
+                saldo();
             }
             else
             {

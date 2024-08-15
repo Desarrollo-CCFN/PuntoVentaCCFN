@@ -22,5 +22,21 @@ namespace Capa_Datos.Productos
             return dt;
         }
         #endregion
+
+        #region busqueda producto x nombre
+        public DataTable ConsultaProducto(string busqueda)
+        {
+            MySqlDataAdapter da = new MySqlDataAdapter("SP_P_BusquedaProductoManual", conn.AbrirConexion());
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.Add("busqueda", MySqlDbType.VarChar).Value = busqueda;
+            DataSet ds = new DataSet();
+            ds.Clear();
+            da.Fill(ds);
+            DataTable dt = ds.Tables[0];
+            conn.CerrarConexion();
+
+            return dt;
+        }
+        #endregion
     }
 }

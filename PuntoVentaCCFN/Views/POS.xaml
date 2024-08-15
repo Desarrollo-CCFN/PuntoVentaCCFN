@@ -434,8 +434,10 @@
             </Button>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Blue"
+                    x:Name="buscarProd"
                 Grid.Column="9"
                 Grid.Row="4" Margin="460,29,20,5" Grid.RowSpan="2"
+                    Click="buscarProd_Click"
                 >
                 <TextBlock Text="Buscar Producto"
                     Foreground="White"

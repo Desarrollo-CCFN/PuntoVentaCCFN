@@ -11,16 +11,17 @@ namespace Capa_Negocio.Venta
 
 
         #region insert venta headerInical
-        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash, int slpCode)
+        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash)
         {
-            return objDatos.Venta(sucursal, caja, cardCode, idCash, slpCode);
+            return objDatos.Venta(sucursal, caja, cardCode, idCash);
+
         }
         #endregion
 
         #region insertar venta HeaderFinal
-        public void insertarHeaderFinal(CE_VentaHeader ce)
+        public void insertarHeaderFinal(CE_VentaHeader ce, int _userId, ref string sMensaje)
         {
-            objDatos.ventaFinal(ce);
+            objDatos.ventaFinal(ce, _userId, ref sMensaje);
         }
         #endregion
         #region insertar venta headerFinal
@@ -35,9 +36,9 @@ namespace Capa_Negocio.Venta
             objDatos.ventaDetalle(numTck, itemCode, cantidad, monto);
         }
 
-        public void insertarDetalleLive(CE_VentaDetalle detalle)
+        public bool insertarDetalleLive(CE_VentaDetalle detalle, ref string sMensaje)
         {
-            objDatos.ventaDetalleLive(detalle);
+            return objDatos.ventaDetalleLive(detalle, ref sMensaje);
         }
 
         public void insertarVentaPago(CE_VentaPagos ventaPago)
