@@ -6,14 +6,287 @@
              xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
              mc:Ignorable="d"
              d:DesignHeight="865" d:DesignWidth="1425">
+    <UserControl.Resources>
+        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border CornerRadius="0,0,10,10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                                            <Grid Grid.Column="1" Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="#0276aa"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#bbdefb"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#bbdefb"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
 
-    <Border Background="Aqua" CornerRadius="10">
+        </Style>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="tbStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border CornerRadius="10" x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background1" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border1" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background1" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border1" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background2" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border2" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground2" Color="#FF838383"/>
+        <Style x:Key="btnSide" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background2}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border2}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground2}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Border Background="#5b7bb2" CornerRadius="10">
         <Grid Margin="0,0,0,-10" Height="865" VerticalAlignment="Bottom">
-            <DataGrid x:Name="GridSt" d:ItemsSource="{d:SampleData ItemCount=5}" Height="400" VerticalAlignment="Bottom" Margin="0,0,0,346" FontSize="10" GridLinesVisibility="None" SelectionMode="Single" SelectionUnit="Cell" Grid.ColumnSpan="7"/>
-            <Label x:Name="lb_tsr" Content="Numero TSR:" HorizontalAlignment="Left" Margin="65,61,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="tb_tsr" HorizontalAlignment="Left" Height="26" Margin="10,61,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="131" RenderTransformOrigin="-0.113,0.822" AutoWordSelection="True" KeyDown="tb_tsr_KeyDown" Grid.ColumnSpan="5" Grid.Column="2"/>
-            <Button x:Name="btn_Consultar" HorizontalAlignment="Left" Height="26" Margin="144,70,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.032,0.822" Background="Blue" Content="Buscar" Click="btn_Consultar_Click" Foreground="#FFF9FBFB" FontWeight="Black" Grid.Column="6"/>
-            <Button x:Name="BtnProcesar" Content="Procesar Entrada" HorizontalAlignment="Left" Height="44" Margin="625,56,0,0" VerticalAlignment="Top" Width="124" Background="Blue" Foreground="#FFF9FBFB" FontSize="10" FontWeight="Bold" Click="BtnProcesar_Click" Grid.Column="6"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="26*"/>
+                <ColumnDefinition Width="259*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Entrada de Mercancia" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="385,6,505,778"/>
+            <DataGrid x:Name="GridSt"
+                      Style="{DynamicResource DataGridStyle}"
+                      AutoGenerateColumns="False"
+                     Background="GhostWhite"
+                     Foreground="Black"
+                     FontSize="15"
+                     CanUserAddRows="False"
+                     CanUserResizeColumns="True"
+                     CanUserResizeRows="False"
+                     CanUserSortColumns="False"
+                     RowBackground="Transparent"
+                     HeadersVisibility="Column"
+                      SelectionMode="Single" 
+                      SelectionUnit="Cell"
+                    CellEditEnding="GridSt_CellEditEnding"
+                     GridLinesVisibility="Horizontal"
+                      
+                     HorizontalGridLinesBrush="#35baf6" Margin="25,116,20,230" Grid.ColumnSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Linea" Width="50" Binding="{Binding LineNum}" />
+                    <DataGridTextColumn Header="Status" Width="50" Binding="{Binding LineStatus}" />
+                    <DataGridTextColumn Header="Codigo" Width="100" Binding="{Binding ItemCode}" />
+                    <DataGridTextColumn Header="Descripción" Width="200" Binding="{Binding Dscription}" />
+                    <DataGridTextColumn Header="Cantidad" Width="100" Binding="{Binding Quantity}" />
+                    <DataGridTextColumn Header="UmTsr" Width="100" Binding="{Binding UmTsr}" />
+                    <DataGridTextColumn Header="Costo" Width="100" Binding="{Binding Price}" />
+                    <DataGridTextColumn Header="Total" Width="100" Binding="{Binding ImporteTotal}" />
+                    <DataGridTextColumn Header="Moneda" Width="100" Binding="{Binding Currency}" />
+                    <DataGridTextColumn Header="Saldo" Width="100" Binding="{Binding OpenQty}" />
+                    <DataGridTextColumn Header="Cant. Recibo" Width="100" Binding="{Binding Path=InQty}" IsReadOnly="False"/>
+                    <DataGridTextColumn Header="Base" Width="100" Binding="{Binding BaseQty}" />
+                    <DataGridTextColumn Header="UMI" Width="70" Binding="{Binding Umi}" />
+                    <DataGridTextColumn Header="Almacen" Width="100" Binding="{Binding WhsCode}" />
+                    <DataGridTextColumn Header="DocEntry" Width="100" Binding="{Binding DocEntry}" Visibility="Hidden" />
+                    <DataGridTextColumn Header="UomEntry" Width="100" Binding="{Binding WhsCode}" Visibility="Hidden"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="lb_tsr" 
+                   Text="Numero Transferencia" 
+                   HorizontalAlignment="Left" 
+                   Margin="57,49,0,0"
+                       FontSize="15"
+                   Foreground="White"
+                   VerticalAlignment="Top" Height="20" Width="146" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tb_tsr" 
+                     HorizontalAlignment="Left" 
+                     Height="26" Margin="25,74,0,0" 
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Top" 
+                     Width="210" 
+                     Style="{DynamicResource tbStyle}"
+                     RenderTransformOrigin="-0.113,0.822" 
+                     AutoWordSelection="True" 
+                     KeyDown="tb_tsr_KeyDown" Grid.ColumnSpan="2"/>
+            <Button x:Name="btn_Consultar" 
+                    HorizontalAlignment="Left" 
+                    Height="40" 
+                    Margin="145,67,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="100" 
+                    FontSize="15"
+                    RenderTransformOrigin="0.032,0.822" 
+                    Background="Blue" 
+                    Style="{DynamicResource btnSide}" 
+                    Content="Buscar" 
+                    Click="btn_Consultar_Click" 
+                    Foreground="White" 
+                    FontWeight="Bold" Grid.Column="1"/>
+            <Button x:Name="BtnProcesar" 
+                    Content="Procesar Entrada" 
+                    HorizontalAlignment="Left" 
+                    Height="44" 
+                    Margin="1066,670,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="209" 
+                    Background="Green"
+                    Style="{DynamicResource btnSide}"
+                    Foreground="White" 
+                    FontSize="15" 
+                    FontWeight="Bold" 
+                    Click="BtnProcesar_Click" Grid.Column="1"/>
 
         </Grid>
     </Border>

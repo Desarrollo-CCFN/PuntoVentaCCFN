@@ -67,31 +67,31 @@ namespace PuntoVentaCCFN.Views
                 GridSt.Columns[i].IsReadOnly = true;
             }
 
-           
-          //  GridSt.RowStyleSelector =  SingleLine;
 
-            GridSt.Columns[0].Header = "Linea";
-            GridSt.Columns[1].Header = "Estatus";
-            GridSt.Columns[2].Header = "Codigo";
-            GridSt.Columns[3].Header = "Descripción";
-            GridSt.Columns[4].Header = "Cantidad";
-            GridSt.Columns[5].Header = "UmTsr";
-            GridSt.Columns[6].Header = "Costo";
-            GridSt.Columns[7].Header = "Total";
-            GridSt.Columns[8].Header = "Moneda";
-            GridSt.Columns[9].Header = "Saldo";
-            
-            GridSt.Columns[10].Header = "Cant.Recibo";
-            GridSt.CellEditEnding += GridSt_CellEditEnding;
+            //  GridSt.RowStyleSelector =  SingleLine;
+
+            //GridSt.Columns[0].Header = "Linea";
+            //GridSt.Columns[1].Header = "Estatus";
+            //   GridSt.Columns[2].Header = "Codigo";
+            //   GridSt.Columns[3].Header = "Descripción";
+            //   GridSt.Columns[4].Header = "Cantidad";
+            //   GridSt.Columns[5].Header = "UmTsr";
+            //   GridSt.Columns[6].Header = "Costo";
+            //   GridSt.Columns[7].Header = "Total";
+            //   GridSt.Columns[8].Header = "Moneda";
+            //   GridSt.Columns[9].Header = "Saldo";
+
+            //   GridSt.Columns[10].Header = "Cant.Recibo";
+            //   GridSt.CellEditEnding += GridSt_CellEditEnding;
             GridSt.Columns[10].IsReadOnly = false;
-         //  -- GridSt.Columns[10].header
+            ////  -- GridSt.Columns[10].header
 
-            GridSt.Columns[11].Header = "Base";
-            GridSt.Columns[12].Header = "Umi";
-            GridSt.Columns[13].Header = "Almacén";
+            //   GridSt.Columns[11].Header = "Base";
+            //   GridSt.Columns[12].Header = "Umi";
+            //   GridSt.Columns[13].Header = "Almacén";
 
-            GridSt.Columns[14].Visibility = 0; // DocEntry
-            GridSt.Columns[15].Visibility = 0; // UmEntry;
+            //   GridSt.Columns[14].Visibility = 0; // DocEntry
+            //   GridSt.Columns[15].Visibility = 0; // UmEntry;
 
             //string svalue = GridSt.Items[0][1].ToString();
 
