@@ -5,6 +5,9 @@ using System.Configuration;
 using Capa_Presentacion;
 using Capa_Presentacion.SCS.Boxes;
 using System.Windows.Media.Animation;
+using Capa_Presentacion.Views;
+
+
 
 namespace PuntoVentaCCFN
 {
@@ -47,7 +50,13 @@ namespace PuntoVentaCCFN
 
         private void Cerrar(object sender, RoutedEventArgs e)
         {
-            Close();
+            //Close();
+            foreach (Window window in System.Windows.Application.Current.Windows)
+            {
+                window.Close();
+            }
+
+
         }
 
         private void Usuarios_Click(object sender, RoutedEventArgs e)
@@ -75,8 +84,22 @@ namespace PuntoVentaCCFN
 
         private void BtnCuenta_Click(object sender, RoutedEventArgs e)
         {
-            var configuracion = new configuracionApp();
-            configuracion.Show();
+            int valueToSend = 1;
+            var Acceso = new Acceso(valueToSend);   // Activa el Password de acceso
+            Acceso.Show();
+
+              //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+               // configuracionWindow.Show();
+
+           
+            // 1 = Confinguracion Pantalla Principal
+            // 2= Cancelar la Factura
+
+            //  var configuracion = new configuracionApp();
+            //configuracion.Show();
+
+
+
         }
 
         private void EntradaClick(object sender, RoutedEventArgs e)
@@ -88,6 +111,14 @@ namespace PuntoVentaCCFN
             DoubleAnimation animation = new DoubleAnimation(0, 1,
                                         (Duration)TimeSpan.FromSeconds(1));
             this.BeginAnimation(UIElement.OpacityProperty, animation);
+        }
+
+        private void BtnInfo_Click(object sender, RoutedEventArgs e)
+        {
+
+            var AcercaDe = new AcercaDe();   // Activa el Password de acceso
+            AcercaDe.Show();
+
         }
     }
 }

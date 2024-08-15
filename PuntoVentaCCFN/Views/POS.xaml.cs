@@ -26,6 +26,8 @@ using Capa_Entidad.Venta;
 using System.Threading;
 using MessageBox = System.Windows.Forms.MessageBox;
 using System.Configuration;
+using PuntoVentaCCFN.Views;
+using Capa_Presentacion.Views;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -55,7 +57,7 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
             
-            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
             listPrecios = SettingSection.PriceList;
             cardCode = SettingSection.CardCode;
             whsCode = SettingSection.Sucursal;
@@ -355,6 +357,8 @@ namespace PuntoVentaCCFN.Views
         void Imprimir(string numTck)
         {
 
+            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600)
+
             var e = new EPSON();
 
 
@@ -468,18 +472,37 @@ namespace PuntoVentaCCFN.Views
         #region logica para eliminar producto de la venta
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
-            var seleccionado = GridDatos.SelectedItem;
-            if (seleccionado != null)
+
+            int valueToSend = 2;
+            var Acceso = new Acceso(valueToSend);
+            //  Acceso.Show();
+            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
+            // 1 = Confinguracion Pantalla Principal
+            // 2= Cancelar la Factura
+
+            if (Acceso.ReturnValue == 1)
             {
-                GridDatos.Items.Remove(seleccionado);
-                if (GridDatos.Items.Count < 1)
+                System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                var seleccionado = GridDatos.SelectedItem;
+                if (seleccionado != null)
                 {
+                    GridDatos.Items.Remove(seleccionado);
+                    if (GridDatos.Items.Count < 1)
+                    {
 
-                    pagado = 0;
+                        pagado = 0;
+                    }
                 }
-            }
 
-            saldo();
+                saldo(); 
+            }
+        
+        
+        
+        
+        
+        
         }
         #endregion
 
