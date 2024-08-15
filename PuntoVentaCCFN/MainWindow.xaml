@@ -7,13 +7,14 @@
         xmlns:viewmodels="clr-namespace:PuntoVentaCCFN.Views"
         mc:Ignorable="d"
         Title="Punto De Venta CCFN" Height="900" Width="1500"
-
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
         Background="Transparent">
     <Window.Resources>
+
+
         <!--#region FOCUSVISUAL-->
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -233,7 +234,7 @@
         </Style>
         <!--#endregion-->
         <!--#region  DATATEMPLATE USUARIOS-->
-        
+
         <DataTemplate x:Name="Usuarios" DataType="{x:Type viewmodels:Usuarios}">
             <viewmodels:Usuarios DataContext="{Binding}"/>
         </DataTemplate>
@@ -261,19 +262,34 @@
         </EventTrigger>
     </Window.Triggers>
     <!--#region PROYECTO-->
-    <Border CornerRadius="10" Background="GhostWhite">
-        <Grid Name="Principal" Background="Transparent">
-            <!--#region HEADER-->
-            <Grid Name="Header" Height="35" VerticalAlignment="Top" Background="Transparent">
-                <Border CornerRadius="10,10,0,0" Background="#8a1c1c">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition Width="220"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <!--#region TITULO-->
-                        <TextBlock 
+    <Border CornerRadius="12" >
+
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/HomeCarnes.jpg"
+                        Stretch="Fill"/>
+        </Border.Background>
+        <Border CornerRadius="10"  
+                
+      Background="#1b1448"
+      BorderBrush="MediumSlateBlue"  
+                
+      BorderThickness="5"
+      Opacity="0.85" Height="910" 
+      VerticalAlignment="Bottom" Margin="0,0,-2,-5"
+      RenderTransformOrigin="0.5,0.5">
+
+            <Grid Name="Principal" Background="Transparent">
+                <!--#region HEADER-->
+                <Grid Name="Header" Height="35" VerticalAlignment="Top" Background="Transparent">
+                    <Border CornerRadius="10,10,0,0" Background="#8a1c1c">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="220"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <!--#region TITULO-->
+                            <TextBlock 
                             Text="Punto De Venta CCFN" 
                             Grid.Column="0"
                             Foreground="White"
@@ -281,10 +297,10 @@
                             Margin="10,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
-                        </TextBlock>
-                        <!--#endregion-->
-                        <!--#region CUENTA-->
-                        <Button 
+                            </TextBlock>
+                            <!--#endregion-->
+                            <!--#region CUENTA-->
+                            <Button 
                             Style="{DynamicResource BTNHEADERSTYLE}" 
                             x:Name="BtnCuenta"
                             Grid.Column="1"
@@ -295,24 +311,23 @@
                             HorizontalAlignment="Left"
                             Click="BtnCuenta_Click"
                             Cursor="Hand">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1"
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="1"
                                            Text="Configuracion"
-                                           HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
-                                           Margin="5,0,0,0"/>
-                                <Image Grid.Column="0"
-                                       VerticalAlignment="Center"
-                                       Source="/SCS/IMG/config.png"/>
-                            </Grid>
-                        </Button>
-                        <!--#endregion-->
-                        <!--#region INFO-->
-                        <Button x:Name="BtnInfo"
+                                           Margin="5,0,0,0" HorizontalAlignment="Left" Width="93"/>
+                                    <Image Grid.Column="0"
+                                       VerticalAlignment="Bottom"
+                                       Source="/SCS/IMG/config.png" Margin="0,0,0,3"/>
+                                </Grid>
+                            </Button>
+                            <!--#endregion-->
+                            <!--#region INFO-->
+                            <Button x:Name="BtnInfo"
                                 Grid.Column="1"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
@@ -321,25 +336,25 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Cursor="Hand"
-                                Style="{DynamicResource BTNHEADERSTYLE}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="15"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Image Source="/SCS/IMG/info.png"
+                                Style="{DynamicResource BTNHEADERSTYLE}" Click="BtnInfo_Click">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="15"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/SCS/IMG/info.png"
                                    Grid.Column="0"
                                     VerticalAlignment="Center"/>
-                                <TextBlock Text="Acerca de" 
+                                    <TextBlock Text="Acerca de" 
                                            Grid.Column="1"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
                                            Margin="5,0,0,0"/>
-                            </Grid>
-                        </Button>
-                        <!--#endregion-->
-                        <!--#region MINIMIZAR-->
-                        <Button x:Name="BtnMinimizar"
+                                </Grid>
+                            </Button>
+                            <!--#endregion-->
+                            <!--#region MINIMIZAR-->
+                            <Button x:Name="BtnMinimizar"
                                 Grid.Column="2"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
@@ -349,12 +364,12 @@
                                 VerticalAlignment="Top"
                                 Margin="0,5,35,0"
                                 Style="{DynamicResource BTNHEADERSTYLE}" Click="Minimizar">
-                            <Image Source="/SCS/IMG/minus.png" 
+                                <Image Source="/SCS/IMG/minus.png" 
                                    Cursor="Hand"/>
-                        </Button>
-                        <!--#endregion-->
-                        <!--#region CERRAR-->
-                        <Button x:Name="BtnCerrar"
+                            </Button>
+                            <!--#endregion-->
+                            <!--#region CERRAR-->
+                            <Button x:Name="BtnCerrar"
                                 Grid.Column="2"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
@@ -364,16 +379,16 @@
                                 VerticalAlignment="Top"
                                 Margin="0,5,5,0"
                                 Style="{DynamicResource BTNHEADERSTYLE}" Click="Cerrar">
-                            <Image Source="/SCS/IMG/equis.png" 
+                                <Image Source="/SCS/IMG/equis.png" 
                                    Cursor="Hand"/>
-                        </Button>
-                        <!--#endregion-->
-                    </Grid>
-                </Border>
-            </Grid>
-            <!--#endregion-->
-            <!--#region CONTENIDO-->
-            <Grid x:Name="GridContent"
+                            </Button>
+                            <!--#endregion-->
+                        </Grid>
+                    </Border>
+                </Grid>
+                <!--#endregion-->
+                <!--#region CONTENIDO-->
+                <Grid x:Name="GridContent"
                   Background="Transparent"
                   VerticalAlignment="Bottom"
                   HorizontalAlignment="Right"
@@ -381,48 +396,62 @@
                   Width="1425" 
                   PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownBG"
                   >
-                <Border CornerRadius="0,0,0,10" Background="#5b7bb2" />
-                <TextBlock Text="PuntoVentaCCFN"
+                    <Border CornerRadius="0,0,0,10" Background="#5b7bb2" />
+                    <!--  
+                    <TextBlock Text="PuntoVentaCCFN"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="50"/>
-                <ContentControl Content="{Binding}"/>
-            </Grid>
-            <!--#endregion-->
-            <!--#region SIDEBAR-->
-            <Grid 
+                    -->
+                    <Image Source="/Images/PuntoVenta.jpg" Margin="950,638,72,46" RenderTransformOrigin="1.835,2.142">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleY="-0.342"/>
+                                <RotateTransform/>
+                                <TranslateTransform Y="-4.419"/>
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <ContentControl Content="{Binding}" Margin="0,0,0,10"/>
+
+                </Grid>
+                <!--#endregion-->
+                <!--#region SIDEBAR-->
+                <Grid 
                 x:Name="GridMenu"
                 Background="Transparent"
                 Width="80"
                 HorizontalAlignment="Left"
                 Margin="0,35,0,0">
-                <Border Background="#1a237e"
+                    <Border Background="#1a237e"
                         CornerRadius="0,0,0,10"/>
 
-            <!--#region MENU-->
-                <StackPanel Background="Transparent"
+                    <!--#region MENU-->
+                    <StackPanel Background="Transparent"
                             VerticalAlignment="Top">
 
-                    <Grid Height="50"
+                        <Grid Height="50"
                           VerticalAlignment="Top"
                           Margin="0,30,0,0">
 
-                        <Border Background="#D61734" 
+                            <Border Background="#D61734" 
                                 Height="25" 
                                 CornerRadius="3,0,0,3"
                                 Width="6"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"/>
 
-                        <TextBlock Text="CCFN" 
+                            <TextBlock Text="CCFN" 
                                    Foreground="White" 
                                    FontSize="15"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
-                    </Grid>
-                  
-                    <!--#region SHOW/HIDE-->
-                    <!--<Grid Background="Transparent"
+                        </Grid>
+
+                        <!--#region SHOW/HIDE-->
+                        <!--<Grid Background="Transparent"
                           VerticalAlignment="Top"
                           HorizontalAlignment="Right"
                           Margin="0,10,10,0">
@@ -434,7 +463,9 @@
                                 <ImageBrush ImageSource="/SCS/IMG/hamburguesa.png"/>
                             </ToggleButton.Background>
                             <ToggleButton.Triggers>
-                                --><!--#region HIDE--><!--
+                                -->
+                        <!--#region HIDE-->
+                        <!--
                                 <EventTrigger RoutedEvent="ToggleButton.Unchecked">
                                     <BeginStoryboard>
                                         <Storyboard x:Name="HidePanel">
@@ -446,8 +477,10 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
-                                --><!--#endregion-->
-                                <!--#region SHOW--><!--
+                                -->
+                        <!--#endregion-->
+                        <!--#region SHOW-->
+                        <!--
                                 <EventTrigger RoutedEvent="ToggleButton.Checked">
                                     <BeginStoryboard>
                                         <Storyboard x:Name="ShowPanel">
@@ -459,63 +492,67 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
-                                --><!--#endregion--><!--
+                                -->
+                        <!--#endregion-->
+                        <!--
                             </ToggleButton.Triggers>
                         </ToggleButton>
                     </Grid>-->
-                    <!--#endregion-->
-                    <!--#region LISTA-->
+                        <!--#endregion-->
+                        <!--#region LISTA-->
 
-                    <Menu Height="600" Background="Transparent" >
-                        <Menu.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Vertical"/>
-                            </ItemsPanelTemplate>
-                        </Menu.ItemsPanel>
+                        <Menu Height="600" Background="Transparent" >
+                            <Menu.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </Menu.ItemsPanel>
 
-                        <MenuItem Template="{StaticResource Menu_Template}">
-                            <MenuItem.Icon>
-                                <Image Source="/SCS/IMG/dashboard.png"></Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}">
-                            <MenuItem.Icon>
-                                <Image Source="/SCS/IMG/ventaccfn.png"></Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-
-                        <MenuItem Template="{StaticResource Menu_SubMenu_Template}">
-                            <MenuItem.Icon>
-                                <Image Source="/SCS/IMG/almacen.png"></Image>
-                            </MenuItem.Icon>
-
-                            <MenuItem Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
+                            <MenuItem Template="{StaticResource Menu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/product.png"></Image>
+                                    <Image Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Click="EntradaClick" Header="Entradas" Template="{StaticResource Item_Template}">
+                            <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/entrada.png"></Image>
+                                    <Image Source="/SCS/IMG/ventaccfn.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                        </MenuItem>
+                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/almacen.png"></Image>
+                                </MenuItem.Icon>
 
-                        <MenuItem Click="Usuarios_Click" Template="{StaticResource Menu_Template}">
-                            <MenuItem.Icon>
-                                <Image Source="/SCS/IMG/usuarios.png"></Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </Menu>
-                    <!--<ListView Background="Transparent"
+                                <MenuItem Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/SCS/IMG/product.png"></Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <MenuItem Click="EntradaClick" Header="Entradas" Template="{StaticResource Item_Template}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/SCS/IMG/entrada.png"></Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                            </MenuItem>
+
+                            <MenuItem Click="Usuarios_Click" Template="{StaticResource Menu_Template}">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/usuarios.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </Menu>
+                        <!--<ListView Background="Transparent"
                               BorderBrush="Transparent"
                               Margin="0,30,0,0"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
-                        --><!--#region INICIO--><!--
+                        -->
+                        <!--#region INICIO-->
+                        <!--
                         <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
                             <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnInicio"
                                     Height="70"
@@ -543,8 +580,10 @@
                                 </Grid>
                             </Button>
                         </ListViewItem>
-                        --><!--#endregion-->
-                        <!--#region POS--><!--
+                        -->
+                        <!--#endregion-->
+                        <!--#region POS-->
+                        <!--
                         <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
                             <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnPOS"
                                     Height="70"
@@ -572,8 +611,10 @@
                                 </Grid>
                             </Button>
                         </ListViewItem>
-                        --><!--#endregion-->
-                        <!--#region PRODUCTOS--><!--
+                        -->
+                        <!--#endregion-->
+                        <!--#region PRODUCTOS-->
+                        <!--
                         <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
                             <Button Style="{DynamicResource BtnListaStyle}" 
                                     x:Name="BtnProductos"
@@ -603,8 +644,10 @@
                                 </Grid>
                             </Button>
                         </ListViewItem>
-                        --><!--#endregion-->
-                        <!--#region USUARIOS--><!--
+                        -->
+                        <!--#endregion-->
+                        <!--#region USUARIOS-->
+                        <!--
                         <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
                             <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnUsuarios"
                                             Height="70"
@@ -632,14 +675,17 @@
                                 </Grid>
                             </Button>
                         </ListViewItem>
-                        --><!--#endregion--><!--
+                        -->
+                        <!--#endregion-->
+                        <!--
                     </ListView>-->
-                    <!--#endregion-->
-                </StackPanel>
-                <!--#endregion -->
+                        <!--#endregion-->
+                    </StackPanel>
+                    <!--#endregion -->
+                </Grid>
+                <!--#endregion-->
             </Grid>
-            <!--#endregion-->
-        </Grid>
+        </Border>
     </Border>
     <!--#endregion-->
 </Window>

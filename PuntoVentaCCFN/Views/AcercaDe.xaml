@@ -1,0 +1,105 @@
+﻿<Window x:Class="Capa_Presentacion.Views.AcercaDe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Capa_Presentacion.Views"
+        mc:Ignorable="d"
+        Title="Acerca de" Height="400" Width="600" 
+         WindowStyle="None"
+  ResizeMode="NoResize"
+  WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+     AllowsTransparency="True"
+  MouseDown="Window_MouseDown" Cursor="Hand"
+        >
+    <!-- Background="#08769F" -->
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1"
+                                     Duration="0:0:2" />
+                    <!-- Duración de 2 segundos -->
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Border CornerRadius="12">
+
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/back-image.jpg"
+                        Stretch="Fill"/>
+        </Border.Background>
+
+
+
+
+
+        <Border CornerRadius="10"  
+                
+      Background="#1b1448"
+      BorderBrush="MediumSlateBlue"  
+                
+      BorderThickness="5"
+      Opacity="0.85" Height="400" 
+      VerticalAlignment="Center" Margin="0,0,-2,0"
+      RenderTransformOrigin="0.5,0.5">
+
+
+            <Grid>
+                <!-- Contenedor Principal -->
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+
+                    <!-- Imagen del Logo -->
+                    <Image Source="/Images/Logo.png" Height="100" Width="100" Margin="0,0,0,20"/>
+
+                    <!-- Título Principal -->
+                    <TextBlock Text="Punto de Venta CCFN" 
+                       Foreground="White" 
+                       FontSize="30" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center"/>
+
+                    <!-- Subtítulo -->
+                    <TextBlock Text="Ver. Pre-Alfa" 
+                       Foreground="LightGray" 
+                       FontSize="20" 
+                       FontWeight="Medium" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,10,0,30"/>
+
+                    <!-- Pie de Página -->
+                    <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,30,0,0">
+                    <!--    <TextBlock Text="Derechos reservados a CCFN" 
+                           Foreground="White" 
+                           FontSize="14" 
+                           HorizontalAlignment="Center"/>
+                          -->
+                        <TextBlock Text="Desarrollado por el Equipo de Sistemas CCFN" 
+                           Foreground="LightGray" 
+                           FontSize="14" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,5,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button Content="Aceptar" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top" 
+                Width="106" 
+                Height="28" 
+                Margin="0,359,0,0"
+                Background="#FF136F6D"
+                Foreground="White"
+                FontWeight="Bold"
+                BorderThickness="0"
+                Cursor="Hand" Click="Button_Click"/>
+
+
+            </Grid>
+        </Border>
+    </Border>
+</Window>

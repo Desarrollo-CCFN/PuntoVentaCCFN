@@ -12,6 +12,22 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown" Cursor="Hand">
+    <!--Opacity="0" -->
+    
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                     From="0" To="1"
+                                     Duration="0:0:2" />
+                    <!-- Duración de 2 segundos -->
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+
 
     <Border CornerRadius="12">
         
@@ -186,7 +202,8 @@
                              Height="28"
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
-                             Padding="20,0,0,0" >
+                             Padding="20,0,0,0" 
+                             KeyDown="txtUser_KeyDown" >
 
                         <TextBox.Background>
                             <ImageBrush ImageSource="/Images/user-icon.png"

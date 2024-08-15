@@ -11,8 +11,11 @@
 
   <ItemGroup>
     <None Remove="Images\back-image.jpg" />
+    <None Remove="Images\HomeCarnes.jpg" />
     <None Remove="Images\key-icon.png" />
+    <None Remove="Images\lock-icon.png" />
     <None Remove="Images\logo.png" />
+    <None Remove="Images\PuntoVenta.jpg" />
     <None Remove="Images\user-icon.png" />
     <None Remove="SCS\IMG\almacen.png" />
     <None Remove="SCS\IMG\barras.png" />
@@ -48,10 +51,19 @@
     <Content Include="Images\back-image.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\HomeCarnes.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\key-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\lock-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\PuntoVenta.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\user-icon.png">

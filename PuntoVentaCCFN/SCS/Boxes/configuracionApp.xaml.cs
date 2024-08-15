@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Capa_Presentacion.Views;
+using System.Configuration;
 using System.Windows;
 
 
@@ -10,8 +11,9 @@ namespace Capa_Presentacion.SCS.Boxes
     public partial class configuracionApp : Window
     {
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+       
         public configuracionApp()
-        {
+        { 
             InitializeComponent();
             configurationData();
         }
