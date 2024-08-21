@@ -16,6 +16,8 @@
     <None Remove="Images\lock-icon.png" />
     <None Remove="Images\logo.png" />
     <None Remove="Images\PuntoVenta.jpg" />
+    <None Remove="Images\soporte.jpg" />
+    <None Remove="Images\soporte_1.jpg" />
     <None Remove="Images\user-icon.png" />
     <None Remove="SCS\IMG\almacen.png" />
     <None Remove="SCS\IMG\barras.png" />
@@ -64,6 +66,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\PuntoVenta.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\soporte.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\soporte_1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\user-icon.png">

@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using Capa_Negocio;
+using Capa_Presentacion.Views;
+using Capa_Entidad;
 namespace PuntoVentaCCFN.Views
 {
     /// <summary>
@@ -50,8 +52,29 @@ namespace PuntoVentaCCFN.Views
             int id = (int)((System.Windows.Controls.Button)sender).CommandParameter;
             CRUDUsuarios ventana = new CRUDUsuarios();
             ventana.IdUsuario = id;
-            ventana.Consutlar();
+            ventana.Consultar();
             FrameUsuarios.Content = ventana;
         }
+
+        private void FrameUsuarios_Navigated(object sender, NavigationEventArgs e)
+        {
+
+        }
+
+    
+        private void Modificar(object sender, RoutedEventArgs e)
+        {
+
+            int id = (int)((System.Windows.Controls.Button)sender).CommandParameter;
+            ModifUsuarios ventana = new ModifUsuarios();
+            ventana.IdUsuario = id;
+            ventana.Update();
+            FrameUsuarios.Content = ventana;
+
+
+
+        }
+         
+
     }
 }

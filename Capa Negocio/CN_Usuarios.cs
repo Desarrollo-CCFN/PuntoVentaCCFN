@@ -20,11 +20,28 @@ namespace Capa_Negocio
             objDatos.CD_INSERTAR(Usuaros);
         }
         #endregion
+
+        #region Actualizar
+        public void Actualizar(CE_Usuarios usuario)
+        {
+            objDatos.Actualizar(usuario);
+        }
+        #endregion
+
+
+
+
         #region CargarUsuarios
         public DataTable CargarUsuarios()
         {
             return objDatos.CargarUsuarios();
         }
         #endregion  
+    
+    
+    
+    
+    
+    
     }
 }

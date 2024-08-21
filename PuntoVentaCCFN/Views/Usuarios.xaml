@@ -339,7 +339,12 @@
                                             Width="80"
                                             BorderBrush="Transparent"
                                             Foreground="White"
-                                            Style="{DynamicResource BtnBuscarStyle}" />
+                                             
+                                            CommandParameter="{Binding USERID}"
+                                            Click="Modificar"
+                                            />
+                                    <!--  Style="{DynamicResource BtnBuscarStyle}"  -->
+                                    
                                     <Button Content="Eliminar"
                                             x:Name="BtnEliminar"
                                             Background="Blue"
@@ -351,11 +356,11 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="ID" Width="50" Binding="{Binding USERID}"/>
-                    <DataGridTextColumn Header="Codigo Usuario" Width="*" Binding="{Binding USER_CODE}"/>
-                    <DataGridTextColumn Header="Nombres" Width="*" Binding="{Binding U_NAME}"/>
-                    <DataGridTextColumn Header="Sucursal" Width="*" Binding="{Binding DfltsGroup}"/>
-                    <DataGridTextColumn Header="Bloqueado" Width="*" Binding="{Binding Locked}"/>
+                    <DataGridTextColumn Header="ID" Width="50" Binding="{Binding USERID}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Codigo Usuario" Width="*" Binding="{Binding USER_CODE}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Nombres" Width="*" Binding="{Binding U_NAME}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Sucursal" Width="*" Binding="{Binding DfltsGroup}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Bloqueado" Width="*" Binding="{Binding Locked}" IsReadOnly="True"/>
                 </DataGrid.Columns>
                 
             </DataGrid>
@@ -365,7 +370,7 @@
                    Grid.Column="0"
                    Grid.Row="0"
                    Grid.ColumnSpan="6"
-                   Grid.RowSpan="8"/>
+                   Grid.RowSpan="8" Navigated="FrameUsuarios_Navigated"/>
             <!--#endregion-->
         </Grid>
     </Border>

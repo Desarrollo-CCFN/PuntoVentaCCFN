@@ -35,10 +35,21 @@ namespace PuntoVentaCCFN.Views
             InitializeComponent();
         }
 
-        public void Consutlar()
+        public void Consultar()
         {
             var a = objeto_CN_Usuarios.Consulta(IdUsuario);
             tbUsuario.Text = a.U_NAME.ToString();
+            tbSucursal.Text = a.DfltsGroup.ToString();
+            tbPrivilegio.Text = a.Locked.ToString();
+            tbPassword.Password = "12345678";  //a.PASSWORD1.ToString();
+
+            tbSuperUser.Text = a.SUPERUSER.ToString();
+            tbId.Text = a.USERID.ToString();
+            tbUserCode.Text = a.USER_CODE.ToString();
+
+
+
+
         }
 
 

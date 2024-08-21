@@ -120,5 +120,17 @@ namespace PuntoVentaCCFN
             AcercaDe.Show();
 
         }
+
+        private void BtnSoporte_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            var WPFMessageReceiver = new WPFMessageReceiver();   // Activa el Password de acceso
+            WPFMessageReceiver.Show();
+
+
+
+
+        }
     }
 }
