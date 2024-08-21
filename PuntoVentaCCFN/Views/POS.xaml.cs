@@ -374,7 +374,7 @@ namespace PuntoVentaCCFN.Views
         #region inserción venta final(actualizacion de header final)
         private void PagoFinal(object sender, RoutedEventArgs e)
         {
-            printer.Dispose();
+            //printer.Dispose();
             if (GridDatos.Items.Count >= 1)
             {
                 ventaCambio();
@@ -388,7 +388,7 @@ namespace PuntoVentaCCFN.Views
 
         void ventaCambio()
         {
-            printer.Dispose();
+            //printer.Dispose();
             
 
             modalCambio modalc = new modalCambio(Convert.ToDecimal(tbTipoCambio.Text));
@@ -416,6 +416,7 @@ namespace PuntoVentaCCFN.Views
                 ventaI.Id = 0;
                 pagado = 0;
                 saldo();
+                pagoUSD = false;
             //}
             //else
             //{
@@ -426,7 +427,7 @@ namespace PuntoVentaCCFN.Views
 
         public void ventaFinal()
         {
-            printer.Dispose();
+            //printer.Dispose();
             cN_Venta = new CN_Venta();
             if (cambio < 0.01m)
             {
@@ -438,6 +439,7 @@ namespace PuntoVentaCCFN.Views
                 ventaI.Id = 0;
                 pagado = 0;
                 saldo();
+                
             }
             else
             {
@@ -449,8 +451,8 @@ namespace PuntoVentaCCFN.Views
         #region impresion ticket de venta
         void Imprimir(string numTck)
         {
-            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+            //var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
 
             var e = new EPSON();
 

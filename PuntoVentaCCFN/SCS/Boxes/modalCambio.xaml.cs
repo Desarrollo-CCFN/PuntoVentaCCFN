@@ -32,13 +32,13 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void calculateMXN(object sender, TextChangedEventArgs e)
         {
-            if(tbCambioU.Text == null || tbCambioU.Text == "") {
+            if (tbCambioU.Text == null || tbCambioU.Text == "") {
                 lblConvert.Text = "$0 MXN";
                 tbCambioR.Text = null;
-                return; 
+                return;
             }
 
-            
+
 
             conversion = Convert.ToDecimal(tbCambioU.Text) * tc;
 
@@ -49,6 +49,13 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void aceptarCambio(object sender, RoutedEventArgs e)
         {
+
+            if (tbCambioR.Text == null || tbCambioR.Text == "")
+            {
+                System.Windows.MessageBox.Show("Ingresa cantidad a regresar!!");
+                return;
+            }
+
             totalcambion = conversion + Convert.ToDecimal(tbCambioR.Text);
 
             if (tbCambioU.Text != null || tbCambioU.Text != "")
