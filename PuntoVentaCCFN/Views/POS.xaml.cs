@@ -123,8 +123,6 @@ namespace PuntoVentaCCFN.Views
                     return;
                 }
 
-                GridDatos.Items.Add(dt);
-                saldo();
                 DataRow row = dt.Rows[0];
                 CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
                 ce_Detalle.IdHeader = ventaI.Id;
@@ -140,6 +138,10 @@ namespace PuntoVentaCCFN.Views
                 {
                     MessageBox.Show(sMensaje);
                 }
+
+                GridDatos.Items.Add(dt);
+                saldo();
+                
                 tbCodigoProducto.Text = "";
             }
         }
@@ -206,6 +208,9 @@ namespace PuntoVentaCCFN.Views
                 
                 ventaPago.IdHeader = ventaI.Id;
                 venta.insertarVentaPago(ventaPago);
+            } else
+            {
+                MessageBox.Show("Ingresa una cantidad valida!!");
             }
 
         }
@@ -238,6 +243,10 @@ namespace PuntoVentaCCFN.Views
                 pagoUSD = true;
 
             }
+            else
+            {
+                MessageBox.Show("Ingresa una cantidad valida!!");
+            }
         }
         private void Tarjeta(object sender, RoutedEventArgs e)
         {
@@ -263,6 +272,10 @@ namespace PuntoVentaCCFN.Views
                 }
                 ventaPago.IdHeader = ventaI.Id;
                 venta.insertarVentaPago(ventaPago);
+            }
+            else
+            {
+                MessageBox.Show("Ingresa una cantidad valida!!");
             }
 
         }
@@ -377,6 +390,11 @@ namespace PuntoVentaCCFN.Views
             //printer.Dispose();
             if (GridDatos.Items.Count >= 1)
             {
+                if(pagado <= 0)
+                {
+                    System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                    return;
+                }
                 ventaCambio();
 
             } else
@@ -393,6 +411,7 @@ namespace PuntoVentaCCFN.Views
 
             modalCambio modalc = new modalCambio(Convert.ToDecimal(tbTipoCambio.Text));
                         modalc.tbCambioN.Text = cambio.ToString("0.00");
+            modalc.tbCambioR.Text = cambio.ToString("0.00");
             modalc.tbCambioNU.Text = (cambio / Convert.ToDecimal(tbTipoCambio.Text)).ToString("0.00");
 
             if (!pagoUSD)
