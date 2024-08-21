@@ -28,6 +28,7 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using System.Configuration;
 using PuntoVentaCCFN.Views;
 using Capa_Presentacion.Views;
+using System.Reflection;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -48,6 +49,7 @@ namespace PuntoVentaCCFN.Views
         public string whsCode;
         public string nombreCaja;
         public string sMensaje = null;
+        public bool pagoUSD = false;
         public POS()
         {
             InitializeComponent();
@@ -113,7 +115,13 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 DataTable dt;
-                dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios);
+                dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", ref sMensaje);
+
+                if(dt == null)
+                {
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
 
                 GridDatos.Items.Add(dt);
                 saldo();
@@ -121,14 +129,14 @@ namespace PuntoVentaCCFN.Views
                 CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
                 ce_Detalle.IdHeader = ventaI.Id;
                 ce_Detalle.ItemCode = Convert.ToString(row[0]);
-                ce_Detalle.Cantidad = Convert.ToDecimal(row[8]);
+                ce_Detalle.Cantidad = Convert.ToDecimal(row[11]);
                 ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
                 ce_Detalle.Monto = Convert.ToDecimal(row[6]);
                 ce_Detalle.WhsCode = whsCode;
                 ce_Detalle.CodeBars = tbCodigoProducto.Text;
                 ce_Detalle.PriceList = listPrecios;
                 ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
-                if(!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
+                if (!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
                 {
                     MessageBox.Show(sMensaje);
                 }
@@ -138,20 +146,22 @@ namespace PuntoVentaCCFN.Views
         #endregion
 
         #region calculo del saldo en cada insersion de producto
-        decimal total, cambio, pagado, subTotal;
+        decimal total, cambio, pagado, subTotal, totalUSD;
         private void saldo()
         {
             total = 0;
+            totalUSD = 0;
             subTotal = 0;
             for (int i = 0; i < GridDatos.Items.Count; i++)
             {
                 decimal precioTotal;
                 decimal precioSubtotal;
-                int j = 6;
+                int j = 8;
                 DataGridCell celda = GetCelda(i, j);
                 TextBlock tb = celda.Content as TextBlock;
                 precioTotal = decimal.Parse(tb.Text);
                 total += precioTotal;
+                totalUSD += precioTotal / Convert.ToDecimal(tbTipoCambio.Text);
 
                 int k = 3;
                 DataGridCell celda1 = GetCelda(i, k);
@@ -162,7 +172,8 @@ namespace PuntoVentaCCFN.Views
 
             cambio = pagado - total;
 
-            tbImporte.Text = "$" + total.ToString();
+            tbImporte.Text = "$" + total.ToString("0.00");
+            tbImporteUSD.Text = "$" + totalUSD.ToString("0.00");
             tbSubtotal.Text = "$" + subTotal.ToString();
             tbPagado.Text = "$" + pagado.ToString("###,###.00");
             tbCambio.Text = "$" + cambio.ToString();
@@ -197,6 +208,36 @@ namespace PuntoVentaCCFN.Views
                 venta.insertarVentaPago(ventaPago);
             }
 
+        }
+
+        private void EfectivoUSD(object sender, RoutedEventArgs e)
+        {
+            var ingresar = new Ingresar();
+            ingresar.ShowDialog();
+
+            if(ingresar.Efectivo > 0)
+            {
+                pagado += ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                saldo();
+                CE_VentaPagos ventaPago = new CE_VentaPagos();
+                ventaPago.Payform = "EFU";
+                ventaPago.Currency = "USD";
+                ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
+                ventaPago.AmountPay = ingresar.Efectivo;
+                if (cambio < 0)
+                {
+                    ventaPago.BalAmout = cambio;
+                }
+                else
+                {
+                    ventaPago.BalAmout = 0;
+                }
+
+                ventaPago.IdHeader = ventaI.Id;
+                venta.insertarVentaPago(ventaPago);
+                pagoUSD = true;
+
+            }
         }
         private void Tarjeta(object sender, RoutedEventArgs e)
         {
@@ -333,9 +374,10 @@ namespace PuntoVentaCCFN.Views
         #region inserción venta final(actualizacion de header final)
         private void PagoFinal(object sender, RoutedEventArgs e)
         {
+            printer.Dispose();
             if (GridDatos.Items.Count >= 1)
             {
-                ventaFinal();
+                ventaCambio();
 
             } else
             {
@@ -344,11 +386,49 @@ namespace PuntoVentaCCFN.Views
 
         }
 
-        void ventaFinal()
+        void ventaCambio()
         {
-            cN_Venta = new CN_Venta();
+            printer.Dispose();
+            
 
-            if(cambio >=0)
+            modalCambio modalc = new modalCambio(Convert.ToDecimal(tbTipoCambio.Text));
+                        modalc.tbCambioN.Text = cambio.ToString("0.00");
+            modalc.tbCambioNU.Text = (cambio / Convert.ToDecimal(tbTipoCambio.Text)).ToString("0.00");
+
+            if (!pagoUSD)
+            {
+                modalc.tbCambioU.Visibility = Visibility.Collapsed;
+                modalc.lblU.Visibility = Visibility.Collapsed;
+                modalc.lblConvert.Visibility = Visibility.Collapsed;
+                modalc.lblcamu.Visibility = Visibility.Collapsed;
+                modalc.tbCambioNU.Visibility = Visibility.Collapsed;
+            }
+            modalc.ShowDialog();
+
+            cN_Venta = new CN_Venta();
+            //if (cambio < 0)
+            //{
+                CE_VentaHeader vf = new CE_VentaHeader();
+                vf.Id = ventaI.Id;
+                cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje);
+                Imprimir(ventaI.NumTck);
+                GridDatos.Items.Clear();
+                ventaI.Id = 0;
+                pagado = 0;
+                saldo();
+            //}
+            //else
+            //{
+            //    System.Windows.MessageBox.Show("Ingresa un pago mayor o igual a la venta!");
+            //}
+
+        }
+
+        public void ventaFinal()
+        {
+            printer.Dispose();
+            cN_Venta = new CN_Venta();
+            if (cambio < 0.01m)
             {
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
@@ -369,8 +449,8 @@ namespace PuntoVentaCCFN.Views
         #region impresion ticket de venta
         void Imprimir(string numTck)
         {
-
-            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600)
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
 
             var e = new EPSON();
 
@@ -462,6 +542,14 @@ namespace PuntoVentaCCFN.Views
         }
         #endregion
 
+        #region apertura y cerrado inicial
+        private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
+        {
+            var acdialog = new modalAperturaSalida();
+            acdialog.Show();
+        }
+        #endregion
+
         #region al cerrar ventana venta
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -517,6 +605,9 @@ namespace PuntoVentaCCFN.Views
         
         
         }
+
+
+
         #endregion
 
         #region logica para obtener datos del grid table
