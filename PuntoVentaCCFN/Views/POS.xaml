@@ -385,6 +385,7 @@
                       x:Name="GridDatos"
                       AutoGenerateColumns="False"
                       Background="GhostWhite"
+                       IsReadOnly="True"
                       Foreground="Black"
                       FontSize="15"
                       CanUserAddRows="False"

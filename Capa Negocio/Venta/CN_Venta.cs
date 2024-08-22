@@ -19,9 +19,9 @@ namespace Capa_Negocio.Venta
         #endregion
 
         #region insertar venta HeaderFinal
-        public void insertarHeaderFinal(CE_VentaHeader ce, int _userId, ref string sMensaje)
+        public bool insertarHeaderFinal(CE_VentaHeader ce, int _userId, ref string sMensaje)
         {
-            objDatos.ventaFinal(ce, _userId, ref sMensaje);
+            return objDatos.ventaFinal(ce, _userId, ref sMensaje);
         }
         #endregion
         #region insertar venta headerFinal

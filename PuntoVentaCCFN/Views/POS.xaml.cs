@@ -134,9 +134,11 @@ namespace PuntoVentaCCFN.Views
                 ce_Detalle.CodeBars = tbCodigoProducto.Text;
                 ce_Detalle.PriceList = listPrecios;
                 ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
+
                 if (!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
                 {
                     MessageBox.Show(sMensaje);
+                    return;
                 }
 
                 GridDatos.Items.Add(dt);
@@ -429,7 +431,11 @@ namespace PuntoVentaCCFN.Views
             //{
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
-                cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje);
+                if (!cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje))
+                {
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
                 Imprimir(ventaI.NumTck);
                 GridDatos.Items.Clear();
                 ventaI.Id = 0;
@@ -452,7 +458,11 @@ namespace PuntoVentaCCFN.Views
             {
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
-                cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje);
+                if(!cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje))
+                {
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
                 Imprimir(ventaI.NumTck);
                 GridDatos.Items.Clear();
                 ventaI.Id = 0;
