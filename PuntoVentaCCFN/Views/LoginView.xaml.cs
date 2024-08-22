@@ -1,5 +1,6 @@
 ﻿using MySqlConnector;
-using System;
+using MySql.Data.MySqlClient;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,10 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using PuntoVentaCCFN;
 using System.Windows.Media.Animation;
+using Capa_Entidad;
+using Capa_Negocio;
+using PuntoVentaCCFN.Views;
+using Capa_Presentacion;
 
 
 
@@ -27,10 +32,13 @@ namespace Capa_Presentacion.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+        readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
+        readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
+     //   private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
         public LoginView()
         {
             InitializeComponent();
+            txtUser.Focus();
 
             // Crear la animación de opacidad
             DoubleAnimation fadeInAnimation = new DoubleAnimation
@@ -63,111 +71,67 @@ namespace Capa_Presentacion.Views
         }
 
 
-        private async void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
 
             InitializeComponent();
 
             if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
             {
-                // System.Windows.MessageBox.Show("Inicio de sesión exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                Mouse.OverrideCursor = null;
-
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.Show();
-
-                // Cerrar la ventana LoginView.xaml
-                 this.Close();
-
+                this.Close();
             }
             else
             {
-
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                //Mouse.OverrideCursor = Cursors.WaitCursor;
-                //objBuidel.Server = "192.168.101.7";
-                //objBuidel.Database = "ccfn_desarrollo";
-                //objBuidel.UserID = "desarrollo2";
-                //objBuidel.Password = "Chivas.2024";
 
-                objBuidel.Server = "54.177.203.25";
-                objBuidel.Database = "CCFNPROD";
-                objBuidel.UserID = "apisap";
-                objBuidel.Password = "34sg!MaXN**5c%tG";
+                // Asignar los valores de la interfaz a la entidad
+                objeto_CE_Usuarios.U_NAME = this.txtUser.Text;
+                objeto_CE_Usuarios.PASSWORD4 = this.txtPass.Password;
 
-                MySqlConnection connection = null;
+                // Llamar al método de negocio para autenticar el usuario
+                DataTable dtResultado = objeto_CN_Usuarios.AutUsuario(this.txtUser.Text, this.txtPass.Password);
 
-                // using (var connection = new MySqlConnection(objBuidel.ConnectionString))
-                // {
-                try
+                Mouse.OverrideCursor = null;
+
+                if (dtResultado.Rows.Count > 0)
                 {
-                    connection = new MySqlConnection(objBuidel.ConnectionString);
-                    connection.Open();
-                    // System.Windows.MessageBox.Show("Conexión exitosa.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    // MessageBox.Show($"Error al conectar a la base de datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                // }
-                finally
-                {
-                    // Cerrar la conexión manualmente si está abierta
-                    if (connection != null && connection.State == System.Data.ConnectionState.Open)
+                    string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
+
+                    if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
+                        MainWindow mainWindow = new MainWindow();
 
-
-                        string password = this.txtPass.Password;
-
-                        string email = this.txtUser.Text;
-                        //  MessageBox.Show(password);
-                        //  MessageBox.Show(email);
-
-
-                        using (var client = new HttpClient())
+                        if (superUserFlag == "Y")
                         {
-                            client.BaseAddress = new Uri("http://192.168.0.32:8886");
-                            client.DefaultRequestHeaders.Accept.Clear();
-                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                            var loginData = new
-                            {
-                                Email = email,
-                                Password = password
-                            };
-
-                            HttpResponseMessage response = await client.PostAsJsonAsync("/api/Account/Login", loginData);
-
-                            if (response.IsSuccessStatusCode)
-                            {
-                                // System.Windows.MessageBox.Show("Inicio de sesión exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                                Mouse.OverrideCursor = null;
-
-                                MainWindow mainWindow = new MainWindow();
-                                mainWindow.Show();
-
-                                // Cerrar la ventana LoginView.xaml
-                                this.Close();
-
-
-
-                            }
-                            else
-                            {
-                                System.Windows.MessageBox.Show("Error Favor de Verificar Usuario/Password", "Aviso", MessageBoxButton.OK, MessageBoxImage.Error);
-                                connection.Close();
-                                // MessageBox.Show("Cerro");
-                                this.txtPass.Password = "";
-                                this.txtUser.Text = "";
-                                Mouse.OverrideCursor = null;
-
-                            }
+                            mainWindow.menuItemUsuarios.Visibility = Visibility.Visible;
+                            mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
+                            mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                         }
+                        else
+                        {
+                            mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
+                            mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
+                            mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
+                        } 
 
-
+                      //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                      
+                        mainWindow.Show();
+                        this.Close();
                     }
+                 
                 }
+                else
+                {
+                    System.Windows.MessageBox.Show("No se tiene registro Favor de Verificar Usuario y/o Password.", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                    txtUser.Clear();
+                    txtPass.Clear();    
+                    txtUser.Focus();
 
+
+                }
             }
 
         }
@@ -188,8 +152,23 @@ namespace Capa_Presentacion.Views
 
             }
 
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                txtPass.Focus();
+            }
+      
+        
         }
 
-        
+        private void txtPass_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Enter || e.Key == Key.Tab) // Verificar si la tecla presionada es Enter
+            {
+                btnLogin_Click(sender, e); // Llamar al método btnLogin_Click con los argumentos correctos
+            }
+             
+
+        }
     }
 }

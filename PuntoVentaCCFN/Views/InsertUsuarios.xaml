@@ -1,13 +1,15 @@
-﻿<Page x:Class="PuntoVentaCCFN.Views.CRUDUsuarios"
+﻿<Page x:Class="Capa_Presentacion.Views.InsertUsuarios"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
+      xmlns:local="clr-namespace:Capa_Presentacion.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="900" d:DesignWidth="1500"
       FontSize="18"
-      Title="CRUDUsuarios">
+      d:DesignHeight="900" d:DesignWidth="800"
+      Title="InsertUsuarios">
+
+
     <Page.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -111,41 +113,42 @@
     </Page.Resources>
 
     <Border CornerRadius="10" Background="#4dabf5">
-        <Grid>
+        <Grid Height="900" VerticalAlignment="Center" RenderTransformOrigin="0.497,0.541">
             <!--#region REGION COLS ROWS-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="148*"/>
+                <ColumnDefinition Width="292*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="247*"/>
+                <ColumnDefinition Width="49*"/>
                 <ColumnDefinition Width="20"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="58"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="41"/>
+                <RowDefinition Height="41"/>
+                <RowDefinition Height="6"/>
+                <RowDefinition Height="43"/>
+                <RowDefinition Height="31"/>
             </Grid.RowDefinitions>
             <!--#endregion-->
             <!--#region TITULO-->
             <TextBlock x:Name="Titulo"
-                       Grid.Column="1"
+                       Text="Alta Usuarios"
+                       Grid.Column="2"
                        Grid.Row="1"
-                       Grid.ColumnSpan="5"
+                       Grid.ColumnSpan="3"
                        FontSize="30"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center"><Run Language="es-mx" Text="Consulta"/><Run Text=" de usuarios"/></TextBlock>
+                       HorizontalAlignment="Center" Height="40" Width="270"/>
             <!--#endregion-->
             <!--#region BOTONES-->
             <!--#region REGRESAR-->
@@ -162,86 +165,92 @@
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
                        Text="Usuario:"
-                       HorizontalAlignment="left"
-                       VerticalAlignment="Center"/>
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Height="24" Width="64"/>
             <TextBox Style="{DynamicResource tbStyle}" Grid.Row="4"
                      Grid.Column="2"
-                     x:Name="tbUsuario"
-                      IsReadOnly="True"
-                     />
+                     x:Name="tbUsuario"/>
             <TextBlock Grid.Row="6"
                        Grid.Column="1"
                        Text="Contraseña:"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-/>
-            <PasswordBox Grid.Row="6"
+                       VerticalAlignment="Center" Height="24" Width="94"
+                   />
+            <PasswordBox Grid.Row="5"
                      Grid.Column="2"
-                     x:Name="tbPassword"
-                       IsEnabled="False"   
+                     x:Name="tbPassword" Margin="0,39,0,1" Grid.RowSpan="2"
+                     KeyDown="tbPassword_KeyDown"    
                          />
+
+            <PasswordBox Grid.Row="5"
+     Grid.Column="3"
+     x:Name="tbPassword_Copiar" Margin="18,39,0,1" Grid.RowSpan="2" Grid.ColumnSpan="2" KeyDown="tbPassword_Copiar_KeyDown"/>
+
+
+
             <TextBlock Grid.Row="8"
                        Grid.Column="1"
                        Text="Sucursal:"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Top" Height="24" Width="70" Margin="21,0,0,0"/>
             <TextBox Grid.Row="8"
                      Grid.Column="2"
                      x:Name="tbSucursal"
-                     Style="{DynamicResource tbStyle}" Margin="0,0,365,0"
-                      IsReadOnly="True"
-                     />
-            <TextBlock Grid.Row="10"
+                     Style="{DynamicResource tbStyle}" Margin="6,0,159,10"/>
+            <TextBlock Grid.Row="11"
                        Grid.Column="1"
-                       Text="Bloqueado:"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"/>
-
-            <TextBox Grid.Row="10"
+                       VerticalAlignment="Center" Height="24" Width="90" Margin="5,0,0,0"><Run Language="es-mx" Text="Bloqueado"/><Run Text=":"/></TextBlock>
+            <ComboBox Grid.Row="11"
                       Grid.Column="2"
-                      x:Name="tbPrivilegio"
-                       Style="{DynamicResource tbStyle}" Margin="0,0,365,0"
-                       IsReadOnly="True"
-                     />
-            <TextBlock Grid.Row="12"
-                Grid.Column="1" Margin="0,10,197,-4"><Run Language="es-mx" Text="Super User"/><Run Text=":"/></TextBlock>
-            <TextBox Grid.Row="12"
+                      x:Name="cbPrivilegio" Margin="10,4,216,4" >
+                <ComboBoxItem></ComboBoxItem>
+                <ComboBoxItem></ComboBoxItem>
+
+            </ComboBox>
+            <TextBlock Grid.Row="5"
                 Grid.Column="2"
-                x:Name="tbSuperUser"
-                Style="{DynamicResource tbStyle}" Margin="0,0,365,0"
-                IsReadOnly="True"
-                     />
-            <TextBlock Grid.Row="3"
-                Grid.Column="4" Margin="10,0,162,46"><Run Language="es-mx" Text="User Code:"/></TextBlock>
-            <TextBlock Grid.Row="3"
-                Grid.Column="5" Margin="53,0,144,49"><Run Language="es-mx" Text="Id"/><Run Text=":"/></TextBlock>
-            <TextBox Grid.Row="3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Margin="87,10,0,0" Height="24" Width="146"
+><Run Language="es-mx" Text="Nueva"/><Run Text=" Contraseña"/></TextBlock>
+            <TextBlock Grid.Row="5"
                 Grid.Column="4"
-                x:Name="tbUserCode"
-                Style="{DynamicResource tbStyle}" Margin="0,32,60,8"
-                IsReadOnly="True"
-                     />
-            <TextBox Grid.Row="3"
-                Grid.Column="5"
-                x:Name="tbId"
-                Style="{DynamicResource tbStyle}" Margin="34,32,88,8"
-                IsReadOnly="True"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top" Margin="0,6,0,0" Height="24" Width="166"
+><Run Language="es-mx" Text="Ingrese Nuevamente"/></TextBlock>
+
+            <TextBlock Grid.Row="9"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Margin="2,6,0,0" Width="101" Grid.Column="1" Height="24"> 
+                <Run Language="es-mx" Text="User Code"/>
+                <Run Text=":"/>
+            </TextBlock>
+            <TextBox Style="{DynamicResource tbStyle}" Grid.Row="9"
+                Grid.Column="2"
+                x:Name="tbCode" Margin="0,5,63,5"
+                
                      />
 
-
-            <!--
-            <ComboBox Grid.Row="10"
-                      Grid.Column="2"
-                      x:Name="cbPrivilegio" Margin="0,0,10,0"/>
-            -->
-            <!--
-            <Button Grid.Row="12"
+            <Button x:Name="Insertar" Grid.Row="12"
                     Grid.Column="2"
-                    Content="Crear Usuario"
+                    Content="Alta Usuarios"
                     Background="Blue"
                     Cursor="Hand"
-                    Style="{DynamicResource BtnStyle}"/>
-            -->
+                    Style="{DynamicResource BtnStyle}" Margin="10,157,10,-157" Click="Alta_Click"/>
+            <TextBlock Grid.Row="12"
+                Grid.Column="1"
+                VerticalAlignment="Top" Margin="2,7,51,0" Height="24"><Run Language="es-mx" 
+                Text="Super User"/>
+                <Run Text=":"/>
+            </TextBlock>
+            <ComboBox Grid.Row="12"
+                Grid.Column="2"
+                x:Name="cbSuper" Margin="10,9,216,-9" >
+                <ComboBoxItem/>
+                <ComboBoxItem/>
+
+            </ComboBox>
+
             <!--#endregion-->
         </Grid>
     </Border>

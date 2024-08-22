@@ -1,6 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using Capa_Entidad;
+using System.Windows;
+using System.Windows.Input; 
 
 namespace Capa_Datos
 {
@@ -25,10 +27,45 @@ namespace Capa_Datos
             ce.USERID = Convert.ToInt32(row[0]);
             ce.USER_CODE = Convert.ToString(row[2]);
             ce.U_NAME = Convert.ToString(row[1]);
+            ce.DfltsGroup = Convert.ToString(row[3]);
+
+            ce.Locked = Convert.ToString(row[4]);
+            ce.SUPERUSER = Convert.ToString(row[5]);
+            ce.PASSWORD4 = Convert.ToString(row[6]);
+
 
             return ce;
         }
         #endregion
+
+
+
+
+
+
+
+
+
+
+
+        #region Borrar
+        public void Borrar(int userId)
+        {
+            MySqlCommand cmd = new MySqlCommand()
+            {
+                Connection = conn.AbrirConexion(),
+                CommandText = "SP_U_BorrarUsuario",
+                CommandType = CommandType.StoredProcedure,
+            };
+            cmd.Parameters.AddWithValue("_USERID", userId);
+          
+            cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
+            conn.CerrarConexion();
+        }
+#endregion
+
+
         #region Insertar
         public void CD_INSERTAR(CE_Usuarios Usuarios)
         {
@@ -46,6 +83,111 @@ namespace Capa_Datos
             conn.CerrarConexion();
         }
         #endregion
+
+        #region Actualizar
+
+        public void Actualizar(CE_Usuarios Usuarios)
+        {
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn.AbrirConexion();
+                    cmd.CommandText = "SP_U_ActualizarUsuarios";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("_USERID", Usuarios.USERID);
+                    cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
+                    cmd.Parameters.AddWithValue("_DfltsGroup", Usuarios.DfltsGroup);
+                    cmd.Parameters.AddWithValue("_Locked", Usuarios.Locked);
+                    cmd.Parameters.AddWithValue("_SUPERUSER", Usuarios.SUPERUSER);
+                    cmd.Parameters.AddWithValue("_PASSWORD4", Usuarios.PASSWORD4);
+                    cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                // Errores específicos de MySQL
+                Console.WriteLine($"Error en la base de datos: {ex.Message}", "Error");
+
+
+
+            }
+            catch (Exception ex)
+            {
+                // otro tipo de error
+                Console.WriteLine($"Ocurrió un error: {ex.Message}", "Error");
+            }
+            finally
+            {
+                conn.CerrarConexion();
+            }
+
+            /*   SqlCommand cmd = new SqlCommand("UPDATE Usuarios SET U_NAME = @U_NAME, USER_CODE = @USER_CODE, DfltsGroup = @DfltsGroup, Locked = @Locked, SUPERUSER = @SUPERUSER WHERE USERID = @USERID", connection);
+               cmd.Parameters.AddWithValue("@USERID", usuario.USERID); no
+               cmd.Parameters.AddWithValue("@U_NAME", usuario.U_NAME);
+               cmd.Parameters.AddWithValue("@USER_CODE", usuario.USER_CODE); NO
+               cmd.Parameters.AddWithValue("@DfltsGroup", usuario.DfltsGroup);
+               cmd.Parameters.AddWithValue("@Locked", usuario.Locked);
+               cmd.Parameters.AddWithValue("@SUPERUSER", usuario.SUPERUSER);
+
+               connection.Open();
+               cmd.ExecuteNonQuery(); */
+
+        }
+        #endregion
+
+        #region Alta
+
+        public void Alta(CE_Usuarios Usuarios)
+        {
+            try
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    cmd.Connection = conn.AbrirConexion();
+                    cmd.CommandText = "SP_U_InsertUsuarios";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                   
+                    cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
+                    cmd.Parameters.AddWithValue("_DfltsGroup", Usuarios.DfltsGroup);
+                    cmd.Parameters.AddWithValue("_Locked", Usuarios.Locked);
+                    cmd.Parameters.AddWithValue("_SUPERUSER", Usuarios.SUPERUSER);
+                    cmd.Parameters.AddWithValue("_PASSWORD4", Usuarios.PASSWORD4);
+                    cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (MySqlException ex)
+            {
+                // Errores específicos de MySQL
+                Console.WriteLine($"Error en la base de datos: {ex.Message}", "Error");
+
+
+
+            }
+            catch (Exception ex)
+            {
+                // otro tipo de error
+                Console.WriteLine($"Ocurrió un error: {ex.Message}", "Error");
+            }
+            finally
+            {
+                conn.CerrarConexion();
+            }
+
+  
+
+        }
+        #endregion
+         
+
+
+
         #region CargarUsuarios
         public DataTable CargarUsuarios()
         {
@@ -60,6 +202,58 @@ namespace Capa_Datos
             return dt;
         }
         #endregion
+
+        #region BuscarUsuario
+        public DataTable BuscarUsuario(string usuario)
+        {
+            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_BuscarUsuario", conn.AbrirConexion());
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
+            DataSet ds = new DataSet();
+            ds.Clear();
+            da.Fill(ds);
+            DataTable dt = ds.Tables[0];
+            conn.CerrarConexion();
+
+            return dt;
+        }
+
+        #endregion
+
+        #region AutUsuario
+        public DataTable AutUsuario(string usuario, string Password)
+        {
+            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_AutUsuario", conn.AbrirConexion());
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
+            da.SelectCommand.Parameters.AddWithValue("_PASSWORD4", Password);
+            DataSet ds = new DataSet();
+            ds.Clear();
+            da.Fill(ds);
+            DataTable dt = ds.Tables[0];
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                ce.USERID = Convert.ToInt32(row[0]);
+                ce.USER_CODE = Convert.ToString(row[2]);
+                ce.U_NAME = Convert.ToString(row[1]);
+                ce.DfltsGroup = Convert.ToString(row[3]);
+
+                ce.Locked = Convert.ToString(row[4]);
+                ce.SUPERUSER = Convert.ToString(row[5]);
+                ce.PASSWORD4 = Convert.ToString(row[6]);
+            }
+            conn.CerrarConexion();
+            
+
+            return dt;
+        }
+
+        #endregion
+
+
+
 
     }
 }

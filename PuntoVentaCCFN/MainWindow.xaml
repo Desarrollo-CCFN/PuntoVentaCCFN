@@ -303,14 +303,14 @@
                             <Button 
                             Style="{DynamicResource BTNHEADERSTYLE}" 
                             x:Name="BtnCuenta"
-                            Grid.Column="1"
                             Background="Transparent"
                             FontSize="15"
                             Foreground="White"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Click="BtnCuenta_Click"
-                            Cursor="Hand">
+                            Cursor="Hand" Grid.Column="1" Margin="1,0,0,0">
+
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15"/>
@@ -321,10 +321,58 @@
                                            VerticalAlignment="Center"
                                            Margin="5,0,0,0" HorizontalAlignment="Left" Width="93"/>
                                     <Image Grid.Column="0"
-                                       VerticalAlignment="Bottom"
-                                       Source="/SCS/IMG/config.png" Margin="0,0,0,3"/>
+                                       VerticalAlignment="Center"
+                                       Source="/SCS/IMG/config.png"/>
+
                                 </Grid>
+
                             </Button>
+
+
+                            <Button 
+                            Style="{DynamicResource BTNHEADERSTYLE}" 
+                            x:Name="BtnSoporte"
+                            Background="Transparent"
+                            FontSize="15"
+                            Foreground="White"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Click="BtnSoporte_Click"
+                            Cursor="Hand" Margin="1050,0,0,0" Width="135">
+
+
+                                <Grid Width="130">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="13"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <TextBlock
+                                           Text="Soprte MSN"
+                                           VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="86" Grid.Column="1" Height="19" Margin="0,0,0,6" />
+
+
+                                    <Image Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                                Source="/Images/soporte.jpg" Margin="1,0,106,0" Height="39" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="0.858"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+
+
+
+
+                                </Grid>
+
+                            </Button>
+
                             <!--#endregion-->
                             <!--#region INFO-->
                             <Button x:Name="BtnInfo"
@@ -348,7 +396,6 @@
                                     <TextBlock Text="Acerca de" 
                                            Grid.Column="1"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
                                            Margin="5,0,0,0"/>
                                 </Grid>
                             </Button>
@@ -396,14 +443,18 @@
                   Width="1425" 
                   PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownBG"
                   >
-                    <Border CornerRadius="0,0,0,10" Background="#5b7bb2" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1117*"/>
+                        <ColumnDefinition Width="308*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border CornerRadius="0,0,0,10" Background="#5b7bb2" Grid.ColumnSpan="2" />
                     <!--  
                     <TextBlock Text="PuntoVentaCCFN"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="50"/>
                     -->
-                    <Image Source="/Images/PuntoVenta.jpg" Margin="950,638,72,46" RenderTransformOrigin="1.835,2.142">
+                    <Image Source="/Images/PuntoVenta.jpg" Margin="950,638,72,46" RenderTransformOrigin="1.835,2.142" Grid.ColumnSpan="2">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -414,7 +465,7 @@
                         </Image.RenderTransform>
                     </Image>
 
-                    <ContentControl Content="{Binding}" Margin="0,0,0,10"/>
+                    <ContentControl Content="{Binding}" Margin="0,0,0,10" Grid.ColumnSpan="2"/>
 
                 </Grid>
                 <!--#endregion-->
@@ -510,7 +561,7 @@
 
                             <MenuItem Template="{StaticResource Menu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/dashboard.png"></Image>
+                                    <Image x:Name="menuItemdashboard" Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -522,7 +573,7 @@
 
                             <MenuItem Template="{StaticResource Menu_SubMenu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/almacen.png"></Image>
+                                    <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>
                                 </MenuItem.Icon>
 
                                 <MenuItem Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
@@ -539,11 +590,23 @@
 
                             </MenuItem>
 
-                            <MenuItem Click="Usuarios_Click" Template="{StaticResource Menu_Template}">
+                            <MenuItem x:Name="menuItemUsuarios" Click="Usuarios_Click" 
+                                      Template="{StaticResource Menu_Template}" Height="50" 
+                                      VerticalAlignment="Center">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/usuarios.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
+
+                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/reportes.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+
+
+
                         </Menu>
                         <!--<ListView Background="Transparent"
                               BorderBrush="Transparent"

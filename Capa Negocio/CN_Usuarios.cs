@@ -14,17 +14,64 @@ namespace Capa_Negocio
             return objDatos.Consulta(IdUsuario);
         }
         #endregion
+
+        #region Borrar
+        public void Borrar(int userId)
+        {
+             objDatos.Borrar(userId);
+        }
+        #endregion
+
+
+
+
         #region Insertar
         public void Insertar(CE_Usuarios Usuaros)
         {
             objDatos.CD_INSERTAR(Usuaros);
         }
         #endregion
+
+        #region Actualizar
+        public void Actualizar(CE_Usuarios usuario)
+        {
+            objDatos.Actualizar(usuario);
+        }
+        #endregion
+
+
+        #region Alta
+        public void Alta(CE_Usuarios usuario)
+        {
+            objDatos.Alta(usuario);
+        }
+        #endregion
+
+
+
         #region CargarUsuarios
         public DataTable CargarUsuarios()
         {
             return objDatos.CargarUsuarios();
         }
-        #endregion  
+        #endregion
+
+        #region BuscarUsuario
+        public DataTable BuscarUsuario(string usuario)
+        {
+            return objDatos.BuscarUsuario(usuario);
+        }
+        #endregion
+
+
+        #region AutUsuario
+        public DataTable AutUsuario(string usuario, string Password)
+        {
+            return objDatos.AutUsuario(usuario, Password);
+        }
+        #endregion
+
+
+
     }
 }
