@@ -102,50 +102,56 @@ namespace PuntoVentaCCFN.Views
                 
                 if (tbCodigoProducto.Text == "") return;
 
-                CN_Carrito carrito = new CN_Carrito();
-
-                if (ventaI.Id.Equals(0))
-                {
-                    ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
-                }
-
-                if(ventaI.Id.Equals(-1)) {
-                    MessageBox.Show(ventaI.Comments);
-                    return;
-                }
-
-                DataTable dt;
-                dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", ref sMensaje);
-
-                if(dt == null)
-                {
-                    MessageBox.Show(sMensaje);
-                    return;
-                }
-
-                DataRow row = dt.Rows[0];
-                CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
-                ce_Detalle.IdHeader = ventaI.Id;
-                ce_Detalle.ItemCode = Convert.ToString(row[0]);
-                ce_Detalle.Cantidad = Convert.ToDecimal(row[11]);
-                ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
-                ce_Detalle.Monto = Convert.ToDecimal(row[6]);
-                ce_Detalle.WhsCode = whsCode;
-                ce_Detalle.CodeBars = tbCodigoProducto.Text;
-                ce_Detalle.PriceList = listPrecios;
-                ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
-
-                if (!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
-                {
-                    MessageBox.Show(sMensaje);
-                    return;
-                }
-
-                GridDatos.Items.Add(dt);
-                saldo();
+                operacionBusquedaInsercio();
                 
                 tbCodigoProducto.Text = "";
             }
+        }
+
+        private void operacionBusquedaInsercio()
+        {
+            CN_Carrito carrito = new CN_Carrito();
+
+            if (ventaI.Id.Equals(0))
+            {
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+            }
+
+            if (ventaI.Id.Equals(-1))
+            {
+                MessageBox.Show(ventaI.Comments);
+                return;
+            }
+
+            DataTable dt;
+            dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", "S24", ref sMensaje);
+
+            if (dt == null)
+            {
+                MessageBox.Show(sMensaje);
+                return;
+            }
+
+            DataRow row = dt.Rows[0];
+            CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
+            ce_Detalle.IdHeader = ventaI.Id;
+            ce_Detalle.ItemCode = Convert.ToString(row[0]);
+            ce_Detalle.Cantidad = Convert.ToDecimal(row[11]);
+            ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
+            ce_Detalle.Monto = Convert.ToDecimal(row[6]);
+            ce_Detalle.WhsCode = whsCode;
+            ce_Detalle.CodeBars = tbCodigoProducto.Text;
+            ce_Detalle.PriceList = listPrecios;
+            ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
+
+            if (!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
+            {
+                MessageBox.Show(sMensaje);
+                return;
+            }
+
+            GridDatos.Items.Add(dt);
+            saldo();
         }
         #endregion
 
@@ -304,6 +310,13 @@ namespace PuntoVentaCCFN.Views
         {
             var busquedaProducto = new modalProductos();
             busquedaProducto.ShowDialog();
+
+            if(busquedaProducto.cadenaBusqueda != null)
+            {
+                tbCodigoProducto.Text = busquedaProducto.cadenaBusqueda;
+                operacionBusquedaInsercio();
+                tbCodigoProducto.Text = "";
+            }
         }
         #endregion
 

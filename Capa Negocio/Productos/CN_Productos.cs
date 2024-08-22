@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Capa_Datos.Productos;
 using Capa_Entidad;
+using Capa_Entidad.Productos;
 
 namespace Capa_Negocio.Productos
 {
@@ -19,6 +20,13 @@ namespace Capa_Negocio.Productos
         public DataTable BusquedaProducto(string busqueda)
         {
             return objDatos.ConsultaProducto(busqueda);
+        }
+        #endregion
+
+        #region busqueda um de producto
+        public List<CE_ProductUm> BusquedaUm(string busqueda)
+        {
+            return objDatos.ConsultaUM(busqueda);
         }
         #endregion
     }

@@ -38,5 +38,24 @@ namespace Capa_Datos.Productos
             return dt;
         }
         #endregion
+
+        #region busqueda de um de producto
+        public List<CE_ProductUm> ConsultaUM(string itemCode)
+        {
+            List<CE_ProductUm> listUm = new List<CE_ProductUm> ();
+            MySqlCommand conm = new MySqlCommand("SP_P_BusquedaUOM", conn.AbrirConexion());
+            conm.CommandType = CommandType.StoredProcedure;
+            conm.Parameters.Add("itemCode", MySqlDbType.VarChar).Value = itemCode;
+            MySqlDataReader dr = conm.ExecuteReader();
+
+            while(dr.Read())
+            {
+                listUm.Add(new CE_ProductUm { UomEntry = dr["UomEntry"].ToString(), UomCode = dr["UomCode"].ToString()});
+            }
+            conn.CerrarConexion();
+
+            return listUm;
+        }
+        #endregion
     }
 }

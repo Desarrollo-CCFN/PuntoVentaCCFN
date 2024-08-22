@@ -13,7 +13,7 @@ namespace Capa_Datos.Productos
 
 
         #region buscarArticulo
-        public DataTable Buscar(string BcdCode, int listNum, string currency, ref string sMensaje)
+        public DataTable Buscar(string BcdCode, int listNum, string currency, string whsCode, ref string sMensaje)
         {
             string sItemCode = "";
             DataTable dt = new DataTable();
@@ -27,6 +27,7 @@ namespace Capa_Datos.Productos
                 da.SelectCommand.Parameters.Add("p_Barcode", MySqlDbType.VarChar).Value = BcdCode;
                 da.SelectCommand.Parameters.Add("p_ListaP", MySqlDbType.Int32).Value = listNum;
                 da.SelectCommand.Parameters.Add("p_MonVenta", MySqlDbType.VarChar).Value = currency;
+                da.SelectCommand.Parameters.Add("p_Almacen", MySqlDbType.VarChar).Value = whsCode;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;

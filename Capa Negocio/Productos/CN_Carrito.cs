@@ -10,9 +10,9 @@ namespace Capa_Negocio.Productos
         private readonly CD_Carrito objDatos = new CD_Carrito();
 
         #region buscarproductoVenta
-        public DataTable buscarProducto(string bcdCode, int listNum, string currency, ref string sMensaje)
+        public DataTable buscarProducto(string bcdCode, int listNum, string currency, string whsCode, ref string sMensaje)
         {
-            return objDatos.Buscar(bcdCode, listNum, currency, ref sMensaje);
+            return objDatos.Buscar(bcdCode, listNum, currency, whsCode, ref sMensaje);
         }
         #endregion
     }

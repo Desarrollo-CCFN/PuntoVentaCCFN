@@ -23,6 +23,8 @@ namespace Capa_Presentacion.SCS.Boxes
     public partial class modalProductos : Window
     {
         readonly CN_Productos objeto_CN_Productos = new CN_Productos();
+        public string cadenaBusqueda;
+        public string itemCode;
         public modalProductos()
         {
             InitializeComponent();
@@ -42,7 +44,14 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
+            if(itemCode == null || itemCode == "")
+            {
+                System.Windows.MessageBox.Show("Debes Seleccionar un producto!!");
+                return;
+            }
 
+            cadenaBusqueda = "*" + itemCode + "*" + cbUnidades.Text;
+            this.Close();
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
@@ -56,9 +65,13 @@ namespace Capa_Presentacion.SCS.Boxes
             if (GridProductos.SelectedItem == null) return;
 
             DataRowView row = GridProductos.SelectedItem as DataRowView;
-            System.Windows.MessageBox.Show(row.Row.ItemArray[0].ToString());
-            
-            
+            itemCode = row.Row.ItemArray[0].ToString();
+            List<CE_ProductUm> lista = objeto_CN_Productos.BusquedaUm(row.Row.ItemArray[0].ToString());
+
+            cbUnidades.ItemsSource = lista;
+            cbUnidades.DisplayMemberPath = "UomCode";
+            cbUnidades.SelectedValuePath = "UomEntry";
+            cbUnidades.SelectedIndex = 0;
         }
     }
 

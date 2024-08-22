@@ -265,7 +265,7 @@
                        FontSize="15"
                        Margin="588,23,33,161" 
                        Grid.Row="2"/>
-            <ComboBox Margin="585,54,30,130" Grid.Row="2"/>
+            <ComboBox x:Name="cbUnidades" Margin="585,54,30,130" Grid.Row="2"/>
         </Grid>
     </Border>
 
