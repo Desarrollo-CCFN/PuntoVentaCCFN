@@ -42,6 +42,7 @@
     <None Remove="SCS\IMG\product.png" />
     <None Remove="SCS\IMG\productos.png" />
     <None Remove="SCS\IMG\registro.png" />
+    <None Remove="SCS\IMG\reportes.png" />
     <None Remove="SCS\IMG\usuario.png" />
     <None Remove="SCS\IMG\usuarioF.png" />
     <None Remove="SCS\IMG\usuarios.png" />
@@ -144,6 +145,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\registro.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\reportes.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\usuario.png">

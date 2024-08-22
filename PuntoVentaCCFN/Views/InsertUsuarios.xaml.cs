@@ -19,26 +19,27 @@ using System.Windows.Shapes;
 namespace Capa_Presentacion.Views
 {
     /// <summary>
-    /// Lógica de interacción para ModifUsuarios.xaml
+    /// Lógica de interacción para InsertUsuarios.xaml
     /// </summary>
-    public partial class ModifUsuarios : Page
+    public partial class InsertUsuarios : Page
     {
-
         readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
         readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
-   
-
-        public int IdUsuario;
-
-        public ModifUsuarios()
+        public InsertUsuarios()
         {
             InitializeComponent();
+            cbPrivilegio.Items.Add("Y");
+            cbPrivilegio.Items.Add("N");
+
+            cbSuper.Items.Add("Y");
+            cbSuper.Items.Add("N");
             tbUsuario.Focus();
+            
         }
 
-        public void Update()
+        public void Alta()
         {
-
+            /*
             cbPrivilegio.Items.Add("Y");
             cbPrivilegio.Items.Add("N");
 
@@ -52,19 +53,15 @@ namespace Capa_Presentacion.Views
             tbSucursal.Text = a.DfltsGroup.ToString();
             cbPrivilegio.Text = a.Locked.ToString();
             cbSuper.Text = a.SUPERUSER.ToString();
+            */
+            //   a.SUPERUSER.ToString();
+            // a.Locked.ToString();
 
-           //   a.SUPERUSER.ToString();
-           // a.Locked.ToString();
-            
+           
+
         }
 
-
-        private void Regresar(object sender, RoutedEventArgs e)
-        {
-            Content = new Usuarios();
-        }
-
-        private void Salvar_Click(object sender, RoutedEventArgs e)
+        private void Alta_Click(object sender, RoutedEventArgs e)
         {
 
             if (tbPassword.Password != tbPassword_Copiar.Password)
@@ -82,7 +79,7 @@ namespace Capa_Presentacion.Views
 
 
                 // Asignar los valores de la interfaz a la entidad
-                objeto_CE_Usuarios.USERID = Convert.ToInt32(tbId.Text);
+                
                 objeto_CE_Usuarios.U_NAME = tbUsuario.Text;
                 objeto_CE_Usuarios.USER_CODE = tbCode.Text;
                 objeto_CE_Usuarios.DfltsGroup = tbSucursal.Text;
@@ -91,10 +88,10 @@ namespace Capa_Presentacion.Views
                 objeto_CE_Usuarios.PASSWORD4 = tbPassword_Copiar.Password;
 
                 // Llamar al método de negocio para guardar los cambios
-                objeto_CN_Usuarios.Actualizar(objeto_CE_Usuarios);
+                objeto_CN_Usuarios.Alta(objeto_CE_Usuarios);
 
                 // Mostrar un mensaje de confirmación
-                System.Windows.MessageBox.Show("Los cambios han sido guardados exitosamente.", "Confirmación", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Alta de usuario exitoso.", "Confirmación", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
 
                 // Redirigir o realizar otra acción si es necesario
                 Content = new Usuarios();
@@ -102,14 +99,23 @@ namespace Capa_Presentacion.Views
 
 
 
+
+
         }
+
+        private void Regresar(object sender, RoutedEventArgs e)
+        {
+            Content = new Usuarios();
+        }
+
+
 
         private void tbPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                
+
                 tbPassword_Copiar.Focus(); // Mueve el foco a tbPassword_Copiar
             }
 
@@ -132,14 +138,16 @@ namespace Capa_Presentacion.Views
                     tbPassword.Focus();
                 }
                 else
-                { 
-                    System.Windows.MessageBox.Show("Modificación de Contraseña Exitosa.");
+                {
+               //     System.Windows.MessageBox.Show("Modificación de Contraseña Exitosa.");
                     // Si son iguales, continuar  
-                    tbSucursal.Focus();  
+                    tbSucursal.Focus();
                 }
             }
 
 
         }
+
+
     }
 }

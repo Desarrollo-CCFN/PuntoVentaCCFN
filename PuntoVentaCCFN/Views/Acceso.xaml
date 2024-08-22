@@ -35,10 +35,10 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Usuario:" VerticalAlignment="Center" Margin="0,5,0,0"   />
-            <TextBox x:Name="txtUsuario" Grid.Column="1" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" Grid.ColumnSpan="2"  FontSize="14" FontFamily="Montserrat"   FontWeight="Medium"/>
+            <TextBox x:Name="txtUsuario" Grid.Column="1" Margin="5,5,0,0" Height="28" VerticalAlignment="Bottom" Grid.ColumnSpan="2"  FontSize="14" FontFamily="Montserrat"   FontWeight="Medium" KeyDown="txtUsuario_KeyDown"/>
 
             <TextBlock Text="Password:" Grid.Row="1" VerticalAlignment="Center" Margin="0,5,0,0"/>
-            <PasswordBox x:Name="txtPassword" Grid.Row="1" Grid.Column="1" Margin="5,5,0,0" Height="28" Grid.ColumnSpan="2" FontSize="14" FontFamily="Montserrat"   FontWeight="Medium" />
+            <PasswordBox x:Name="txtPassword" Grid.Row="1" Grid.Column="1" Margin="5,5,0,0" Height="28" Grid.ColumnSpan="2" FontSize="14" FontFamily="Montserrat"   FontWeight="Medium" KeyDown="txtPassword_KeyDown" />
 
 
 

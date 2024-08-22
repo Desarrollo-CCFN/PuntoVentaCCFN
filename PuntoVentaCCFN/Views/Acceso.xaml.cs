@@ -1,4 +1,7 @@
-﻿using Capa_Presentacion.SCS.Boxes;
+﻿using Capa_Entidad;
+using Capa_Negocio;
+using System.Data;
+using Capa_Presentacion.SCS.Boxes;
 using MySqlConnector;
 using System;
 using System.Net.Http;
@@ -16,17 +19,21 @@ namespace Capa_Presentacion.Views
     /// </summary>
     public partial class Acceso : Window
     {
+        readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
+        readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
         public int ReturnValue { get; set; } // Propiedad para devolver el valor
 
-        private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+      //  private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
         private int valueToSend_;
-        public Acceso(int valueToSend)
+          public Acceso(int valueToSend)
         {
             valueToSend_ = valueToSend;
             ReturnValue = 0; // Valor por defecto
-          //  System.Windows.MessageBox.Show("Password para Acceso: " + valueToSend_, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+            //    System.Windows.MessageBox.Show("Password para Acceso: " + valueToSend_, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
 
             InitializeComponent();
+            txtUsuario.Focus();
+
         }
        
         
@@ -42,83 +49,83 @@ namespace Capa_Presentacion.Views
                 DragMove();
         }
 
-        private async void BtnLogin_Click(object sender, RoutedEventArgs e)
+        private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+           
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
-            objBuidel.Server = "54.177.203.25";
-            objBuidel.Database = "CCFNPROD";
-            objBuidel.UserID = "apisap";
-            objBuidel.Password = "34sg!MaXN**5c%tG";
+                // Asignar los valores de la interfaz a la entidad
+                objeto_CE_Usuarios.U_NAME = this.txtUsuario.Text;
+                objeto_CE_Usuarios.PASSWORD4 = this.txtPassword.Password;
 
-            MySqlConnection connection = null;
+                // Llamar al método de negocio para autenticar el usuario
+                DataTable dtResultado = objeto_CN_Usuarios.AutUsuario(this.txtUsuario.Text, this.txtPassword.Password);
 
-            try
-            {
-                connection = new MySqlConnection(objBuidel.ConnectionString);
-                connection.Open();
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error al conectar a la base de datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                if (connection != null && connection.State == System.Data.ConnectionState.Open)
+                Mouse.OverrideCursor = null;
+
+                if (dtResultado.Rows.Count > 0)
                 {
-                    string password = txtPassword.Password;
-                    string email = txtUsuario.Text;
+                    string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
+                    string UserCod       = dtResultado.Rows[0].ItemArray[2]?.ToString();
 
-                    using (var client = new HttpClient())
+                if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
-                        client.BaseAddress = new Uri("http://192.168.0.32:8886");
-                        client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                       
 
-                        var loginData = new { Email = email, Password = password };
-
-                        HttpResponseMessage response = await client.PostAsJsonAsync("/api/Account/Login", loginData);
-
-                        if (response.IsSuccessStatusCode)
+                        if (superUserFlag == "Y" && valueToSend_ == 1)
                         {
-                            Mouse.OverrideCursor = null;
-                            
-
-                            if (valueToSend_ == 1)     // Acceso Confinguracion Pantalla Principal
-                            {
-                                 var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-                                 configuracionWindow.Show();
-                              
-                            }
-
-                            if (valueToSend_ == 2)  // Acceso Cancelar la Factura
-                            {
-                                
-                                ReturnValue = 1;   // regresa 1 que puede proseguir con acceso
-
-                            }
-
-                            this.Close();
-
-                            // var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-                            // configuracionWindow.Show();
-
-                            //   var configuracion = new configuracionApp();
-                            //   configuracion.Show();
+                            var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+                               this.Close();
+                              configuracionWindow.Show();
 
                         }
-                        else
+                        else if ((superUserFlag == "Y" ||  UserCod == "SUPERVISOR") && valueToSend_ == 2)
                         {
-                            System.Windows.MessageBox.Show("Error Favor de Verificar Usuario/Password", "Aviso", MessageBoxButton.OK, MessageBoxImage.Error);
-                            connection.Close();
-                            txtPassword.Password = "";
-                            txtUsuario.Text = "";
-                            Mouse.OverrideCursor = null;
-                        }
+                                 ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
+                                 this.Close();                   // EN LA PANTALLA ORIGEN
+
+                    } else
+                        {
+                               System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                                ReturnValue = 0;
+
+                         }
+
+
+
+                           // this.Close();
                     }
-                }
-            }
 
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("No se tiene registro Favor de Verificar Usuario y/o Password.", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                    txtUsuario.Clear();
+                    txtPassword.Clear();
+                    txtUsuario.Focus();
+
+
+                }
+
+        }
+
+        private void txtUsuario_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {           
+
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                txtPassword.Focus();
+            }
+             
+        }
+
+        private void txtPassword_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab) // Verificar si la tecla presionada es Enter
+            {
+                BtnLogin_Click(sender, e); // Llamar al método btnLogin_Click con los argumentos correctos
+            }
+              
         }
     }
 }

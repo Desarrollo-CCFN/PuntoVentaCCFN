@@ -43,8 +43,17 @@ namespace PuntoVentaCCFN.Views
 
         private void Agregar(object sender, RoutedEventArgs e)
         {
-            CRUDUsuarios ventana = new CRUDUsuarios();
+          //  CRUDUsuarios ventana = new Insert();
+          //  FrameUsuarios.Content = ventana;
+
+           // int id = (int)((System.Windows.Controls.Button)sender).CommandParameter;
+            InsertUsuarios ventana = new InsertUsuarios();
+         //   ventana.IdUsuario = id;
+         //   ventana.Update();
             FrameUsuarios.Content = ventana;
+
+
+
         }
 
         private void Consultar(object sender, RoutedEventArgs e)
@@ -74,7 +83,83 @@ namespace PuntoVentaCCFN.Views
 
 
         }
-         
 
+        private void BtnBuscar_Click(object sender, RoutedEventArgs e)
+        {
+
+            string usuario = tbUsuario.Text.Trim();
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                BuscarUsuario(usuario);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Por favor, ingresa un nombre de usuario para buscar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CargarDatos();
+
+
+
+            }
+
+        }
+
+        private void BuscarUsuario(string usuario)
+        {
+            DataTable dtResultado = objeto_CN_Usuarios.BuscarUsuario(usuario);
+            
+            if (dtResultado.Rows.Count > 0)
+            {
+                GridDatos.ItemsSource = dtResultado.DefaultView;
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("No se encontraron usuarios con ese nombre.", "Resultado de la Búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
+                GridDatos.ItemsSource = null; // Limpiar los datos previos si no hay resultados
+            }
+        }
+
+        private void tbUsuario_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                string usuario = tbUsuario.Text.Trim();
+                if (!string.IsNullOrEmpty(usuario))
+                {
+                    BuscarUsuario(usuario);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Por favor, ingresa un nombre de usuario para buscar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    CargarDatos();
+                }
+
+            }
+
+        }
+
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+
+            int id = (int)((System.Windows.Controls.Button)sender).CommandParameter;
+            objeto_CN_Usuarios.Borrar(id);
+            System.Windows.MessageBox.Show("Se borro de forma Exitosa", "Confirmación", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            GridDatos.ItemsSource = objeto_CN_Usuarios.CargarUsuarios().DefaultView;
+
+
+        }
+
+    /*    private void BtnSalir_Click(object sender, RoutedEventArgs e)
+        {
+            // Content = new Usuarios();
+            //throw new NotImplementedException();
+            Window parentWindow = Window.GetWindow(this);
+            
+            if (parentWindow != null)
+            {
+                // Cerrar la ventana principal
+                parentWindow.Close();
+                
+            }
+        }*/
     }
 }

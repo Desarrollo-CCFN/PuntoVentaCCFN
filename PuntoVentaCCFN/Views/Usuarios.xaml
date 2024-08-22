@@ -258,12 +258,13 @@
                        Margin="0,0,10,0"/>
             <!--#endregion-->
             <!--#region TEXTBOX-->
-            <TextBox Style="{DynamicResource TextBoxStyle}" TextAlignment="Center" 
+            <TextBox x:Name="tbUsuario" Style="{DynamicResource TextBoxStyle}" 
+                     TextAlignment="Center" 
                      Background="Transparent" 
                      BorderBrush="Blue"
                      Grid.Column="2"
                      Grid.Row="2"
-                     FontSize="20"
+                     FontSize="20" KeyDown="tbUsuario_KeyDown"
                      />
 
             <!--#endregion-->
@@ -275,7 +276,7 @@
                     Cursor="Hand"
                     Width="100"
                     x:Name="BtnBuscar"
-                    HorizontalAlignment="Left">
+                    HorizontalAlignment="Left" Click="BtnBuscar_Click">
                 <TextBlock Text="Buscar"
                            Foreground="White"
                            FontSize="15"
@@ -289,11 +290,12 @@
                     Grid.Column="4"
                     Grid.Row="2"
                     Cursor="Hand"
+                    
                     Width="150"
                     x:Name="BtnCrearUsuario"
                     Click="Agregar"
                     Style="{DynamicResource BtnBuscarStyle}">
-            <TextBlock Text="Agregar Usuario"
+                <TextBlock Text="Agregar Usuario"
                        Foreground="White"
                        FontSize="15"
                        VerticalAlignment="Center"/>
@@ -344,14 +346,16 @@
                                             Click="Modificar"
                                             />
                                     <!--  Style="{DynamicResource BtnBuscarStyle}"  -->
-                                    
+
                                     <Button Content="Eliminar"
                                             x:Name="BtnEliminar"
                                             Background="Blue"
                                             Width="80"
                                             BorderBrush="Transparent"
                                             Foreground="White"
-                                            Style="{DynamicResource BtnBuscarStyle}"/>
+                                            CommandParameter="{Binding USERID}"
+                                            Style="{DynamicResource BtnBuscarStyle}" 
+                                            Click="BtnEliminar_Click"/>
                                 </DockPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -362,7 +366,7 @@
                     <DataGridTextColumn Header="Sucursal" Width="*" Binding="{Binding DfltsGroup}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Bloqueado" Width="*" Binding="{Binding Locked}" IsReadOnly="True"/>
                 </DataGrid.Columns>
-                
+
             </DataGrid>
             <!--#endregion-->
             <!--#region FRAMEUSUARIOS-->
@@ -371,6 +375,30 @@
                    Grid.Row="0"
                    Grid.ColumnSpan="6"
                    Grid.RowSpan="8" Navigated="FrameUsuarios_Navigated"/>
+
+            <!--
+            <Button Background="#FFEF4620"
+        BorderBrush="#00e676"
+        Grid.Column="4"
+        Grid.Row="6"
+        Cursor="Hand"
+        
+        Width="150"
+        x:Name="Salir"
+        Click="BtnSalir_Click"
+        Style="{DynamicResource BtnBuscarStyle}" Height="34" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+                <TextBlock Text="Regresar"
+           Foreground="White"
+           FontSize="15"
+           VerticalAlignment="Center"/>
+
+            </Button>
+                  -->
+
+
+
             <!--#endregion-->
         </Grid>
     </Border>

@@ -561,7 +561,7 @@
 
                             <MenuItem Template="{StaticResource Menu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/dashboard.png"></Image>
+                                    <Image x:Name="menuItemdashboard" Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -573,7 +573,7 @@
 
                             <MenuItem Template="{StaticResource Menu_SubMenu_Template}">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/almacen.png"></Image>
+                                    <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>
                                 </MenuItem.Icon>
 
                                 <MenuItem Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
@@ -590,11 +590,23 @@
 
                             </MenuItem>
 
-                            <MenuItem Click="Usuarios_Click" Template="{StaticResource Menu_Template}">
+                            <MenuItem x:Name="menuItemUsuarios" Click="Usuarios_Click" 
+                                      Template="{StaticResource Menu_Template}" Height="50" 
+                                      VerticalAlignment="Center">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/usuarios.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
+
+                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/reportes.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+
+
+
                         </Menu>
                         <!--<ListView Background="Transparent"
                               BorderBrush="Transparent"

@@ -473,8 +473,8 @@ namespace PuntoVentaCCFN.Views
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
 
-            int valueToSend = 2;
-            var Acceso = new Acceso(valueToSend);
+             
+            var Acceso = new Acceso(2);
             //  Acceso.Show();
             bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
             // 1 = Confinguracion Pantalla Principal

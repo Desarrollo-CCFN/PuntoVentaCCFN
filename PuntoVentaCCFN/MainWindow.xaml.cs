@@ -84,8 +84,9 @@ namespace PuntoVentaCCFN
 
         private void BtnCuenta_Click(object sender, RoutedEventArgs e)
         {
-            int valueToSend = 1;
-            var Acceso = new Acceso(valueToSend);   // Activa el Password de acceso
+           // int valueToSend = 1;
+           // var Acceso = new Acceso(valueToSend);   // Activa el Password de acceso
+            var Acceso = new Acceso(1);
             Acceso.Show();
 
               //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
@@ -129,6 +130,14 @@ namespace PuntoVentaCCFN
             WPFMessageReceiver.Show();
 
 
+
+
+        }
+
+        private void Reportes_Click(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
 
 
         }

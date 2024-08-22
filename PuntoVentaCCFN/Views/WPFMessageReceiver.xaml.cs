@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -6,6 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Drawing;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Capa_Presentacion.Views
 {
@@ -24,8 +31,65 @@ namespace Capa_Presentacion.Views
             InitializeComponent();
             udpClient = new UdpClient(11000); // Configura el puerto en el constructor
             ledIndicator.Fill = new SolidColorBrush(Colors.Red); // Inicializa el LED en rojo
+            LoadJson();
+
             StartListening();
         }
+
+
+
+        public void LoadJson()
+        {
+            try
+            {
+                if (File.Exists("C:\\PuntoVenta\\config.json"))
+                {
+                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\config.json"))
+                    {
+                        
+                        string json = r.ReadToEnd();
+                        JObject jsons = JObject.Parse(json);
+
+                        AppConfig.IP = jsons["IP"].ToString();
+                        AppConfig.Sucursal = jsons["Sucursal"].ToString();
+                        AppConfig.Puerto = jsons["Puerto"].ToString();
+
+                    }
+                }
+                else
+                {
+                    if (!Directory.Exists("C:\\PuntoVenta"))
+                    {
+                        Directory.CreateDirectory("C:\\PuntoVenta");
+                    }
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "1200" };
+
+
+
+                    string json = JsonConvert.SerializeObject(_data);
+                    File.WriteAllText(@"C:\\PuntoVenta\\config.json", json);
+
+                    System.Windows.Forms.MessageBox.Show("Se ha creado un archivo de configuracion en el disco local, C:\\PuntoVenta ", "Configuracion");
+                }
+            }
+            catch (Exception EX)
+            {
+                System.Windows.Forms.MessageBox.Show("Error en ejecucion");
+            }
+        }
+
+
+
+        public static class AppConfig
+        {
+            public static string IP { get; set; }
+            public static string Sucursal { get; set; }
+            public static string Puerto { get; set; }
+
+        }
+
+         
+
 
         private async void StartListening()
         {
@@ -88,11 +152,7 @@ namespace Capa_Presentacion.Views
                 });
             }
         }
-
-
-
-
-
+         
         private async void btnReply_Click(object sender, RoutedEventArgs e)
         {
 
@@ -102,11 +162,12 @@ namespace Capa_Presentacion.Views
 
             try
             {
-                await udpClient.SendAsync(data, data.Length, "192.168.101.20", 12000);
+                //await udpClient.SendAsync(data, data.Length, "192.168.101.20", 12000);
+                await udpClient.SendAsync(data, data.Length, AppConfig.IP,1200);
                 Dispatcher.Invoke(() =>
                 {
                     ledIndicator.Fill = new SolidColorBrush(Colors.Green);
-                    lstReceivedMessages.Items.Add($"Enviado Caja1 Lazaro {timestamp}: {replyMessage}");
+                    lstReceivedMessages.Items.Add($"Enviado {AppConfig.Sucursal} {timestamp}: {replyMessage}");
                     txtReply.Clear();
                 });
             }
