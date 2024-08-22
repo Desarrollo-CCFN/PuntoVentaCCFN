@@ -239,7 +239,8 @@
                    />
 
             <DataGrid Style="{DynamicResource DataGridStyle}"
-                Margin="0,80,0,0" 
+                Margin="0,80,190,0"
+                      SelectionUnit="FullRow"
                       x:Name="GridProductos"
                       Grid.RowSpan="3" 
                       AutoGenerateColumns="False"
@@ -252,12 +253,19 @@
                     CanUserSortColumns="False"
                     RowBackground="Transparent"
                     HeadersVisibility="Column"
-                    GridLinesVisibility="Horizontal">
+                    GridLinesVisibility="Horizontal" SelectionChanged="searchProductUoms">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Cod Producto" Width="100" Binding="{Binding ItemCode}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Descripcion" Width="*" Binding="{Binding ItemName}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <TextBlock Text="Unidad de Medida"
+                       Foreground="White"
+                       FontSize="15"
+                       Margin="588,23,33,161" 
+                       Grid.Row="2"/>
+            <ComboBox Margin="585,54,30,130" Grid.Row="2"/>
         </Grid>
     </Border>
 

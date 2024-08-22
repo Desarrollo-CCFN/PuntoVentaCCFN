@@ -1,6 +1,8 @@
-﻿using Capa_Negocio.Productos;
+﻿using Capa_Entidad.Productos;
+using Capa_Negocio.Productos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +36,7 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            GridProductos.UnselectAll();
             GridProductos.ItemsSource = objeto_CN_Productos.BusquedaProducto(tbSearchbox.Text).DefaultView;
         }
 
@@ -46,5 +49,22 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             this.Close();
         }
+
+        
+        private void searchProductUoms(object sender, SelectionChangedEventArgs e)
+        {
+            if (GridProductos.SelectedItem == null) return;
+
+            DataRowView row = GridProductos.SelectedItem as DataRowView;
+            System.Windows.MessageBox.Show(row.Row.ItemArray[0].ToString());
+            
+            
+        }
+    }
+
+    public class ProductRow
+    {
+        public string ItemCode { get; set; }
+        public string ItemName { get; set; }
     }
 }
