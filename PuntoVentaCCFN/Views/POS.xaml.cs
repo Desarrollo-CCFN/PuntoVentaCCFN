@@ -37,13 +37,21 @@ namespace PuntoVentaCCFN.Views
     /// </summary>
     public partial class POS : System.Windows.Controls.UserControl
     {
+        #region declaracion e iniciacion de pantalla
+
         readonly CN_Clientes objeto_CN_Clientes = new CN_Clientes();
         readonly CN_TipoCambio objeto_CN_TipoCambio = new CN_TipoCambio();
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
+        readonly CN_Productos objeto_CN_Productos = new CN_Productos();
         readonly CN_Venta venta = new CN_Venta();
         CE_VentaHeader ventaI = new CE_VentaHeader();
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         BasePrinter printer;
+        List<GridList> lista = new List<GridList>();
+
+        public string codigoClienteFactura;
+        public string nombreClienteFactura;
+
         public int listPrecios;
         public string cardCode;
         public string whsCode;
@@ -68,6 +76,9 @@ namespace PuntoVentaCCFN.Views
 
         }
 
+        #endregion
+
+
         #region consulta del tipo de cambio
         public void ConsultarTC()
         {
@@ -89,7 +100,7 @@ namespace PuntoVentaCCFN.Views
         #region consulta inicial de lista de precio default
         public void ConsultarListaPrecio()
         {
-            var listaPrecio = objeto_CN_ListaPrecios.Consulta(listPrecios); 
+            var listaPrecio = objeto_CN_ListaPrecios.Consulta(listPrecios);
             tbListaPrecio.Text = listaPrecio.ListName.ToString();
         }
         #endregion
@@ -99,11 +110,11 @@ namespace PuntoVentaCCFN.Views
         {
             if (e.Key == Key.Enter)
             {
-                
+
                 if (tbCodigoProducto.Text == "") return;
 
                 operacionBusquedaInsercio();
-                
+
                 tbCodigoProducto.Text = "";
             }
         }
@@ -124,7 +135,7 @@ namespace PuntoVentaCCFN.Views
             }
 
             DataTable dt;
-            dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", "S24", ref sMensaje);
+            dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", whsCode, ventaI.Id, ref sMensaje);
 
             if (dt == null)
             {
@@ -134,15 +145,18 @@ namespace PuntoVentaCCFN.Views
 
             DataRow row = dt.Rows[0];
             CE_VentaDetalle ce_Detalle = new CE_VentaDetalle();
+            GridList l = new GridList();
+
             ce_Detalle.IdHeader = ventaI.Id;
             ce_Detalle.ItemCode = Convert.ToString(row[0]);
-            ce_Detalle.Cantidad = Convert.ToDecimal(row[11]);
+            ce_Detalle.Cantidad = Convert.ToDecimal(row[12]);
             ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
             ce_Detalle.Monto = Convert.ToDecimal(row[6]);
             ce_Detalle.WhsCode = whsCode;
             ce_Detalle.CodeBars = tbCodigoProducto.Text;
             ce_Detalle.PriceList = listPrecios;
             ce_Detalle.UomEntry = Convert.ToInt32(row[5]);
+            ce_Detalle.LineNum = Convert.ToInt32(row[11]);
 
             if (!venta.insertarDetalleLive(ce_Detalle, ref sMensaje))
             {
@@ -150,7 +164,29 @@ namespace PuntoVentaCCFN.Views
                 return;
             }
 
-            GridDatos.Items.Add(dt);
+            l.ItemCode = Convert.ToString(row[0]);
+            l.ItemName = Convert.ToString(row[1]);
+            l.CodeBar = Convert.ToString(row[2]);
+            l.Precio_Base = Convert.ToDecimal(row[3]);
+            l.Unidad = Convert.ToString(row[4]);
+            l.UomEntry = Convert.ToInt32(row[5]);
+            l.Total = Convert.ToDecimal(row[6]);
+            l.Impuesto_FC = Convert.ToDecimal(row[7]);
+            l.Impuesto = Convert.ToDecimal(row[9]);
+            l.Precio_Base_FC = Convert.ToDecimal(row[10]);
+            l.LineNum = Convert.ToInt32(row[11]);
+            l.Cantidad = Convert.ToDecimal(row[12]);
+            lista.Add(l);
+
+            GridDatos.ItemsSource = null;
+            GridDatos.ItemsSource = lista;
+            //GridDatos.Items.Add(dt.DefaultView);
+
+            for (int i = 0; GridDatos.Columns.Count > i; i++)
+            {
+                GridDatos.Columns[i].IsReadOnly = true;
+            }
+            GridDatos.Columns[7].IsReadOnly = false;
             saldo();
         }
         #endregion
@@ -206,17 +242,19 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.Currency = "MXN";
                 ventaPago.Rate = 1;
                 ventaPago.AmountPay = ingresar.Efectivo;
-                if(cambio < 0)
+                if (cambio < 0)
                 {
                     ventaPago.BalAmout = cambio;
-                } else
+                }
+                else
                 {
                     ventaPago.BalAmout = 0;
                 }
-                
+
                 ventaPago.IdHeader = ventaI.Id;
                 venta.insertarVentaPago(ventaPago);
-            } else
+            }
+            else
             {
                 MessageBox.Show("Ingresa una cantidad valida!!");
             }
@@ -228,7 +266,7 @@ namespace PuntoVentaCCFN.Views
             var ingresar = new Ingresar();
             ingresar.ShowDialog();
 
-            if(ingresar.Efectivo > 0)
+            if (ingresar.Efectivo > 0)
             {
                 pagado += ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
                 saldo();
@@ -311,11 +349,54 @@ namespace PuntoVentaCCFN.Views
             var busquedaProducto = new modalProductos();
             busquedaProducto.ShowDialog();
 
-            if(busquedaProducto.cadenaBusqueda != null)
+            if (busquedaProducto.cadenaBusqueda != null)
             {
                 tbCodigoProducto.Text = busquedaProducto.cadenaBusqueda;
                 operacionBusquedaInsercio();
                 tbCodigoProducto.Text = "";
+            }
+        }
+        #endregion
+
+        #region logica editar cantidad
+        private void GridDatos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+
+            DataGridRow row = e.Row;
+            GridList item = row.Item as GridList;
+            var obj = lista.FirstOrDefault(x => x.LineNum == item.LineNum);
+            var Acceso = new Acceso(3);
+            Acceso.ShowDialog();
+
+            if (Acceso.ReturnValue == 1)
+            {
+
+                if (obj != null)
+                {
+                    var t = (e.EditingElement as System.Windows.Controls.TextBox).Text;
+
+                    if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t)))
+                    {
+                        MessageBox.Show("Ocurrio un error al actualizar cantidad de producto!!");
+                        return;
+                    }
+                    else
+                    {
+
+                        obj.Cantidad = Convert.ToDecimal(t);
+                        obj.Total = Convert.ToDecimal(t) * obj.Total;
+                    }
+
+                }
+
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista;
+                saldo();
+
+            }
+            else
+            {
+                MessageBox.Show("No tienes acceso a cambiar cantidad!!");
             }
         }
         #endregion
@@ -405,14 +486,15 @@ namespace PuntoVentaCCFN.Views
             //printer.Dispose();
             if (GridDatos.Items.Count >= 1)
             {
-                if(pagado <= 0)
+                if (pagado <= 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
                     return;
                 }
                 ventaCambio();
 
-            } else
+            }
+            else
             {
                 System.Windows.MessageBox.Show("No se han agregado productos!");
             }
@@ -422,10 +504,10 @@ namespace PuntoVentaCCFN.Views
         void ventaCambio()
         {
             //printer.Dispose();
-            
+
 
             modalCambio modalc = new modalCambio(Convert.ToDecimal(tbTipoCambio.Text));
-                        modalc.tbCambioN.Text = cambio.ToString("0.00");
+            modalc.tbCambioN.Text = cambio.ToString("0.00");
             modalc.tbCambioR.Text = cambio.ToString("0.00");
             modalc.tbCambioNU.Text = (cambio / Convert.ToDecimal(tbTipoCambio.Text)).ToString("0.00");
 
@@ -442,6 +524,70 @@ namespace PuntoVentaCCFN.Views
             cN_Venta = new CN_Venta();
             //if (cambio < 0)
             //{
+            CE_VentaHeader vf = new CE_VentaHeader();
+            vf.Id = ventaI.Id;
+            if (!cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje))
+            {
+                MessageBox.Show(sMensaje);
+                return;
+            }
+            Imprimir(ventaI.NumTck);
+            FacturarVenta();
+
+
+            //}
+            //else
+            //{
+            //    System.Windows.MessageBox.Show("Ingresa un pago mayor o igual a la venta!");
+            //}
+
+        }
+
+        public void FacturarVenta()
+        {
+            MessageBoxResult r = System.Windows.MessageBox.Show("Desea facturar la venta?", "Facturacion de Venta", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (r == MessageBoxResult.Yes)
+            {
+                var clientes = new modalClientes();
+                clientes.ShowDialog();
+                if (clientes.codigoCliente != null)
+                {
+                    codigoClienteFactura = clientes.codigoCliente.ToString();
+                    nombreClienteFactura = clientes.nombreCliente.ToString();
+
+                    var mFacturacion = new modalFacturacion();
+                    mFacturacion.tbCodigoCliente.Text = codigoClienteFactura;
+                    mFacturacion.tbNombreCliente.Text = nombreClienteFactura;
+                    mFacturacion.ShowDialog();
+
+                    if (mFacturacion.isFacturado)
+                    {
+                        MessageBox.Show("Facturado con exito!!");
+                    }
+                    else
+                    {
+                        
+                        FacturarVenta();
+                    }
+
+
+                }
+            }
+
+            GridDatos.ItemsSource = null;
+            lista.Clear();
+            ventaI.Id = 0;
+            pagado = 0;
+            saldo();
+            pagoUSD = false;
+        }
+
+        public void ventaFinal()
+        {
+            //printer.Dispose();
+            cN_Venta = new CN_Venta();
+            if (cambio < 0.01m)
+            {
                 CE_VentaHeader vf = new CE_VentaHeader();
                 vf.Id = ventaI.Id;
                 if (!cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje))
@@ -454,34 +600,7 @@ namespace PuntoVentaCCFN.Views
                 ventaI.Id = 0;
                 pagado = 0;
                 saldo();
-                pagoUSD = false;
-            //}
-            //else
-            //{
-            //    System.Windows.MessageBox.Show("Ingresa un pago mayor o igual a la venta!");
-            //}
 
-        }
-
-        public void ventaFinal()
-        {
-            //printer.Dispose();
-            cN_Venta = new CN_Venta();
-            if (cambio < 0.01m)
-            {
-                CE_VentaHeader vf = new CE_VentaHeader();
-                vf.Id = ventaI.Id;
-                if(!cN_Venta.insertarHeaderFinal(vf, 1, ref sMensaje))
-                {
-                    MessageBox.Show(sMensaje);
-                    return;
-                }
-                Imprimir(ventaI.NumTck);
-                GridDatos.Items.Clear();
-                ventaI.Id = 0;
-                pagado = 0;
-                saldo();
-                
             }
             else
             {
@@ -586,6 +705,34 @@ namespace PuntoVentaCCFN.Views
         }
         #endregion
 
+        #region logica para anular venta
+        private void AnularVenta(object sender, RoutedEventArgs e)
+        {
+            var Acceso = new Acceso(4);
+            Acceso.ShowDialog();
+
+            if (Acceso.ReturnValue == 1)
+            {
+
+                CN_Venta cn_Venta = new CN_Venta();
+
+                if (!cn_Venta.anularVenta(ventaI.Id))
+                {
+                    MessageBox.Show("Error al anular venta!!");
+                }
+                else
+                {
+                    GridDatos.ItemsSource = null;
+                    ventaI.Id = 0;
+                    pagado = 0;
+                    saldo();
+                    pagoUSD = false;
+                    MessageBox.Show("Se anulo la venta con exito!!");
+                }
+            }
+        }
+        #endregion
+
         #region apertura y cerrado inicial
         private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
         {
@@ -611,43 +758,38 @@ namespace PuntoVentaCCFN.Views
             ConsultarListaPrecio();
             ConsultarTC();
         }
-
         #endregion
 
         #region logica para eliminar producto de la venta
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
+            var seleccionado = GridDatos.SelectedItem as GridList;
+            
 
-             
-            var Acceso = new Acceso(2);
-            //  Acceso.Show();
-            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
-            // 1 = Confinguracion Pantalla Principal
-            // 2= Cancelar la Factura
-
-            if (Acceso.ReturnValue == 1)
+            if (seleccionado != null)
             {
-                System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                var seleccionado = GridDatos.SelectedItem;
-                if (seleccionado != null)
+                var Acceso = new Acceso(2);
+                Acceso.ShowDialog();
+                if (Acceso.ReturnValue == 1)
                 {
-                    GridDatos.Items.Remove(seleccionado);
+                    lista.Remove(seleccionado);
+                    GridDatos.ItemsSource = null;
+                    GridDatos.ItemsSource = lista;
+                    //GridDatos.Items.Remove(seleccio/*nado);*/
                     if (GridDatos.Items.Count < 1)
                     {
-
                         pagado = 0;
                     }
-                }
 
-                saldo(); 
+                    saldo();
+                }
             }
-        
-        
-        
-        
-        
-        
+            else
+            {
+                MessageBox.Show("Debes seleccionar un producto!!");
+                return;
+            }
+
         }
 
 
@@ -709,5 +851,23 @@ namespace PuntoVentaCCFN.Views
 
 
     }
+    #region entidad para row de datagrid
+    public class GridList
+    {
+        public string ItemCode { get; set; }
+        public string ItemName { get; set; }
+        public string CodeBar { get; set; }
+        public string Unidad { get; set; }
+        public decimal Precio_Base { get; set; }
+        public int UomEntry { get; set; }
+        public decimal Cantidad { get; set; }
+        public decimal Impuesto { get; set; }
+        public decimal Precio_Base_FC { get; set; }
+        public decimal Impuesto_FC { get; set; }
+        public decimal Total { get; set; }
+        public int LineNum { get; set; }
+    }
+    #endregion
+
 }
 

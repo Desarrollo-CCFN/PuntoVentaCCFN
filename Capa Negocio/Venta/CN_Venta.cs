@@ -45,5 +45,10 @@ namespace Capa_Negocio.Venta
         {
             objDatos.ventaPagos(ventaPago);
         }
+
+        public bool anularVenta(int idHeader)
+        {
+            return objDatos.AnularVenta(idHeader);
+        }
     }
 }

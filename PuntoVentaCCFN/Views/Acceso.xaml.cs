@@ -70,26 +70,35 @@ namespace Capa_Presentacion.Views
 
                 if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
-                       
 
-                        if (superUserFlag == "Y" && valueToSend_ == 1)
-                        {
-                            var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-                               this.Close();
-                              configuracionWindow.Show();
 
-                        }
-                        else if ((superUserFlag == "Y" ||  UserCod == "SUPERVISOR") && valueToSend_ == 2)
-                        {
-                                 ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
-                                 this.Close();                   // EN LA PANTALLA ORIGEN
+                    if (superUserFlag == "Y" && valueToSend_ == 1)
+                    {
+                        var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+                        this.Close();
+                        configuracionWindow.Show();
 
-                    } else
-                        {
-                               System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
-                                ReturnValue = 0;
+                    }
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 2)
+                    {
+                        ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
+                        this.Close();                   // EN LA PANTALLA ORIGEN
 
-                         }
+                    }
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 3) {
+                        ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
+                        this.Close();
+                    } else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 4)
+                    {
+                        ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
+                        this.Close();
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                        ReturnValue = 0;
+
+                    }
 
 
 
