@@ -549,7 +549,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
-                Grid.Row="4" Margin="290,29,261,5" Click="Tarjeta" Grid.RowSpan="2"
+                Grid.Row="4" Margin="290,29,261,5" Click="TarjetaC" Grid.RowSpan="2"
                 >
                 <TextBlock Text="Tarjeta C."
                     Foreground="White"
@@ -602,6 +602,17 @@
                 Grid.Row="5" Margin="108,4,188,4" Grid.ColumnSpan="3" Click="AnularVenta"
                 >
                 <TextBlock Text="Anular Venta"
+                    Foreground="White"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                           />
+            </Button>
+            <Button Style="{DynamicResource btnSide}" 
+                Background="Red"
+                Grid.Column="4"
+                Grid.Row="5" Margin="75,4,31,4" Click="AnularFPago"
+                >
+                <TextBlock Text="Anular F.Pago"
                     Foreground="White"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"

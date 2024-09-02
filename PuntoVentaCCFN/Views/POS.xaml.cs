@@ -78,7 +78,6 @@ namespace PuntoVentaCCFN.Views
 
         #endregion
 
-
         #region consulta del tipo de cambio
         public void ConsultarTC()
         {
@@ -233,6 +232,11 @@ namespace PuntoVentaCCFN.Views
             var ingresar = new Ingresar();
             ingresar.ShowDialog();
 
+            if(ingresar.Efectivo == 0)
+            {
+                return;
+            }
+
             if (ingresar.Efectivo > 0)
             {
                 pagado += ingresar.Efectivo;
@@ -242,6 +246,7 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.Currency = "MXN";
                 ventaPago.Rate = 1;
                 ventaPago.AmountPay = ingresar.Efectivo;
+                ventaPago.VoucherNum = "";
                 if (cambio < 0)
                 {
                     ventaPago.BalAmout = cambio;
@@ -266,6 +271,11 @@ namespace PuntoVentaCCFN.Views
             var ingresar = new Ingresar();
             ingresar.ShowDialog();
 
+            if (ingresar.Efectivo == 0)
+            {
+                return;
+            }
+
             if (ingresar.Efectivo > 0)
             {
                 pagado += ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
@@ -275,6 +285,7 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.Currency = "USD";
                 ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Efectivo;
+                ventaPago.VoucherNum = "";
                 if (cambio < 0)
                 {
                     ventaPago.BalAmout = cambio;
@@ -296,18 +307,62 @@ namespace PuntoVentaCCFN.Views
         }
         private void Tarjeta(object sender, RoutedEventArgs e)
         {
-            var ingresar = new Ingresar();
+            var ingresar = new ingresarT();
             ingresar.ShowDialog();
 
-            if (ingresar.Efectivo > 0)
+            if (ingresar.Cantidad == 0)
             {
-                pagado += ingresar.Efectivo;
+                return;
+            }
+
+            if (ingresar.Cantidad > 0)
+            {
+                pagado += ingresar.Cantidad;
                 saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TD";
                 ventaPago.Currency = "MXN";
                 ventaPago.Rate = 1;
-                ventaPago.AmountPay = ingresar.Efectivo;
+                ventaPago.AmountPay = ingresar.Cantidad;
+                ventaPago.VoucherNum = ingresar.Voucher;
+                if (cambio < 0)
+                {
+                    ventaPago.BalAmout = cambio;
+                }
+                else
+                {
+                    ventaPago.BalAmout = 0;
+                }
+                ventaPago.IdHeader = ventaI.Id;
+                venta.insertarVentaPago(ventaPago);
+            }
+            else
+            {
+                MessageBox.Show("Ingresa una cantidad valida!!");
+            }
+
+        }
+
+        private void TarjetaC(object sender, RoutedEventArgs e)
+        {
+            var ingresar = new ingresarT();
+            ingresar.ShowDialog();
+
+            if (ingresar.Cantidad == 0)
+            {
+                return;
+            }
+
+            if (ingresar.Cantidad > 0)
+            {
+                pagado += ingresar.Cantidad;
+                saldo();
+                CE_VentaPagos ventaPago = new CE_VentaPagos();
+                ventaPago.Payform = "TC";
+                ventaPago.Currency = "MXN";
+                ventaPago.Rate = 1;
+                ventaPago.AmountPay = ingresar.Cantidad;
+                ventaPago.VoucherNum = ingresar.Voucher;
                 if (cambio < 0)
                 {
                     ventaPago.BalAmout = cambio;
@@ -729,6 +784,23 @@ namespace PuntoVentaCCFN.Views
                     pagoUSD = false;
                     MessageBox.Show("Se anulo la venta con exito!!");
                 }
+            }
+        }
+        #endregion
+
+        #region logica anular formas de pago
+        private void AnularFPago(object sender, RoutedEventArgs e)
+        {
+            cN_Venta = new CN_Venta();
+
+            if(cN_Venta.AnularFpago(ventaI.Id))
+            {
+                System.Windows.MessageBox.Show("Formas de pago anuladas correctamente!!","",MessageBoxButton.OK, MessageBoxImage.Information);
+                pagado = 0;
+                saldo();
+            } else
+            {
+                System.Windows.MessageBox.Show("Error al anular Formas de pago!!", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         #endregion
