@@ -203,7 +203,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
-                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="50"/>

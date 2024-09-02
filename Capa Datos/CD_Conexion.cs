@@ -11,8 +11,9 @@ namespace Capa_Datos
     public class CD_Conexion
     {
         private readonly MySqlConnection conn = new MySqlConnection("server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;");
-        //public readonly MySqlConnection conn = new MySqlConnection("server=localhost;uid=desarrollo2; pwd=690305;database=ccfn_desarrollo;");
-
+     
+       /// public readonly MySqlConnection conn = new MySqlConnection("server=localhost;uid=desarrollo2; pwd=690305;database=ccfn_desarrollo;");
+     
         public MySqlConnection AbrirConexion()
         {
             if(conn.State == ConnectionState.Closed)

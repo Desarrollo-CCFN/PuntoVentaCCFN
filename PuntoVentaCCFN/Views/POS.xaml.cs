@@ -29,6 +29,9 @@ using System.Configuration;
 using PuntoVentaCCFN.Views;
 using Capa_Presentacion.Views;
 using System.Reflection;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Linq.Expressions;
+using System.ComponentModel;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -558,6 +561,7 @@ namespace PuntoVentaCCFN.Views
                     var mFacturacion = new modalFacturacion();
                     mFacturacion.tbCodigoCliente.Text = codigoClienteFactura;
                     mFacturacion.tbNombreCliente.Text = nombreClienteFactura;
+                    mFacturacion.idTickNumb = ventaI.Id;
                     mFacturacion.ShowDialog();
 
                     if (mFacturacion.isFacturado)
@@ -566,7 +570,6 @@ namespace PuntoVentaCCFN.Views
                     }
                     else
                     {
-                        
                         FacturarVenta();
                     }
 
@@ -758,6 +761,47 @@ namespace PuntoVentaCCFN.Views
             ConsultarListaPrecio();
             ConsultarTC();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            string sRutaAplicacion = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+            string sRutaTimbrado = sRutaAplicacion + @"\Timbrado\TimbradoCCFN40.exe";
+            string sRutaXmlFiles = sRutaAplicacion + @"\Timbrado\XmlFiles\";
+            string sXmlFiles =  @"documento";
+
+
+            if (!Directory.Exists(sRutaXmlFiles))
+            {
+                 Directory.CreateDirectory(sRutaXmlFiles);
+            }
+
+            MessageBox.Show(sRutaAplicacion);
+
+            var process = new Process();
+            // string sAplTimbrar = @"C:\Users\subdirector.ti\source\repos\TimbradoCCFN40\TimbradoCCFN40\bin\Debug\TimbradoCCFN40.exe";
+            string sAplTimbrar = sRutaTimbrado; //  @"C:\Users\subdirector.ti\source\repos\TimbradoCCFN40\TimbradoCCFN40\bin\Debug\TimbradoCCFN40.exe";
+            ProcessStartInfo StartInfo = new ProcessStartInfo(sAplTimbrar);
+            // StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+            StartInfo.Arguments = "13 " + sRutaXmlFiles + " " + sXmlFiles;
+            process.StartInfo = StartInfo;
+            
+            try
+            {
+                process.Start();
+                process.WaitForExit();
+                
+            }
+            catch (Win32Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                process.Dispose();
+            }
+        }
         #endregion
 
         #region logica para eliminar producto de la venta
@@ -776,7 +820,7 @@ namespace PuntoVentaCCFN.Views
                     GridDatos.ItemsSource = null;
                     GridDatos.ItemsSource = lista;
                     //GridDatos.Items.Remove(seleccio/*nado);*/
-                    if (GridDatos.Items.Count < 1)
+            if (GridDatos.Items.Count < 1)
                     {
                         pagado = 0;
                     }

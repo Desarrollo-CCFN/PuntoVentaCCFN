@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Capa Datos\Capa Datos.csproj" />
     <ProjectReference Include="..\Capa Entidad\Capa Entidad.csproj" />
   </ItemGroup>
