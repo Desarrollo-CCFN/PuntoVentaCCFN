@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using DllTimbraCFNN40;
+//using DllTimbraCFNN40;
 using System.Diagnostics;
 using System.ComponentModel;
 using Capa_Datos.ReciboProducto;

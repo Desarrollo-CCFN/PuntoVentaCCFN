@@ -48,6 +48,8 @@ namespace PuntoVentaCCFN.Views
 
     public partial class POS : System.Windows.Controls.UserControl
     {
+        readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
+
         readonly CN_Clientes objeto_CN_Clientes = new CN_Clientes();
         readonly CN_TipoCambio objeto_CN_TipoCambio = new CN_TipoCambio();
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
@@ -88,7 +90,7 @@ namespace PuntoVentaCCFN.Views
 
         }
 
-        #endregion
+        
 
         #region consulta del tipo de cambio
         public void ConsultarTC()
@@ -841,7 +843,7 @@ namespace PuntoVentaCCFN.Views
         #region al cerrar ventana venta
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            printer.Dispose();
+           // printer.Dispose();
         }
 
 
