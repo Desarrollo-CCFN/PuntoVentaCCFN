@@ -6,7 +6,8 @@ using Capa_Presentacion;
 using Capa_Presentacion.SCS.Boxes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
-using Capa_Presentacion.Reportes;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using System.util;
 
 
 namespace PuntoVentaCCFN
@@ -53,6 +54,19 @@ namespace PuntoVentaCCFN
             //Close();
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
+                var applicationConfiguration = ConfigurationManager
+        .OpenExeConfiguration(ConfigurationUserLevel.None);
+                var section = applicationConfiguration.GetSection("App_Preferences");
+
+                if(section != null)
+                {
+                    applicationConfiguration.Sections.Remove("App_Preferences");
+                    section.SectionInformation.ForceSave = true;
+                    applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                }
+
+                //ConfigurationManager.RefreshSection("App_Preferences");
+
                 window.Close();
             }
 
@@ -164,8 +178,20 @@ namespace PuntoVentaCCFN
             // Muestra la nueva ventana
             loginView.Show();
 
-            // Cierra la ventana actual
-            this.Close();
+
+        }
+
+        private void Factturacion(object sender, RoutedEventArgs e)
+        {
+            var clientes = new modalClientes();
+            clientes.ShowDialog();
+            if (clientes.codigoCliente != null)
+            {
+                var mFacturacion = new modalFacturacion();
+                mFacturacion.tbCodigoCliente.Text = clientes.codigoCliente.ToString();
+                mFacturacion.tbNombreCliente.Text = clientes.nombreCliente.ToString();
+                mFacturacion.ShowDialog();
+            }
 
         }
     }

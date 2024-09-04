@@ -38,5 +38,10 @@ namespace Capa_Presentacion.SCS.Boxes
             Cantidad = 0;
             this.Close();
         }
+
+        private void Focus(object sender, RoutedEventArgs e)
+        {
+            tbVoucher.Focus();
+        }
     }
 }

@@ -8,29 +8,16 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using iTextSharp.text;
-using iTextSharp.xmp;
-using iTextSharp.text.pdf;
 using System.IO;
-using System.util;
-using System.Windows.Forms.PropertyGridInternal;
-using iTextSharp.text.html.simpleparser;
-using iTextSharp.tool.xml;
-using System.Drawing.Printing;
 using System.Diagnostics;
 using ESCPOS_NET;
 using ESCPOS_NET.Emitters;
 using ESCPOS_NET.Utilities;
-using Capa_Negocio.Clientes;
 using Capa_Entidad.Venta;
-using System.Threading;
 using MessageBox = System.Windows.Forms.MessageBox;
 using System.Configuration;
-using PuntoVentaCCFN.Views;
 using Capa_Presentacion.Views;
 using System.Reflection;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.Linq.Expressions;
 using System.ComponentModel;
 
 namespace PuntoVentaCCFN.Views
@@ -67,6 +54,7 @@ namespace PuntoVentaCCFN.Views
         public string cardCode;
         public string whsCode;
         public string nombreCaja;
+        public decimal tipoCambio;
         public string sMensaje = null;
         public bool pagoUSD = false;
       
@@ -80,13 +68,14 @@ namespace PuntoVentaCCFN.Views
         void IniciarConfiguracion()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-                   
 
-            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
-            listPrecios = SettingSection.PriceList;
-            cardCode = SettingSection.CardCode;
-            whsCode = SettingSection.Sucursal;
-            nombreCaja = SettingSection.NombreCaja;
+            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            listPrecios = SettingSection.DefListNum;
+            cardCode = SettingSection.DefCardCode;
+            whsCode = SettingSection.Filler;
+            tipoCambio = SettingSection.DefRateCash;
+            tbMoneda.Text = SettingSection.DefCurrency;
+            nombreCaja = "1";
 
         }
 
@@ -96,8 +85,8 @@ namespace PuntoVentaCCFN.Views
         public void ConsultarTC()
         {
 
-            var tipoCambio = objeto_CN_TipoCambio.Consulta();
-            tbTipoCambio.Text = tipoCambio.Rate.ToString();
+            //var tipoCambio = objeto_CN_TipoCambio.Consulta();
+            tbTipoCambio.Text = tipoCambio.ToString();
         }
         #endregion
 
@@ -148,7 +137,7 @@ namespace PuntoVentaCCFN.Views
             }
 
             DataTable dt;
-            dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, "MXN", whsCode, ventaI.Id, ref sMensaje);
+            dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, tbMoneda.Text, whsCode, ventaI.Id, ref sMensaje);
 
             if (dt == null)
             {
@@ -163,7 +152,7 @@ namespace PuntoVentaCCFN.Views
             ce_Detalle.IdHeader = ventaI.Id;
             ce_Detalle.ItemCode = Convert.ToString(row[0]);
             ce_Detalle.Cantidad = Convert.ToDecimal(row[12]);
-            ce_Detalle.Currency = "MXN"; //TODO obtener moneda de documento
+            ce_Detalle.Currency = tbMoneda.Text;
             ce_Detalle.Monto = Convert.ToDecimal(row[6]);
             ce_Detalle.WhsCode = whsCode;
             ce_Detalle.CodeBars = tbCodigoProducto.Text;
@@ -185,8 +174,8 @@ namespace PuntoVentaCCFN.Views
             l.UomEntry = Convert.ToInt32(row[5]);
             l.Total = Convert.ToDecimal(row[6]);
             l.Impuesto_FC = Convert.ToDecimal(row[7]);
-            l.Impuesto = Convert.ToDecimal(row[9]);
-            l.Precio_Base_FC = Convert.ToDecimal(row[10]);
+            l.Impuesto = Convert.ToDecimal(row[10]);
+            l.Precio_Base_FC = Convert.ToDecimal(row[9]);
             l.LineNum = Convert.ToInt32(row[11]);
             l.Cantidad = Convert.ToDecimal(row[12]);
             lista.Add(l);
@@ -233,9 +222,9 @@ namespace PuntoVentaCCFN.Views
 
             tbImporte.Text = "$" + total.ToString("0.00");
             tbImporteUSD.Text = "$" + totalUSD.ToString("0.00");
-            tbSubtotal.Text = "$" + subTotal.ToString();
+            tbSubtotal.Text = "$" + subTotal.ToString("0.00");
             tbPagado.Text = "$" + pagado.ToString("###,###.00");
-            tbCambio.Text = "$" + cambio.ToString();
+            tbCambio.Text = "$" + cambio.ToString("0.00");
 
         }
         #endregion
@@ -580,14 +569,14 @@ namespace PuntoVentaCCFN.Views
             modalc.tbCambioR.Text = cambio.ToString("0.00");
             modalc.tbCambioNU.Text = (cambio / Convert.ToDecimal(tbTipoCambio.Text)).ToString("0.00");
 
-            if (!pagoUSD)
-            {
+            //if (!pagoUSD)
+            //{
                 modalc.tbCambioU.Visibility = Visibility.Collapsed;
                 modalc.lblU.Visibility = Visibility.Collapsed;
                 modalc.lblConvert.Visibility = Visibility.Collapsed;
                 modalc.lblcamu.Visibility = Visibility.Collapsed;
                 modalc.tbCambioNU.Visibility = Visibility.Collapsed;
-            }
+            //}
             modalc.ShowDialog();
 
             cN_Venta = new CN_Venta();
@@ -625,6 +614,7 @@ namespace PuntoVentaCCFN.Views
                     nombreClienteFactura = clientes.nombreCliente.ToString();
 
                     var mFacturacion = new modalFacturacion();
+                    mFacturacion.tbTicket.Visibility = Visibility.Collapsed;
                     mFacturacion.tbCodigoCliente.Text = codigoClienteFactura;
                     mFacturacion.tbNombreCliente.Text = nombreClienteFactura;
                     mFacturacion.idTickNumb = ventaI.Id;
