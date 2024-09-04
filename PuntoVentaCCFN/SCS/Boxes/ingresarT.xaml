@@ -133,7 +133,7 @@
                 Grid.Row="1"
                 x:Name="tbVoucher"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center" Margin="15,4,15,36" Grid.RowSpan="3"/>
+                VerticalContentAlignment="Center" Margin="15,4,15,36" Grid.RowSpan="3" Loaded="Focus"/>
             <TextBox Style="{DynamicResource txtBoxCantidad}" 
                 Grid.Row="4"
                 x:Name="tbCantidad"

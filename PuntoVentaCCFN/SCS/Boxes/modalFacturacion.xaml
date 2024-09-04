@@ -200,7 +200,7 @@
         </Style>
     </Window.Resources>
     <Border CornerRadius="10" Background="#5b7bb2">
-        <Grid>
+        <Grid Margin="10,10,-10,-10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="Auto"/>
@@ -209,66 +209,76 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Codigo de Cliente" 
-                       Margin="104,64,564,36" 
+                       Margin="319,50,349,50" 
                        Foreground="White"
                        FontSize="15"/>
             <TextBox Grid.Row="0" 
-                     Margin="60,91,496,0"
+                     Margin="245,75,275,16"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbCodigoCliente"
                      Style="{DynamicResource txtBoxCantidad}" />
 
             <Button  x:Name="BtnOk"
-                   Grid.Row="2"
+                   Grid.Row="4"
                    Content="Aceptar"
                     Style="{DynamicResource btnOk}"
                    Width="100"
                    Cursor="Hand"
                    HorizontalAlignment="Left"
-                   IsDefault="True" Margin="60,240,0,30" Grid.RowSpan="3"
+                   IsDefault="True" Margin="245,0,0,20"
                      Click="BtnOk_Click"
                    />
             <Button  x:Name="BtnCancelar"
-                   Grid.Row="2" Style="{DynamicResource btnOk}"
+                   Grid.Row="4" Style="{DynamicResource btnOk}"
                    Content="Cancelar"
                    Width="100"
                    Cursor="Hand"
                    HorizontalAlignment="Left"
                    IsDefault="True"
-                    Margin="630,240,0,30" Grid.RowSpan="3"
+                    Margin="425,0,0,20"
                      Click="BtnCancelar_Click"
                    />
             <TextBox 
-                Margin="450,91,70,0"
+                Margin="245,15,275,226"
                 TextAlignment="Center"
                 FontSize="20"
                 x:Name="tbNombreCliente"
-                Style="{DynamicResource txtBoxCantidad}" />
+                Style="{DynamicResource txtBoxCantidad}" Grid.Row="2" />
             <TextBlock Text="Nombre Cliente" 
-                Margin="538,64,158,36" 
+                Margin="333,110,363,260" 
                 Foreground="White"
-                FontSize="15"/>
-            <ComboBox x:Name="cbUsos" Margin="450,114,70,120" Grid.Row="2"/>
+                FontSize="15" Grid.RowSpan="3"/>
+            <ComboBox x:Name="cbUsos" Margin="245,165,275,79" Grid.Row="2"/>
             <TextBlock Text="SAT USO" 
-                Margin="557,85,177,155" 
+                Margin="352,135,382,105" 
                 Foreground="White"
-                FontSize="15" Grid.Row="2"/>
+                FontSize="15" Grid.Row="2" RenderTransformOrigin="0.576,-0.3"/>
             <TextBox Grid.Row="2" 
-                Margin="56,112,492,120"
+                Margin="245,90,275,150"
                 TextAlignment="Center"
                 FontSize="20"
                 x:Name="tbCorreo"
                 Style="{DynamicResource txtBoxCantidad}" />
             <TextBlock Text="Correo Electronico (Opcional)" 
-                Margin="79,85,515,155" 
+                Margin="291,60,303,180" 
                 Foreground="White"
                 FontSize="15" Grid.Row="2"/>
             <TextBlock Text="Modulo Facturacion" 
-                Margin="306,17,306,70" 
+                Margin="291,10,321,77" 
                 Foreground="White"
                 FontSize="20"
                        FontWeight="Bold"/>
+            <TextBlock Text="Ticket Venta" 
+                Margin="342,196,372,44" 
+                Foreground="White"
+                FontSize="15" Grid.Row="2"/>
+            <TextBox Grid.Row="2" 
+                Margin="245,226,275,16"
+                TextAlignment="Center"
+                FontSize="20"
+                x:Name="tbTicket"
+                Style="{DynamicResource txtBoxCantidad}" />
         </Grid>
 
     </Border>

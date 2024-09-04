@@ -133,7 +133,17 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
             <TextBlock Text="Configuracion de POS"
                        Grid.Column="0"
@@ -142,99 +152,141 @@
                        VerticalAlignment="Center"
                        Foreground="White"
                        FontSize="20"/>
-            <TextBlock Text="Codigo de Cliente" 
+            <TextBlock Text="Company" 
                        Grid.Column="1"  
                        Grid.Row="2"
                        Foreground="White"
                        FontSize="15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
                      Grid.Row="2"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbCodigoC"
-                     Text="{Binding CardCode}"
-                     Style="{DynamicResource txtBoxCantidad}"/>
-            <TextBlock Text="Lista de Precios" 
+                     Text="{Binding CompanyName}"
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,173,0"/>
+            <TextBlock Text="Codigo de Sucursal" 
                        Grid.Column="1"  
                        Grid.Row="4"
                        Foreground="White"
                        FontSize="15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
                      Grid.Row="4"
                      TextAlignment="Center"
                      FontSize="20"
-                     Text="{Binding PriceList}"
+                     Text="{Binding Filler}"
                      x:Name="tbListaPrecio"
-                     Style="{DynamicResource txtBoxCantidad}"/>
-            <TextBlock Text="Codigo de Sucursal" 
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
+            <TextBlock Text="Base de Datos" 
                         Grid.Column="1"  
                         Grid.Row="6"
                         Foreground="White"
                         FontSize="15"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
                       Grid.Row="6"
                       TextAlignment="Center"
                       FontSize="20"
                       x:Name="tbSucursal"
-                      Text="{Binding Sucursal}"
-                      Style="{DynamicResource txtBoxCantidad}"/>
-            <TextBlock Text="Puerto de Impresora" 
+                      Text="{Binding Bd}"
+                      Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,172,0"/>
+            <TextBlock Text="Codigo Cliente" 
                        Grid.Column="1"  
                        Grid.Row="8"
                        Foreground="White"
                        FontSize="15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
                      Grid.Row="8"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbPuerto"
-                     Text="{Binding Puerto}"
-                     Style="{DynamicResource txtBoxCantidad}"/>
-            <TextBlock Text="Nombre de Caja" 
+                     Text="{Binding DefCardCode}"
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,173,0"/>
+            <TextBlock Text="TC Efectivo" 
                        Grid.Column="1"  
                        Grid.Row="10"
                        Foreground="White"
                        FontSize="15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
                      Grid.Row="10"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbCaja"
-                     Text="{Binding NombreCaja}"
-                     Style="{DynamicResource txtBoxCantidad}"/>
+                     Text="{Binding DefRateCash}"
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
 
             <Button  x:Name="btnAceptar"
-                    Grid.Row="11"
+                    Grid.Row="18"
                     Grid.Column="1"
                     Content="Aceptar"
                     Width="100"
                     Cursor="Hand"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     IsDefault="True"
                      Style="{DynamicResource btnOk}"
-                    Click="btnAceptar_Click" Margin="0,105,59,-120"
+                    Click="btnAceptar_Click" Margin="151,12,0,2" Grid.RowSpan="2" Grid.ColumnSpan="2"
                     />
             <Button  x:Name="btnCancelar"
-                Grid.Row="11"
-                Grid.Column="3"
+                Grid.Row="18"
+                Grid.Column="2"
                 Content="Cancelar"
                 Width="100"
                 Cursor="Hand"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Left"
                 IsDefault="True"
                      Style="{DynamicResource btnOk}"
-                Click="btnCancelar_Click" Margin="0,105,0,-120"
+                Click="btnCancelar_Click" Margin="201,8,0,7" Grid.RowSpan="2" Grid.ColumnSpan="2"
                     />
+            <TextBlock Text="TC Credito" 
+                Grid.Column="1"  
+                Grid.Row="11"
+                Foreground="White"
+                FontSize="15"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Margin="10,9,0,0" Grid.RowSpan="2"/>
+            <TextBox Grid.Column="1" 
+                Grid.Row="12"
+                TextAlignment="Center"
+                FontSize="20"
+
+                Text="{Binding DefRateCredit}"
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0"/>
+            <TextBlock Text="Moneda" 
+                Grid.Column="1"  
+                Grid.Row="14"
+                Foreground="White"
+                FontSize="15"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
+                Grid.Row="14"
+                TextAlignment="Center"
+                FontSize="20"
+
+                Text="{Binding DefCurrency}"
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
+            <TextBlock Text="Lista de Precios" 
+                Grid.Column="1"  
+                Grid.Row="16"
+                Foreground="White"
+                FontSize="15"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox Grid.Column="1" 
+                Grid.Row="16"
+                TextAlignment="Center"
+                FontSize="20"
+
+                Text="{Binding DefListNum}"
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0"/>
         </Grid>
 
 

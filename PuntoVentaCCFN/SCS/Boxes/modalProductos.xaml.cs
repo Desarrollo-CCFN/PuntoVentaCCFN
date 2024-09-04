@@ -38,6 +38,7 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            cbUnidades.ItemsSource = null;
             GridProductos.UnselectAll();
             GridProductos.ItemsSource = objeto_CN_Productos.BusquedaProducto(tbSearchbox.Text).DefaultView;
         }

@@ -31,6 +31,7 @@
     <None Remove="SCS\IMG\engrane.png" />
     <None Remove="SCS\IMG\entrada.png" />
     <None Remove="SCS\IMG\equis.png" />
+    <None Remove="SCS\IMG\factura.png" />
     <None Remove="SCS\IMG\gear-solid.png" />
     <None Remove="SCS\IMG\hamburguesa.png" />
     <None Remove="SCS\IMG\home.png" />
@@ -112,6 +113,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\equis.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\factura.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\gear-solid.png">

@@ -27,6 +27,7 @@ namespace Capa_Presentacion.SCS.Boxes
         private void btnAceptar_Click(object sender, RoutedEventArgs e)
         {
             AppConfig.Save();
+
             this.Close();
         }
 

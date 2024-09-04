@@ -488,7 +488,6 @@
             <TextBox
                 Grid.Column="9"
                 x:Name="tbMoneda"
-                Text="MXN"
                 IsEnabled="false"
                 Style="{DynamicResource tbStyle}"
                 Grid.Row="2" Margin="25,0,440,0"/>

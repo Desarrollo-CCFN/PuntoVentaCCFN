@@ -148,11 +148,6 @@
                     IsDefault="True"
                     Click="BtnCancelar_Click"
                     />
-            <TextBox Style="{DynamicResource txtBoxCantidad}" 
-                Grid.Row="2"
-                x:Name="tbCantidad_Copiar"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"/>
         </Grid>
         </Border> 
 
