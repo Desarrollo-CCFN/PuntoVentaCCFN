@@ -29,5 +29,12 @@ namespace Capa_Negocio.Productos
             return objDatos.ConsultaUM(busqueda);
         }
         #endregion
+
+        #region anulacion de producto
+        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
+        {
+            return objDatos.AnulacionProducto(idHeader, LineNum, Cantidad);
+        }
+        #endregion
     }
 }

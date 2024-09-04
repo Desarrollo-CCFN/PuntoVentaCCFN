@@ -177,6 +177,7 @@
     <PackageReference Include="MySqlConnector" Version="2.3.7" />
     <PackageReference Include="PdfiumViewer" Version="2.13.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -200,6 +201,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DllTimbraCFNN40">
+      <HintPath>bin\Debug\DllTimbraCFNN40.dll</HintPath>
+    </Reference>
     <Reference Include="SAPBusinessOneSDK">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\SAP\SAP Business One SDK\Lib\SAPBusinessOneSDK.dll</HintPath>
     </Reference>

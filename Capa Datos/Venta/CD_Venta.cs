@@ -164,6 +164,7 @@ namespace Capa_Datos.Venta
                 conm.Parameters.Add("_PriceNum", MySqlDbType.Decimal).Value = detalle.PriceList;
                 conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = detalle.IdHeader;
                 conm.Parameters.Add("_UomEntry", MySqlDbType.Int32).Value = detalle.UomEntry;
+                conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = detalle.LineNum;
 
                 MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
@@ -196,6 +197,26 @@ namespace Capa_Datos.Venta
 
         }
 
+        public bool AnularVenta(int idHeader)
+        {
+            string pName = "";
+            try
+            {
+                pName = "SP_V_Anular";
+                MySqlCommand conm = new MySqlCommand("SP_V_Anular", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idHeader;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void ventaPagos(CE_VentaPagos ventaPago)
         {
             MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
@@ -206,9 +227,29 @@ namespace Capa_Datos.Venta
             conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
             conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
             conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
+            conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
             conm.ExecuteNonQuery();
             conm.Parameters.Clear();
             conn.CerrarConexion();
+        }
+
+        public bool AnularFPagos(int idHeader)
+        {
+            try
+            {
+                MySqlCommand conm = new MySqlCommand("SP_V_VentaPagosCancel", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idHeader;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

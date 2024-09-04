@@ -57,5 +57,31 @@ namespace Capa_Datos.Productos
             return listUm;
         }
         #endregion
+
+        #region anular producto
+        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
+        {
+            string pName = "";
+            try
+            {
+                pName = "SP_P_ActualizarCantidad";
+                MySqlCommand conm = new MySqlCommand("SP_P_ActualizarCantidad", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_Idheader", MySqlDbType.Int32).Value = idHeader;
+                conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
+                conm.Parameters.Add("_Quantity", MySqlDbType.Decimal).Value = Cantidad;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex1)
+            {
+                //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }

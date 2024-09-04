@@ -74,11 +74,11 @@ namespace Capa_Presentacion.Views
                     {
 
 
-                    if (superUserFlag == "Y" && valueToSend_ == 1 && UserCod == "SISTEMAS")
-                    {
-                        var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();     //PARA PODER ABRIR CONFIGURACION
-                        this.Close();
-                        configuracionWindow.Show();
+                        if (superUserFlag == "Y" && valueToSend_ == 1)
+                        {
+                            var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+                               this.Close();
+                              configuracionWindow.Show();
 
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 2)     // cuando pide autorizacion para anular caja
@@ -99,7 +99,7 @@ namespace Capa_Presentacion.Views
                                System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
                                 ReturnValue = 0;
 
-                         }
+                    }
 
 
 

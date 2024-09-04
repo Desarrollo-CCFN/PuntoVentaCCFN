@@ -24,7 +24,8 @@ namespace Capa_Presentacion.SCS.Boxes
                 Total = decimal.Parse(tbCantidad.Text);
                 Efectivo = decimal.Parse(tbCantidad.Text);
                 this.Close();
-            } else
+            }
+            else
             {
                 this.Close();
             }
