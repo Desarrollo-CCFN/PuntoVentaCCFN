@@ -30,14 +30,14 @@ namespace Capa_Presentacion
             set { this["puertoimpresora"] = value; }
         }
 
-        [ConfigurationProperty("sucursal", DefaultValue = "S24")]
+        [ConfigurationProperty("sucursal", DefaultValue = "S23")]
         public string Sucursal
         {
             get { return (string)this["sucursal"]; }
             set { this["sucursal"] = value; }
         }
 
-        [ConfigurationProperty("nombrecaja", DefaultValue = "Caja1")]
+        [ConfigurationProperty("nombrecaja", DefaultValue = "1")]
         public string NombreCaja
         {
             get { return (string)this["nombrecaja"]; }

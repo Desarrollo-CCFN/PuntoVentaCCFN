@@ -462,7 +462,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Blue"
                     x:Name="btnAperturaCerrado"
-                Grid.Row="14" Margin="15,142,10,14" Click="btnAperturaCerrado_Click" Grid.ColumnSpan="4"
+                Grid.Row="14" Margin="15,105,10,14" Click="btnAperturaCerrado_Click" Grid.ColumnSpan="4"
                 >
                 <TextBlock Text="Apertura/Cerrado Inicial"
                     Foreground="White"

@@ -6,7 +6,7 @@ using Capa_Presentacion;
 using Capa_Presentacion.SCS.Boxes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
-
+using Capa_Presentacion.Reportes;
 
 
 namespace PuntoVentaCCFN
@@ -137,8 +137,35 @@ namespace PuntoVentaCCFN
         private void Reportes_Click(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            var MainReportes = new MainReportes();   // Activa el Password de acceso
+            MainReportes.Show();
 
+        }
+
+        private void BtnLogOff_Click(object sender, RoutedEventArgs e)
+        {
+            // Muestra el mensaje de información
+            System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+
+            // Cierra todas las ventanas abiertas excepto la actual
+            foreach (Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window != this)
+                {
+                    window.Close();
+                }
+            }
+
+            // Almacena la nueva ventana que quieres abrir
+            LoginView loginView = new LoginView();
+            // Muestra la nueva ventana
+            loginView.Show();
+
+            // Cierra la ventana actual
+            this.Close();
 
         }
     }

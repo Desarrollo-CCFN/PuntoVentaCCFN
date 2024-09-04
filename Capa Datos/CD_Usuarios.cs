@@ -38,14 +38,7 @@ namespace Capa_Datos
         }
         #endregion
 
-
-
-
-
-
-
-
-
+         
 
 
         #region Borrar
@@ -124,17 +117,7 @@ namespace Capa_Datos
             {
                 conn.CerrarConexion();
             }
-
-            /*   SqlCommand cmd = new SqlCommand("UPDATE Usuarios SET U_NAME = @U_NAME, USER_CODE = @USER_CODE, DfltsGroup = @DfltsGroup, Locked = @Locked, SUPERUSER = @SUPERUSER WHERE USERID = @USERID", connection);
-               cmd.Parameters.AddWithValue("@USERID", usuario.USERID); no
-               cmd.Parameters.AddWithValue("@U_NAME", usuario.U_NAME);
-               cmd.Parameters.AddWithValue("@USER_CODE", usuario.USER_CODE); NO
-               cmd.Parameters.AddWithValue("@DfltsGroup", usuario.DfltsGroup);
-               cmd.Parameters.AddWithValue("@Locked", usuario.Locked);
-               cmd.Parameters.AddWithValue("@SUPERUSER", usuario.SUPERUSER);
-
-               connection.Open();
-               cmd.ExecuteNonQuery(); */
+             
 
         }
         #endregion

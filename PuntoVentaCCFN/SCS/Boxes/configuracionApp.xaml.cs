@@ -22,6 +22,10 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             var SettingSection = AppConfig.GetSection("App_Preferences");
             this.DataContext = SettingSection;
+         //   ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
+        //    System.Windows.Forms.MessageBox.Show(((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString());
+            
+
         }
 
         private void btnAceptar_Click(object sender, RoutedEventArgs e)

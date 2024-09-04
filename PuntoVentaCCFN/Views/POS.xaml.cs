@@ -35,8 +35,18 @@ namespace PuntoVentaCCFN.Views
     /// <summary>
     /// Lógica de interacción para POS.xaml
     /// </summary>
+    /// 
+
+    public static class GlobalVariables
+    {
+        public static int CodSuper { get; set; }
+    }
+
+
     public partial class POS : System.Windows.Controls.UserControl
     {
+        readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
+
         readonly CN_Clientes objeto_CN_Clientes = new CN_Clientes();
         readonly CN_TipoCambio objeto_CN_TipoCambio = new CN_TipoCambio();
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
@@ -50,6 +60,8 @@ namespace PuntoVentaCCFN.Views
         public string nombreCaja;
         public string sMensaje = null;
         public bool pagoUSD = false;
+      
+
         public POS()
         {
             InitializeComponent();
@@ -59,8 +71,9 @@ namespace PuntoVentaCCFN.Views
         void IniciarConfiguracion()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+                   
 
-            printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+            //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
             listPrecios = SettingSection.PriceList;
             cardCode = SettingSection.CardCode;
             whsCode = SettingSection.Sucursal;
@@ -589,8 +602,21 @@ namespace PuntoVentaCCFN.Views
         #region apertura y cerrado inicial
         private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
         {
-            var acdialog = new modalAperturaSalida();
-            acdialog.Show();
+            var Acceso = new Acceso(3);
+            //  Acceso.Show();
+            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
+                                                         // 1 = Confinguracion Pantalla Principal
+                                                         // 2= Cancelar la Factura
+                                                         // 3= abre venta de rendicion de caja
+
+            if (Acceso.ReturnValue >= 2)
+            {
+                //  System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                GlobalVariables.CodSuper  = Acceso.ReturnValue;
+                var acdialog = new modalAperturaSalida();
+                acdialog.Show();
+            }
+             
         }
         #endregion
 
@@ -642,12 +668,7 @@ namespace PuntoVentaCCFN.Views
 
                 saldo(); 
             }
-        
-        
-        
-        
-        
-        
+         
         }
 
 

@@ -108,12 +108,14 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Visible;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
+                            mainWindow.menuItemReportes.Visibility = Visibility.Visible;
                         }
                         else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
+                            mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
                         } 
 
                       //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);

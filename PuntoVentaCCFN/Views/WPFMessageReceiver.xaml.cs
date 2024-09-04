@@ -50,9 +50,10 @@ namespace Capa_Presentacion.Views
                         string json = r.ReadToEnd();
                         JObject jsons = JObject.Parse(json);
 
-                        AppConfig.IP = jsons["IP"].ToString();
-                        AppConfig.Sucursal = jsons["Sucursal"].ToString();
-                        AppConfig.Puerto = jsons["Puerto"].ToString();
+                        AppConfig1.IP = jsons["IP"].ToString();
+                        AppConfig1.Sucursal = jsons["Sucursal"].ToString();
+                        AppConfig1.Puerto = jsons["Puerto"].ToString();
+                       
 
                     }
                 }
@@ -62,7 +63,7 @@ namespace Capa_Presentacion.Views
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "1200" };
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "12000" };
 
 
 
@@ -80,7 +81,7 @@ namespace Capa_Presentacion.Views
 
 
 
-        public static class AppConfig
+        public static class AppConfig1
         {
             public static string IP { get; set; }
             public static string Sucursal { get; set; }
@@ -162,12 +163,12 @@ namespace Capa_Presentacion.Views
 
             try
             {
-                //await udpClient.SendAsync(data, data.Length, "192.168.101.20", 12000);
-                await udpClient.SendAsync(data, data.Length, AppConfig.IP,1200);
+             //   await udpClient.SendAsync(data, data.Length, "192.168.101.20", 12000);
+                await udpClient.SendAsync(data, data.Length, AppConfig1.IP, int.Parse(AppConfig1.Puerto));
                 Dispatcher.Invoke(() =>
                 {
                     ledIndicator.Fill = new SolidColorBrush(Colors.Green);
-                    lstReceivedMessages.Items.Add($"Enviado {AppConfig.Sucursal} {timestamp}: {replyMessage}");
+                    lstReceivedMessages.Items.Add($"Enviado {AppConfig1.Sucursal} {timestamp}: {replyMessage}");
                     txtReply.Clear();
                 });
             }

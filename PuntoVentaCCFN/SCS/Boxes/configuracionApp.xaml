@@ -198,7 +198,7 @@
                      x:Name="tbPuerto"
                      Text="{Binding Puerto}"
                      Style="{DynamicResource txtBoxCantidad}"/>
-            <TextBlock Text="Nombre de Caja" 
+            <TextBlock Text="Número de Caja" 
                        Grid.Column="1"  
                        Grid.Row="10"
                        Foreground="White"

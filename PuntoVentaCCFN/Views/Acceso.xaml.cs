@@ -67,24 +67,34 @@ namespace Capa_Presentacion.Views
                 {
                     string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
                     string UserCod       = dtResultado.Rows[0].ItemArray[2]?.ToString();
+                    string UserId        = dtResultado.Rows[0].ItemArray[0]?.ToString();
+
 
                 if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
-                       
 
-                        if (superUserFlag == "Y" && valueToSend_ == 1)
-                        {
-                            var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-                               this.Close();
-                              configuracionWindow.Show();
 
-                        }
-                        else if ((superUserFlag == "Y" ||  UserCod == "SUPERVISOR") && valueToSend_ == 2)
-                        {
-                                 ReturnValue = 1;     // regresa 1 que puede proseguir con acceso
-                                 this.Close();                   // EN LA PANTALLA ORIGEN
+                    if (superUserFlag == "Y" && valueToSend_ == 1 && UserCod == "SISTEMAS")
+                    {
+                        var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();     //PARA PODER ABRIR CONFIGURACION
+                        this.Close();
+                        configuracionWindow.Show();
 
-                    } else
+                    }
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 2)     // cuando pide autorizacion para anular caja
+                    {
+                        ReturnValue = 1;     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
+                        this.Close();                   // EN LA PANTALLA ORIGEN
+
+                    }
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 3)   // cuando pide autorizacion para rendicion de caja
+                    {
+                        ReturnValue = int.Parse(UserId);     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
+                        this.Close();                   // EN LA PANTALLA ORIGEN
+
+                    }
+   
+                    else
                         {
                                System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
                                 ReturnValue = 0;

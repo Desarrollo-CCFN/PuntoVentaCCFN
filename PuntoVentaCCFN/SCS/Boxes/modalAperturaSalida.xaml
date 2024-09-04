@@ -199,59 +199,79 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
-    <Border CornerRadius="10" Background="#5b7bb2">
+    <Border CornerRadius="10" Background="#5b7bb2" HorizontalAlignment="Left" Width="816" Margin="-8,0,0,0">
         <Grid Margin="25">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*"/>
-                <ColumnDefinition Width="11*"/>
-                <ColumnDefinition Width="132*"/>
+                <ColumnDefinition Width="353*"/>
+                <ColumnDefinition Width="70*"/>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="328*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
-                <RowDefinition Height="10"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <ComboBox
-                      x:Name="cbTipo" Margin="202,-16,292,111" Grid.Column="2"/>
-            <ComboBox
-          x:Name="cbDenominaciones" Margin="0,38,590,57" Grid.ColumnSpan="3"/>
+    x:Name="cbTipo"
+    Margin="7,23,167,72" Grid.Column="3">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
 
-            <Button Margin="390,35,125,55" Style="{DynamicResource btnOk}" Grid.Column="2">
-                <TextBlock Text="Agregar"
-                />
-            </Button>
+
+            <ComboBox
+    x:Name="cbDenominaciones"
+    Margin="5,69,225,26" >
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+
+
 
             <TextBox Grid.Row="0" 
-                     Margin="115,36,330,55"
+                     Margin="205,66,20,25"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbCantidad"
-                     Style="{DynamicResource txtBoxCantidad}" Grid.Column="2" />
+                     Style="{DynamicResource txtBoxCantidad}" KeyDown="tbCantidad_KeyDown" />
+
+            <Button x:Name="Agregar" Margin="189,57,13,33" Style="{DynamicResource btnOk}" Click="Agregar_Click" Grid.Column="3">
+                <TextBlock Text="Agregar"  />
+            </Button>
+
+
+
             <Button  x:Name="BtnOk"
-                   Grid.Row="4"
+                   Grid.Row="3"
                    Content="Aceptar"
                     Style="{DynamicResource btnOk}"
                    Width="100"
                    Cursor="Hand"
                    HorizontalAlignment="Left"
-                   IsDefault="True" Grid.ColumnSpan="3" 
+                   IsDefault="True" Margin="5,17,0,-17" Click="BtnOk_Click" 
                    />
             <Button  x:Name="BtnCancelar"
-                   Grid.Row="4" Style="{DynamicResource btnOk}"
+                   Grid.Row="3" Style="{DynamicResource btnOk}"
                    Content="Cancelar"
                    Width="100"
                    Cursor="Hand"
                    HorizontalAlignment="Left"
-                   IsDefault="True" Grid.Column="2" Margin="560,0,0,0"
-                   Click="BtnCancelar_Click"
+                   IsDefault="True" Margin="212,17,0,-17"
+                   Click="BtnCancelar_Click" Grid.Column="3"
                    />
 
             <DataGrid Style="{DynamicResource DataGridStyle}"
-                Margin="0,80,0,0" 
+                Margin="0,103,0,42" 
                       x:Name="GridDatos"
-                      Grid.RowSpan="3" 
+                      Grid.RowSpan="4" 
                       AutoGenerateColumns="False"
                     Background="GhostWhite"
                     Foreground="Black"
@@ -262,13 +282,49 @@
                     CanUserSortColumns="False"
                     RowBackground="Transparent"
                     HeadersVisibility="Column"
-                    GridLinesVisibility="Horizontal" Grid.ColumnSpan="3">
+                    GridLinesVisibility="Horizontal" Grid.ColumnSpan="4">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Denominacion" Width="100" Binding="{Binding ItemCode}" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding ItemName}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Total" Width="*" Binding="{Binding ItemName}" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Denominación" Width="100" Binding="{Binding Denominacion}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Cantidad}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Total" Width="*" Binding="{Binding Total}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <ComboBox
+    x:Name="cbMoneda"
+    Margin="6,23,223,72">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+            <Button x:Name="Limpiar" Margin="189,11,13,79" Style="{DynamicResource btnOk}" Click="Limpiar_Click" Grid.Column="3">
+                <TextBlock Text="Limpiar Registro"  />
+            </Button>
+            <Button  x:Name="btnEliminar"
+                Grid.Row="3" Style="{DynamicResource btnOk}"
+                Content="Eliminar"
+                Width="100"
+                Cursor="Hand"
+                HorizontalAlignment="Left"
+                IsDefault="True" Margin="79,17,0,-17"
+                Click="btnEliminar_Click" Grid.Column="3" />
+
+            <ComboBox
+                x:Name="cbCajera"
+                Margin="173,22,20,73">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}">
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+            <Label Content=" RETIROS" HorizontalAlignment="Left" Height="50" Margin="318,-35,0,0" VerticalAlignment="Top" Width="146" FontSize="30" FontWeight="Bold" Grid.ColumnSpan="4"/>
+            <Label Content="MONEDA" HorizontalAlignment="Left" Margin="29,-10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Height="28"/>
+            <Label Content="DENOMINACIÓN" HorizontalAlignment="Left" Margin="6,0,0,0" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+            <Label Content="CAJERA" HorizontalAlignment="Left" Margin="207,-2,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="62"/>
+            <Label Grid.Column="3" Content="TIPO DE RETIRO" HorizontalAlignment="Left" Margin="26,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
         </Grid>
     </Border>
 </Window>
