@@ -4,13 +4,11 @@ using System.Windows.Input;
 using System.Configuration;
 using Capa_Presentacion;
 using Capa_Presentacion.SCS.Boxes;
+using Capa_Presentacion.Reportes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using System.util;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.IO;
 
 
 namespace PuntoVentaCCFN
