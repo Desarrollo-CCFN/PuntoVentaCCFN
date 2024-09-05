@@ -8,6 +8,9 @@ using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using System.util;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
 
 
 namespace PuntoVentaCCFN
@@ -21,13 +24,76 @@ namespace PuntoVentaCCFN
         public MainWindow()
         {
             InitializeComponent();
-
+            LoadJson();
             if (AppConfig.Sections["App_Preferences"] is null)
-            {
+            {   
                 AppConfig.Sections.Add("App_Preferences", new App_Preferences());
                 AppConfig.Save();
             }
         }
+
+
+        public void LoadJson()
+        {
+            try
+            {
+                if (File.Exists("C:\\PuntoVenta\\config.json"))
+                {
+                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\config.json"))
+                    {
+
+                        string json = r.ReadToEnd();
+                        JObject jsons = JObject.Parse(json);
+
+                        AppConfig1.IP = jsons["IP"].ToString();
+                        AppConfig1.Sucursal = jsons["Sucursal"].ToString();
+                        AppConfig1.Puerto = jsons["Puerto"].ToString();
+                        AppConfig1.Caja = jsons["Caja"].ToString();
+                        AppConfig1.Copia = jsons["Copia"].ToString();
+
+
+                    }
+                }
+                else
+                {
+                    if (!Directory.Exists("C:\\PuntoVenta"))
+                    {
+                        Directory.CreateDirectory("C:\\PuntoVenta");
+                    }
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "12000", Caja = "1", Copia = "1" };
+
+
+
+                    string json = JsonConvert.SerializeObject(_data);
+                    File.WriteAllText(@"C:\\PuntoVenta\\config.json", json);
+
+                    // System.Windows.Forms.MessageBox.Show("Se ha creado un archivo de configuracion en el disco local, C:\\PuntoVenta ", "Configuracion");
+                    System.Windows.Forms.MessageBox.Show("Se creo la configuracion, salir y volver entrar ", "Configuracion");
+                    Cerrar(this, new RoutedEventArgs());
+
+                }
+            }
+            catch (Exception EX)
+            {
+                System.Windows.Forms.MessageBox.Show("Error en ejecucion");
+            }
+        }
+
+
+
+        public static class AppConfig1
+        {
+            public static string IP { get; set; }
+            public static string Sucursal { get; set; }
+            public static string Puerto { get; set; }
+
+            public static string Caja { get; set; }
+
+            public static string Copia { get; set; }
+
+        }
+
+
 
         private void TBShow(object sender, RoutedEventArgs e)
         {
@@ -152,8 +218,8 @@ namespace PuntoVentaCCFN
         {
 
             //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-            var MainReportes = new MainReportes();   // Activa el Password de acceso
-            MainReportes.Show();
+          //  var MainReportes = new MainReportes();   // Activa el Password de acceso
+           // MainReportes.Show();
 
         }
 

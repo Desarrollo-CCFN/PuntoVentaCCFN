@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PuntoVentaCCFN;
 
 namespace Capa_Presentacion.Views
 {
@@ -28,17 +29,17 @@ namespace Capa_Presentacion.Views
    
         public WPFMessageReceiver()
         {
-            InitializeComponent();
+             InitializeComponent();   
             udpClient = new UdpClient(11000); // Configura el puerto en el constructor
             ledIndicator.Fill = new SolidColorBrush(Colors.Red); // Inicializa el LED en rojo
-            LoadJson();
+          //  LoadJson();
 
-            StartListening();
+            // StartListening(); temporalmente cerrado
         }
 
 
 
-        public void LoadJson()
+      /*  public void LoadJson()
         {
             try
             {
@@ -53,7 +54,8 @@ namespace Capa_Presentacion.Views
                         AppConfig1.IP = jsons["IP"].ToString();
                         AppConfig1.Sucursal = jsons["Sucursal"].ToString();
                         AppConfig1.Puerto = jsons["Puerto"].ToString();
-                       
+                        AppConfig1.Caja = jsons["Caja"].ToString();
+
 
                     }
                 }
@@ -63,7 +65,7 @@ namespace Capa_Presentacion.Views
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "12000" };
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "12000", Caja = "1" };
 
 
 
@@ -78,7 +80,7 @@ namespace Capa_Presentacion.Views
                 System.Windows.Forms.MessageBox.Show("Error en ejecucion");
             }
         }
-
+      
 
 
         public static class AppConfig1
@@ -87,9 +89,11 @@ namespace Capa_Presentacion.Views
             public static string Sucursal { get; set; }
             public static string Puerto { get; set; }
 
+            public static string Caja { get; set; }
+
         }
 
-         
+         */
 
 
         private async void StartListening()
@@ -153,7 +157,8 @@ namespace Capa_Presentacion.Views
                 });
             }
         }
-         
+       
+
         private async void btnReply_Click(object sender, RoutedEventArgs e)
         {
 
@@ -164,11 +169,11 @@ namespace Capa_Presentacion.Views
             try
             {
              //   await udpClient.SendAsync(data, data.Length, "192.168.101.20", 12000);
-                await udpClient.SendAsync(data, data.Length, AppConfig1.IP, int.Parse(AppConfig1.Puerto));
+                await udpClient.SendAsync(data, data.Length, MainWindow.AppConfig1.IP, int.Parse(MainWindow.AppConfig1.Puerto));
                 Dispatcher.Invoke(() =>
                 {
                     ledIndicator.Fill = new SolidColorBrush(Colors.Green);
-                    lstReceivedMessages.Items.Add($"Enviado {AppConfig1.Sucursal} {timestamp}: {replyMessage}");
+                    lstReceivedMessages.Items.Add($"Enviado {MainWindow.AppConfig1.Sucursal} {timestamp}: {replyMessage}");
                     txtReply.Clear();
                 });
             }

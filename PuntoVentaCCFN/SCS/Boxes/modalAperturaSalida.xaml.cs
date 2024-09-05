@@ -19,7 +19,8 @@ using Capa_Entidad;
 using System.Windows.Navigation;
 using System.Data;
 using System.Configuration;
- 
+using PuntoVentaCCFN;
+
 
 
 
@@ -35,7 +36,7 @@ namespace Capa_Presentacion.SCS.Boxes
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
         MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        Decimal Monto = 0;
+       // Decimal Monto = 0;
 
         private string SucursalString;
         private string nombreCajaString;
@@ -55,8 +56,11 @@ namespace Capa_Presentacion.SCS.Boxes
         public void CargaInicial()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            nombreCajaString = ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
-            SucursalString = ((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
+    
+            // Accede a la propiedad Caja desde AppConfig1
+            nombreCajaString = MainWindow.AppConfig1.Caja;   // ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
+
+            SucursalString = SettingSection.Filler;    //((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
            
             nombreCajaInt = int.Parse(nombreCajaString);
             int Control1 = 0;

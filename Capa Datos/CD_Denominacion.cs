@@ -8,6 +8,7 @@ using System.Data;
 using Capa_Entidad;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+
  
  
 
@@ -122,13 +123,17 @@ namespace Capa_Datos
                         {
                             try
                             {
+                            
+
                                 // Crear una instancia de ProcessStartInfo
                                 ProcessStartInfo startInfo = new ProcessStartInfo();
                                 startInfo.FileName = @"C:\PuntoVenta\impresora\RetirosCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-                                startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                            //startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                                 startInfo.Arguments = $"{idCash} 1";
+                          //  startInfo.Arguments = $"{idCash} {Param}";
 
-                                // Ejecutar el programa externo
-                                Process.Start(startInfo);
+                            // Ejecutar el programa externo
+                            Process.Start(startInfo);
 
                             return "El retiro se ha registrado correctamente.";
                         }
