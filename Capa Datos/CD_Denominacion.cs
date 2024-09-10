@@ -127,9 +127,9 @@ namespace Capa_Datos
 
                                 // Crear una instancia de ProcessStartInfo
                                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                                startInfo.FileName = @"C:\PuntoVenta\impresora\RetirosCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
+                                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
                             //startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
-                                 startInfo.Arguments = $"{idCash} 1";
+                                 startInfo.Arguments = $"{idCash}";
                           //  startInfo.Arguments = $"{idCash} {Param}";
 
                             // Ejecutar el programa externo

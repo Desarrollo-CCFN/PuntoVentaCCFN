@@ -9,7 +9,14 @@ using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
 using static Org.BouncyCastle.Math.EC.ECCurve;
 using System.util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Linq;
+using System.Windows.Controls;
 
+
+  
 
 namespace PuntoVentaCCFN
 {
@@ -19,8 +26,13 @@ namespace PuntoVentaCCFN
     public partial class MainWindow : Window
     {
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+ 
+
+
         public MainWindow()
         {
+            
+
             InitializeComponent();
             LoadJson();
             if (AppConfig.Sections["App_Preferences"] is null)
@@ -28,8 +40,17 @@ namespace PuntoVentaCCFN
                 AppConfig.Sections.Add("App_Preferences", new App_Preferences());
                 AppConfig.Save();
             }
+
+            // Realizar el casting adecuado a App_Preferences
+            var preferences = AppConfig.Sections[11] as App_Preferences;
+            string Empresa = preferences.CompanyName;     //Nombre de la empresa
+            txtSucursal.Text = "Sucursal: " + Empresa;
+
+           
+
         }
 
+         
 
         public void LoadJson()
         {
@@ -58,7 +79,7 @@ namespace PuntoVentaCCFN
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                    var _data = new { IP = "192.168.0.0", Sucursal = "Caja 1 Lazaro", Puerto = "12000", Caja = "1", Copia = "1" };
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
 
 
 
@@ -119,7 +140,7 @@ namespace PuntoVentaCCFN
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 var applicationConfiguration = ConfigurationManager
-        .OpenExeConfiguration(ConfigurationUserLevel.None);
+                .OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = applicationConfiguration.GetSection("App_Preferences");
 
                 if(section != null)
@@ -167,10 +188,10 @@ namespace PuntoVentaCCFN
             var Acceso = new Acceso(1);
             Acceso.Show();
 
-              //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-               // configuracionWindow.Show();
+            //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+            // configuracionWindow.Show();
 
-           
+
             // 1 = Confinguracion Pantalla Principal
             // 2= Cancelar la Factura
 
@@ -216,15 +237,15 @@ namespace PuntoVentaCCFN
         {
 
             //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-          //  var MainReportes = new MainReportes();   // Activa el Password de acceso
-           // MainReportes.Show();
+            var MainReportes = new MainReportes();   // Activa el Password de acceso
+            MainReportes.Show();
 
         }
 
         private void BtnLogOff_Click(object sender, RoutedEventArgs e)
         {
             // Muestra el mensaje de información
-            System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+           // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
 
 
 
@@ -236,11 +257,12 @@ namespace PuntoVentaCCFN
                     window.Close();
                 }
             }
-
+            
             // Almacena la nueva ventana que quieres abrir
             LoginView loginView = new LoginView();
             // Muestra la nueva ventana
             loginView.Show();
+            this.Close();
 
 
         }

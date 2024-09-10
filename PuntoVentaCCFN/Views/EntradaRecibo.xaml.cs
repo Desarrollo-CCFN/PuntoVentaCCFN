@@ -44,58 +44,67 @@ namespace PuntoVentaCCFN.Views
         }
 
         private void RefrescarGrid()
-        { 
+        {
 
             int iNoTst = 0;
 
-            try
+            if (this.tb_tsr.Text == "")
             {
-                iNoTst = Convert.ToInt32(tb_tsr.Text);
-            }
-            catch (Exception ex) 
-            {
-                System.Windows.MessageBox.Show("Invalido Numero de TSR\n" + ex.Message);
-                return;
+                System.Windows.MessageBox.Show("Se debe de ingresar Número de transferencia para la busqueda !!!");
+
             }
 
-            dt = objeto_CN_SolTraslado.CargarSolTraslado(iNoTst);
-
-            GridSt.ItemsSource = dt.DefaultView; // objeto_CN_SolTraslado.CargarSolTraslado(iNoTst).DefaultView;
-
-            for (int i = 0; GridSt.Columns.Count > i; i++)
+            else
             {
-                GridSt.Columns[i].IsReadOnly = true;
+                try
+                {
+                    iNoTst = Convert.ToInt32(tb_tsr.Text);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show("Invalido Numero de TSR\n" + ex.Message);
+                    return;
+                }
+
+                dt = objeto_CN_SolTraslado.CargarSolTraslado(iNoTst);
+
+                GridSt.ItemsSource = dt.DefaultView; // objeto_CN_SolTraslado.CargarSolTraslado(iNoTst).DefaultView;
+
+                for (int i = 0; GridSt.Columns.Count > i; i++)
+                {
+                    GridSt.Columns[i].IsReadOnly = true;
+                }
+
+
+                //  GridSt.RowStyleSelector =  SingleLine;
+
+                //GridSt.Columns[0].Header = "Linea";
+                //GridSt.Columns[1].Header = "Estatus";
+                //   GridSt.Columns[2].Header = "Codigo";
+                //   GridSt.Columns[3].Header = "Descripción";
+                //   GridSt.Columns[4].Header = "Cantidad";
+                //   GridSt.Columns[5].Header = "UmTsr";
+                //   GridSt.Columns[6].Header = "Costo";
+                //   GridSt.Columns[7].Header = "Total";
+                //   GridSt.Columns[8].Header = "Moneda";
+                //   GridSt.Columns[9].Header = "Saldo";
+
+                //   GridSt.Columns[10].Header = "Cant.Recibo";
+                //   GridSt.CellEditEnding += GridSt_CellEditEnding;
+                GridSt.Columns[10].IsReadOnly = false;
+                ////  -- GridSt.Columns[10].header
+
+                //   GridSt.Columns[11].Header = "Base";
+                //   GridSt.Columns[12].Header = "Umi";
+                //   GridSt.Columns[13].Header = "Almacén";
+
+                //   GridSt.Columns[14].Visibility = 0; // DocEntry
+                //   GridSt.Columns[15].Visibility = 0; // UmEntry;
+
+                //string svalue = GridSt.Items[0][1].ToString();
+
+
             }
-
-
-            //  GridSt.RowStyleSelector =  SingleLine;
-
-            //GridSt.Columns[0].Header = "Linea";
-            //GridSt.Columns[1].Header = "Estatus";
-            //   GridSt.Columns[2].Header = "Codigo";
-            //   GridSt.Columns[3].Header = "Descripción";
-            //   GridSt.Columns[4].Header = "Cantidad";
-            //   GridSt.Columns[5].Header = "UmTsr";
-            //   GridSt.Columns[6].Header = "Costo";
-            //   GridSt.Columns[7].Header = "Total";
-            //   GridSt.Columns[8].Header = "Moneda";
-            //   GridSt.Columns[9].Header = "Saldo";
-
-            //   GridSt.Columns[10].Header = "Cant.Recibo";
-            //   GridSt.CellEditEnding += GridSt_CellEditEnding;
-            GridSt.Columns[10].IsReadOnly = false;
-            ////  -- GridSt.Columns[10].header
-
-            //   GridSt.Columns[11].Header = "Base";
-            //   GridSt.Columns[12].Header = "Umi";
-            //   GridSt.Columns[13].Header = "Almacén";
-
-            //   GridSt.Columns[14].Visibility = 0; // DocEntry
-            //   GridSt.Columns[15].Visibility = 0; // UmEntry;
-
-            //string svalue = GridSt.Items[0][1].ToString();
-
-
         }
 
         private void GridSt_CellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)

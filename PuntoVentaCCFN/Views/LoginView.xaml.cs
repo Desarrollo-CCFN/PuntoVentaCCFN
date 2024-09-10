@@ -109,6 +109,7 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                             mainWindow.menuItemReportes.Visibility = Visibility.Visible;
+                          //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -116,6 +117,7 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
+                           // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
                         } 
 
                       //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);

@@ -300,8 +300,8 @@
                             </TextBlock>
 
                             <Grid>
-                          
-                               
+
+
 
                                 <!-- Botón BtnLogOff transparente -->
                                 <Button x:Name="BtnLogOff"
@@ -361,10 +361,10 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Click="BtnSoporte_Click"
-                            Cursor="Hand" Margin="1050,0,0,0" Width="135" Grid.ColumnSpan="2">
+                            Cursor="Hand" Margin="1050,0,0,0" Width="118">
 
 
-                                <Grid Width="130">
+                                <Grid Width="125">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="13"/>
                                         <ColumnDefinition/>
@@ -373,13 +373,13 @@
 
                                     <TextBlock
                                            Text="Soprte MSN"
-                                           VerticalAlignment="Bottom" HorizontalAlignment="Center" 
-                                           Width="86" Grid.Column="1" Height="19" Margin="0,0,0,6" />
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                           Width="92" Grid.Column="1" Height="19" />
 
 
                                     <Image Grid.Column="0"
                                            VerticalAlignment="Center"
-                                                Source="/Images/soporte.jpg" Margin="1,0,106,0" Height="39" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5">
+                                                Source="/Images/soporte.jpg" Margin="-3,0,110,0" Height="39" Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5">
                                         <Image.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -594,10 +594,10 @@
                                     <Image Source="/SCS/IMG/ventaccfn.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            
+
                             <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/factura.png"></Image>
+                                    <Image x:Name="menuItemFacturacion" Source="/SCS/IMG/factura.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
@@ -776,6 +776,16 @@
                     </StackPanel>
                     <!--#endregion -->
                 </Grid>
+                <TextBlock 
+    x:Name="txtSucursal"  
+    Text="Sucursal: " 
+    Grid.Column="0"
+    Foreground="White"
+    FontSize="20"
+    Margin="563,3,0,0"
+    HorizontalAlignment="Left"
+    VerticalAlignment="Top"/>
+
                 <!--#endregion-->
             </Grid>
         </Border>

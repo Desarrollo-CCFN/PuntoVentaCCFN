@@ -73,7 +73,9 @@ namespace Capa_Datos
             cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
             cmd.ExecuteNonQuery();
             cmd.Parameters.Clear();
+
             conn.CerrarConexion();
+             
         }
         #endregion
 
@@ -124,25 +126,27 @@ namespace Capa_Datos
 
         #region Alta
 
-        public void Alta(CE_Usuarios Usuarios)
+        public int Alta(CE_Usuarios Usuarios)
         {
+            int ErrorCode = 0;
+
+
             try
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
                     cmd.Connection = conn.AbrirConexion();
-                    cmd.CommandText = "SP_U_InsertUsuarios";
+                    //  cmd.CommandText = "SP_U_InsertUsuarios";
+                    cmd.CommandText = "SP_U_UsuarioExistente";
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                   
-                    cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
-                    cmd.Parameters.AddWithValue("_DfltsGroup", Usuarios.DfltsGroup);
-                    cmd.Parameters.AddWithValue("_Locked", Usuarios.Locked);
-                    cmd.Parameters.AddWithValue("_SUPERUSER", Usuarios.SUPERUSER);
-                    cmd.Parameters.AddWithValue("_PASSWORD4", Usuarios.PASSWORD4);
-                    cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
 
+                    cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
                     cmd.ExecuteNonQuery();
+
+                    ErrorCode = Convert.ToInt32(cmd.ExecuteScalar());
+
+
                 }
             }
             catch (MySqlException ex)
@@ -161,10 +165,61 @@ namespace Capa_Datos
             finally
             {
                 conn.CerrarConexion();
+
+
             }
 
-  
 
+            if (ErrorCode == 0)
+
+            {
+
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand())
+                    {
+                        cmd.Connection = conn.AbrirConexion();
+                        //  cmd.CommandText = "SP_U_InsertUsuarios";
+                        cmd.CommandText = "SP_U_InsertUser";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+
+                        cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
+                        cmd.Parameters.AddWithValue("_DfltsGroup", Usuarios.DfltsGroup);
+                        cmd.Parameters.AddWithValue("_Locked", Usuarios.Locked);
+                        cmd.Parameters.AddWithValue("_SUPERUSER", Usuarios.SUPERUSER);
+                        cmd.Parameters.AddWithValue("_PASSWORD4", Usuarios.PASSWORD4);
+                        cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
+
+                        cmd.ExecuteNonQuery();
+
+
+                      //  ErrorCode = Convert.ToInt32(cmd.ExecuteScalar());
+
+
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    // Errores específicos de MySQL
+                    Console.WriteLine($"Error en la base de datos: {ex.Message}", "Error");
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    // otro tipo de error
+                    Console.WriteLine($"Ocurrió un error: {ex.Message}", "Error");
+                }
+                finally
+                {
+                    conn.CerrarConexion();
+
+
+                }
+            }
+            return (ErrorCode);
         }
         #endregion
          

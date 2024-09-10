@@ -33,6 +33,13 @@ namespace Capa_Presentacion.Views
 
             cbSuper.Items.Add("Y");
             cbSuper.Items.Add("N");
+
+            cbCode.Items.Add("SISTEMAS");
+            cbCode.Items.Add("SUPERVISOR");
+            cbCode.Items.Add("CAJERA");
+
+
+
             tbUsuario.Focus();
             
         }
@@ -56,52 +63,73 @@ namespace Capa_Presentacion.Views
             */
             //   a.SUPERUSER.ToString();
             // a.Locked.ToString();
+ 
+        }
+
+        private void Alta_Click(object sender, RoutedEventArgs e)
+        {
+            int ErrorCode;
+            // Verifica que los campos obligatorios no estén vacíos
+            if (string.IsNullOrWhiteSpace(tbUsuario.Text) ||
+                string.IsNullOrWhiteSpace(cbCode.Text) ||
+                string.IsNullOrWhiteSpace(tbSucursal.Text) ||
+                string.IsNullOrWhiteSpace(cbPrivilegio.Text) ||
+                string.IsNullOrWhiteSpace(cbSuper.Text) ||
+                string.IsNullOrWhiteSpace(tbPassword.Password) ||
+                string.IsNullOrWhiteSpace(tbPassword_Copiar.Password))
+            {
+                System.Windows.MessageBox.Show("Por favor, complete todos los campos obligatorios.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Verificar que las contraseñas coincidan
+            if (tbPassword.Password != tbPassword_Copiar.Password)
+            {
+                System.Windows.MessageBox.Show("Las contraseñas no coinciden.");
+                tbPassword.Clear();
+                tbPassword_Copiar.Clear();
+                tbPassword.Focus();
+                return;
+            }
+
+            // Asignar los valores a la entidad
+            objeto_CE_Usuarios.U_NAME = tbUsuario.Text;
+            objeto_CE_Usuarios.USER_CODE = cbCode.Text;
+            objeto_CE_Usuarios.DfltsGroup = tbSucursal.Text;
+            objeto_CE_Usuarios.Locked = cbPrivilegio.Text;
+            objeto_CE_Usuarios.SUPERUSER = cbSuper.Text;
+            objeto_CE_Usuarios.PASSWORD4 = tbPassword_Copiar.Password;
+
+            // Llamar al método para guardar los datos
+            ErrorCode = objeto_CN_Usuarios.Alta(objeto_CE_Usuarios);
+
+
+            if (ErrorCode == 0)
+            {
+
+                // Mostrar mensaje de éxito
+                System.Windows.MessageBox.Show("Alta de usuario exitoso.", "Confirmación", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Redirigir o realizar otra acción
+                Content = new Usuarios();
+            }
+            else if (ErrorCode == 1) 
+            {
+                // Mostrar mensaje de éxito
+                System.Windows.MessageBox.Show("El usuario: "+tbUsuario.Text + " EXISTE debe cambiar el Nombre", "Confirmación", MessageBoxButton.OK, MessageBoxImage.Information);
+            } 
+            else if(ErrorCode == 2) 
+            {
+                // Mostrar mensaje de éxito
+                System.Windows.MessageBox.Show("No se puede ingresar Intente nuevamente", "Confirmación", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
 
            
 
         }
 
-        private void Alta_Click(object sender, RoutedEventArgs e)
-        {
 
-            if (tbPassword.Password != tbPassword_Copiar.Password)
-            {
-                System.Windows.MessageBox.Show("La Contraseña se encuentra Inconclusa.");
-                // Borrar los contenidos de los PasswordBox
-                tbPassword.Clear();
-                tbPassword_Copiar.Clear();
-
-                // Regresar el foco a tbPassword
-                tbPassword.Focus();
-            }
-            else
-            {
-
-
-                // Asignar los valores de la interfaz a la entidad
-                
-                objeto_CE_Usuarios.U_NAME = tbUsuario.Text;
-                objeto_CE_Usuarios.USER_CODE = tbCode.Text;
-                objeto_CE_Usuarios.DfltsGroup = tbSucursal.Text;
-                objeto_CE_Usuarios.Locked = cbPrivilegio.Text;
-                objeto_CE_Usuarios.SUPERUSER = cbSuper.Text;
-                objeto_CE_Usuarios.PASSWORD4 = tbPassword_Copiar.Password;
-
-                // Llamar al método de negocio para guardar los cambios
-                objeto_CN_Usuarios.Alta(objeto_CE_Usuarios);
-
-                // Mostrar un mensaje de confirmación
-                System.Windows.MessageBox.Show("Alta de usuario exitoso.", "Confirmación", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-
-                // Redirigir o realizar otra acción si es necesario
-                Content = new Usuarios();
-            }
-
-
-
-
-
-        }
 
         private void Regresar(object sender, RoutedEventArgs e)
         {
@@ -148,6 +176,6 @@ namespace Capa_Presentacion.Views
 
         }
 
-
+         
     }
 }

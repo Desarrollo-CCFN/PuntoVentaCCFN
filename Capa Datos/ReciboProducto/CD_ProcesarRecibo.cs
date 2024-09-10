@@ -14,16 +14,21 @@ namespace Capa_Datos.ReciboProducto
     {
 
         private readonly CD_Conexion? conn = new CD_Conexion();
-       
+
 
         #region Procesar Solicitud de Traslado
         public bool CD_ProcesarSolTraslado(ref DataTable dt, ref string sMensaje)
         {
-            
-           int iRows = 0;
+            // Validar si el DataTable tiene filas
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                sMensaje = "La Fila está vacío. No hay partidas por procesar.";
+                return false;
+            }
 
-            //Genero el valor de la secuencia para la transaccion
-                
+            int iRows = 0;
+
+            // Genero el valor de la secuencia para la transacción
             MySqlCommand cmdSeq = new MySqlCommand("seq_next_id", conn.AbrirConexion());
             cmdSeq.CommandType = CommandType.StoredProcedure;
             MySqlParameter outSeqNextVal = new MySqlParameter("@NetVal", MySqlDbType.Int32);
@@ -32,23 +37,18 @@ namespace Capa_Datos.ReciboProducto
             cmdSeq.ExecuteNonQuery();
 
             int iSequence = Convert.ToInt32(outSeqNextVal.Value);
-                        
-            //MySqlTransaction myTrans;
-            //myTrans = connMySql.BeginTransaction();
-            
+
             string sItemCode = "";
             int iDocEntry = 0;
-
             string sJson = "";
+
             try
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-
                     if (Convert.ToDouble(dt.Rows[i]["InQty"]) > 0)
                     {
                         iRows++;
-
                         sItemCode = dt.Rows[i]["ItemCode"].ToString();
 
                         if (sJson == "")
@@ -57,16 +57,14 @@ namespace Capa_Datos.ReciboProducto
                         }
                         else
                         {
-                            sJson = sJson + ",[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
+                            sJson += ",[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
                         }
                     }
-                                        
-                    
+
                     iDocEntry = Convert.ToInt32(dt.Rows[i]["DocEntry"]);
-                    
                 }
 
-                sJson = sJson + "]";
+                sJson += "]";
 
                 if (iRows == 0)
                 {
@@ -74,20 +72,15 @@ namespace Capa_Datos.ReciboProducto
                     return false;
                 }
 
-
-                sItemCode = "Ejecucion SP_RP_ProcSolTsr";
-
                 // Proceso el recibo de producto
                 MySqlCommand cmdprocesa = new MySqlCommand("SP_RP_ProcSolTsr", conn.AbrirConexion());
                 cmdprocesa.CommandType = CommandType.StoredProcedure;
 
                 cmdprocesa.Parameters.Add("@JItems", MySqlDbType.JSON).Value = sJson;
-
                 cmdprocesa.Parameters.Add("DocEntry_", MySqlDbType.Int32).Value = iDocEntry;
                 cmdprocesa.Parameters.Add("UserId_", MySqlDbType.Int32).Value = 0;
                 cmdprocesa.Parameters.Add("TransId_", MySqlDbType.Int32).Value = iSequence;
 
-              
                 MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
                 cmdprocesa.Parameters.Add(outErrorCode);
@@ -98,25 +91,24 @@ namespace Capa_Datos.ReciboProducto
 
                 cmdprocesa.ExecuteNonQuery();
 
-                
                 if (outErrorCode.Value.ToString() != "0")
                 {
                     sMensaje = outErrorMessage.Value.ToString();
                     return false;
                 }
-                cmdprocesa.Parameters.Clear();
 
-                
+                cmdprocesa.Parameters.Clear();
             }
             catch (Exception ex1)
             {
-                sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
-                               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                sMensaje = "Excepción tipo " + ex1.GetType() + " " + ex1.Message +
+                           " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
                 return false;
             }
-            
+
             return true;
         }
+
         #endregion
     }
 }
