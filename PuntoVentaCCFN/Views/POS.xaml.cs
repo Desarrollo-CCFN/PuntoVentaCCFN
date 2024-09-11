@@ -19,6 +19,7 @@ using System.Configuration;
 using Capa_Presentacion.Views;
 using System.Reflection;
 using System.ComponentModel;
+using static PuntoVentaCCFN.MainWindow;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -822,6 +823,7 @@ namespace PuntoVentaCCFN.Views
             if (Acceso.ReturnValue >= 2)
             {
                 //  System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                Retiro_Control.Retiro_Acceso = 2;
                 GlobalVariables.CodSuper  = Acceso.ReturnValue;
                 var acdialog = new modalAperturaSalida();
                 acdialog.Show();

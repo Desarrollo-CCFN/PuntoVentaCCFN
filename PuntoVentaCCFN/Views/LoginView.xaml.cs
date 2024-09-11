@@ -34,7 +34,24 @@ namespace Capa_Presentacion.Views
     {
         readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
         readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
-     //   private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+        //   private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+
+
+
+        public static class Nom_Cajera
+        {
+            public static string Nome_Cajera { get; set; }
+            public static string Num_Cajera { get; set; }
+
+            public static string Cod_Cajera { get; set; }
+
+            public static string Nom_Sucursal { get; set; }
+
+            public static string Cod_Sucursal { get; set; }
+
+        }
+
+
         public LoginView()
         {
             InitializeComponent();
@@ -99,6 +116,12 @@ namespace Capa_Presentacion.Views
                 {
                     string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
 
+                    Nom_Cajera.Nome_Cajera = dtResultado.Rows[0].ItemArray[1]?.ToString();
+                    Nom_Cajera.Num_Cajera = dtResultado.Rows[0].ItemArray[0]?.ToString();
+                    Nom_Cajera.Cod_Cajera = dtResultado.Rows[0].ItemArray[2]?.ToString();
+                    Nom_Cajera.Nom_Sucursal = dtResultado.Rows[0].ItemArray[7]?.ToString();
+                    Nom_Cajera.Cod_Sucursal = dtResultado.Rows[0].ItemArray[3]?.ToString();
+
                     if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
                         MainWindow mainWindow = new MainWindow();
@@ -118,10 +141,10 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
                            // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
-                        } 
+                        }
 
-                      //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                      
+                        //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+ 
                         mainWindow.Show();
                         this.Close();
                     }

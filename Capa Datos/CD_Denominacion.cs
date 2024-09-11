@@ -116,10 +116,12 @@ namespace Capa_Datos
                     // IN _Serie Varchar(3),
 
                     // Ejecutar el procedimiento almacenado y capturar el IdCash devuelto
-                    var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                     var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                  
+                     
 
-                        // Verificar si se obtuvo un IdCash válido
-                        if (idCash > 1)
+                    // Verificar si se obtuvo un IdCash válido
+                    if (idCash > 10)
                         {
                             try
                             {
@@ -147,11 +149,34 @@ namespace Capa_Datos
                         else
                         {
                         if (idCash == 1) {
-                            return  "YA EXISTE UNA APERTURA DE CAJA SE DEBE CERRAR ANTES";
+                            return  "EXISTE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE CERRAR ANTES";
 
 
 
-                        } else {
+                        } 
+                        else if (idCash == 2)
+                        {
+
+                            return "EXISTE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE CERRAR ANTES";
+
+                        }
+
+
+                        else if (idCash == 3)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        }
+
+                        else if (idCash == 4)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        } 
+                        else
+                        {
 
                             // Console.WriteLine("No se pudo obtener un IdCash válido.", "Error");
                             return "No se pudo obtener un IdCash válido.";

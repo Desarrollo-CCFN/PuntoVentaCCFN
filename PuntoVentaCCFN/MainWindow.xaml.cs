@@ -14,6 +14,8 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
+using static Capa_Presentacion.Views.LoginView;
+
 
 
   
@@ -26,7 +28,15 @@ namespace PuntoVentaCCFN
     public partial class MainWindow : Window
     {
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
- 
+
+
+
+        public static class Retiro_Control
+        {
+            public static int Retiro_Acceso  { get; set; }
+       
+        }
+
 
 
         public MainWindow()
@@ -42,9 +52,9 @@ namespace PuntoVentaCCFN
             }
 
             // Realizar el casting adecuado a App_Preferences
-            var preferences = AppConfig.Sections[11] as App_Preferences;
-            string Empresa = preferences.CompanyName;     //Nombre de la empresa
-            txtSucursal.Text = "Sucursal: " + Empresa;
+            //var preferences = AppConfig.Sections[11] as App_Preferences;
+            string Empresa = Nom_Cajera.Nom_Sucursal;     //preferences.CompanyName;     //Nombre de la empresa
+            txtSucursal.Text = "Sucursal: " + Empresa+" Bienvenida/o: "+ Nom_Cajera.Nome_Cajera;
 
            
 
@@ -280,5 +290,34 @@ namespace PuntoVentaCCFN
             }
 
         }
+
+        #region apertura y cerrado inicial
+        private void Caja_Click(object sender, RoutedEventArgs e)
+        {
+
+            var Acceso = new Acceso(3);
+            //  Acceso.Show();
+            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
+                                                         // 1 = Confinguracion Pantalla Principal
+                                                         // 2= Cancelar la Factura
+                                                         // 3= abre venta de rendicion de caja
+
+            if (Acceso.ReturnValue >= 3)
+            {
+ 
+              //  System.Windows.MessageBox.Show(Nom_Cajera.Cod_Cajera, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Retiro_Control.Retiro_Acceso = 1;
+
+                    GlobalVariables.CodSuper = Acceso.ReturnValue;
+                var acdialog = new modalAperturaSalida();
+                acdialog.Show();
+            }
+
+        }
+        #endregion
     }
 }
+
+
+

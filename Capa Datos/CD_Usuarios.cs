@@ -281,6 +281,8 @@ namespace Capa_Datos
                 ce.Locked = Convert.ToString(row[4]);
                 ce.SUPERUSER = Convert.ToString(row[5]);
                 ce.PASSWORD4 = Convert.ToString(row[6]);
+                ce.Sucursal = Convert.ToString(row[7]);
+
             }
             conn.CerrarConexion();
             

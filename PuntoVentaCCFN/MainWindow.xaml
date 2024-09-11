@@ -634,6 +634,11 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
+                            <MenuItem x:Name="menuItemCaja" Click="Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/venta.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
 
 
 
@@ -782,7 +787,7 @@
     Grid.Column="0"
     Foreground="White"
     FontSize="20"
-    Margin="563,3,0,0"
+    Margin="367,3,0,0"
     HorizontalAlignment="Left"
     VerticalAlignment="Top"/>
 
