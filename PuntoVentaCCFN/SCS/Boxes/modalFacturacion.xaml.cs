@@ -20,6 +20,10 @@ using Capa_Datos.ReciboProducto;
 using Capa_Datos.Venta;
 using System.IO;
 using System.Reflection;
+using System.Data;
+using MySql.Data.MySqlClient;
+using Capa_Datos;
+using iTextSharp.text.pdf;
 
 namespace Capa_Presentacion.SCS.Boxes
 {
@@ -32,6 +36,10 @@ namespace Capa_Presentacion.SCS.Boxes
         public bool isFacturado = false;
       //  readonly CD_ProcesarRecibo objeto_CD_ProcesarRecibo = new CD_ProcesarRecibo();
         readonly CD_GeneraFactura objeto_CD_GeneraFactura = new CD_GeneraFactura();
+
+        private readonly CD_Conexion conn = new CD_Conexion();
+
+
         public int idTickNumb;
 
         public modalFacturacion()
@@ -64,8 +72,24 @@ namespace Capa_Presentacion.SCS.Boxes
             string sUsoCfdi = cbUsos.SelectedValue.ToString();
             int iDocEntry;
 
-            
+            // Me traigo el numero de ticket
+            MySqlDataAdapter da = new MySqlDataAdapter("SP_V_QryTickets", conn.AbrirConexion());
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.Add("_NumTck", MySqlDbType.VarChar).Value =  tbTicket.Text.ToUpper();
+            da.SelectCommand.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idTickNumb;
+            DataSet ds = new DataSet();
+            ds.Clear();
+            da.Fill(ds);
+            DataTable dt;
+            dt = ds.Tables[0];
 
+            if ((dt == null) && (dt.Rows.Count == 0))
+            {
+                System.Windows.MessageBox.Show("No existe información del ticket !!!");
+                return;
+            }
+
+            idTickNumb = Convert.ToInt32(dt.Rows[0]["Id"]);
 
             // public int GenerarFactura(int _IdHeader, string _CardCode, string _UsoCfdi, ref string _Mensaje)
             iDocEntry = objeto_CD_GeneraFactura.GenerarFactura(idTickNumb, sCardCode, sUsoCfdi,  ref sMensaje);
