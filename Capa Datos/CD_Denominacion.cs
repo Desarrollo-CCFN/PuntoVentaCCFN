@@ -244,7 +244,7 @@ namespace Capa_Datos
                         ce.DfltsGroup = Convert.ToString(row[8]);
                         ce.Sucursal = Convert.ToString(row[9]);
 
-                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: " + Convert.ToString(row[6]) + " Nombre Cajero: " + Convert.ToString(row[7]) + " Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
+                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: -" + Convert.ToString(row[6]) + "- Nombre Cajero: -" + Convert.ToString(row[7]) + "- Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
 
 
                     }

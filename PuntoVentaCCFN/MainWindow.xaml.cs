@@ -15,6 +15,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using static Capa_Presentacion.Views.LoginView;
+using Capa_Entidad;
+using Capa_Negocio;
+
 
 
 
@@ -29,6 +32,8 @@ namespace PuntoVentaCCFN
     {
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
+        readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
+        readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
 
 
         public static class Retiro_Control
@@ -175,7 +180,84 @@ namespace PuntoVentaCCFN
 
         private void Pos_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new POS();
+
+
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+
+           string nombreCajaString = MainWindow.AppConfig1.Caja;   // ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
+
+           string SucursalString = SettingSection.Filler;    //((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
+           string  NombreCompany = SettingSection.CompanyName;
+           int nombreCajaInt = int.Parse(nombreCajaString);
+               
+
+
+            string _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
+
+            if (!string.IsNullOrEmpty(_status) && _status.Length >= 4) // Asegurarse de que la cadena tenga al menos 4 caracteres
+            {
+                char firstChar = _status[0];  // Primer carácter
+                char secondChar = _status[1]; // Segundo carácter
+                char tersChar = _status[2]; // Cuarto carácter
+
+                // Mostrar el segundo y cuarto carácter
+              //  System.Windows.Forms.MessageBox.Show($"Caracter 2: {secondChar}, Caracter 4: {fourthChar}");
+
+                if (firstChar == 'N' && tersChar == 'N')
+                {
+                    // Mostrar el mensaje si el primer carácter es 'N'
+                    //System.Windows.Forms.MessageBox.Show("No se tiene Apartura de Caja se debe de abrir Caja");
+                    System.Windows.MessageBox.Show("No se tiene Apartura de Caja se debe de abrir Caja", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+
+                    InitializeComponent();
+                }
+                else if (firstChar == 'Y' || tersChar == 'Y')
+                {
+
+                    if (firstChar == 'N')
+                    {
+                        //System.Windows.Forms.MessageBox.Show(_status.Substring(7)+ " - Falta Apertura de Pesos");
+                        System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Pesos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+
+                    }
+                    else if (tersChar == 'N')
+                    {
+                        //System.Windows.Forms.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares");
+                        System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                    string[] partes = _status.Substring(7).Split('-');
+                    // Las partes relevantes están en los índices 1 y 3
+                    string codigoCajero = partes[1].Trim(); // "623"
+                    string nombreCajero = partes[3].Trim(); // "ERIKA LOPEZ"
+
+                    if (codigoCajero == Nom_Cajera.Num_Cajera.Trim())
+                    {
+                        InitializeComponent();
+                        // Continuar con la asignación de DataContext si es 'Y'
+                        DataContext = new POS();
+                    }
+                    else
+                    {
+                       // System.Windows.Forms.MessageBox.Show("Error: la cajera que desea ingresar no coincide con la cajera que abrió caja: " + nombreCajero+ " Cod."+ codigoCajero);
+                        System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + nombreCajero+ " Cod."+ codigoCajero, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        // Mostrar los resultados
+                        //  System.Windows.Forms.MessageBox.Show($"Código Cajero: {codigoCajero}, Nombre Cajero: {nombreCajero}");
+                    }
+                }
+            }
+            else
+            {
+                InitializeComponent();
+                // Manejo de casos en los que _status no tiene suficientes caracteres o es null
+                System.Windows.Forms.MessageBox.Show("Error: El estado de la caja no es válido o la cadena es demasiado corta.");
+            }
+
+
+            // DataContext = new POS();
+
+
         }
 
        private void Productos_Click(object sender, RoutedEventArgs e)
@@ -316,6 +398,13 @@ namespace PuntoVentaCCFN
 
         }
         #endregion
+
+        private void Cierre_Caja_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+ 
+
+        }
     }
 }
 

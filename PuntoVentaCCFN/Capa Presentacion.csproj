@@ -25,6 +25,7 @@
     <None Remove="SCS\IMG\barritas.png" />
     <None Remove="SCS\IMG\casa.png" />
     <None Remove="SCS\IMG\cerrar.png" />
+    <None Remove="SCS\IMG\Cierre_caja.png" />
     <None Remove="SCS\IMG\circle-info-solid.png" />
     <None Remove="SCS\IMG\close.png" />
     <None Remove="SCS\IMG\config.png" />
@@ -93,6 +94,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\cerrar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\Cierre_caja.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\circle-info-solid.png">

@@ -641,6 +641,11 @@
                             </MenuItem>
 
 
+                            <MenuItem x:Name="menuItemCierreCaja" Click="Cierre_Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image Source="/SCS/IMG/Cierre_caja.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
 
                         </Menu>
                         <!--<ListView Background="Transparent"

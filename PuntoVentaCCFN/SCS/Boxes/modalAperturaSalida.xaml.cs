@@ -82,23 +82,57 @@ namespace Capa_Presentacion.SCS.Boxes
                 if (Retiro_Control.Retiro_Acceso == 1)  // = 1 
                 {
                     cbTipo.Items.Add("1- Apertura de Caja");
-
+                   
+                    cbMoneda.Items.Add("Pesos");
+                    cbMoneda.Items.Add("Dólares");
 
                 }
                 else
                 {
+                    string _Moneda = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
 
-                // cbTipo.Items.Add("2- Retiro Apertura de Caja");
+                    if (!string.IsNullOrEmpty(_status) && _status.Length >= 4) // Asegurarse de que la cadena tenga al menos 4 caracteres
+                    {
+                        char firstChar = _status[0];  // Primer carácter
+                        char secondChar = _status[1]; // Segundo carácter
+                        char tersChar = _status[2]; // Cuarto carácter
+
+                        // Mostrar el segundo y cuarto carácter
+                        //  System.Windows.Forms.MessageBox.Show($"Caracter 2: {secondChar}, Caracter 4: {fourthChar}");
+
+                       if (firstChar == 'Y' || tersChar == 'Y')
+                        {
+
+                            if (firstChar == 'N')
+                            {
+                                //System.Windows.Forms.MessageBox.Show(_status.Substring(7)+ " - Falta Apertura de Pesos");
+                                System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Pesos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                cbMoneda.Items.Add("Dólares");
+
+                            }
+                            else if (tersChar == 'N')
+                            {
+                                //System.Windows.Forms.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares");
+                                System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                cbMoneda.Items.Add("Pesos");
+                            } else
+                            {
+                                cbMoneda.Items.Add("Pesos");
+                                cbMoneda.Items.Add("Dólares");
+
+                            }
+                                                       
+                        }
+                    }
+                        
+
+                    // cbTipo.Items.Add("2- Retiro Apertura de Caja");
                     cbTipo.Items.Add("3- Salida de Dinero");
-
+ 
                 }
-
-                //   cbDenominacionesItems.Add
-
-                // Agregar evento para manejar la selección
-
-                cbMoneda.Items.Add("Pesos");
-                cbMoneda.Items.Add("Dólares");
+  
+              //  cbMoneda.Items.Add("Pesos");
+               // cbMoneda.Items.Add("Dólares");
 
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 

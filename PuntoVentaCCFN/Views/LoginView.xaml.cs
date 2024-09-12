@@ -93,14 +93,13 @@ namespace Capa_Presentacion.Views
 
             InitializeComponent();
 
-            if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
-            {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            else
-            {
+            Nom_Cajera.Nome_Cajera = "";
+            Nom_Cajera.Num_Cajera = "";
+            Nom_Cajera.Cod_Cajera = "";
+            Nom_Cajera.Nom_Sucursal = "";
+            Nom_Cajera.Cod_Sucursal = "";
+
+      
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
                 // Asignar los valores de la interfaz a la entidad
@@ -159,14 +158,13 @@ namespace Capa_Presentacion.Views
 
 
                 }
-            }
-
+           
         }
 
         private void txtUser_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
-            if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
+           /* if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
             {
                 // System.Windows.MessageBox.Show("Inicio de sesión exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 Mouse.OverrideCursor = null;
@@ -177,7 +175,7 @@ namespace Capa_Presentacion.Views
                 // Cerrar la ventana LoginView.xaml
                 this.Close();
 
-            }
+            }*/
 
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {
