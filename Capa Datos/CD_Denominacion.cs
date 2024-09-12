@@ -8,6 +8,7 @@ using System.Data;
 using Capa_Entidad;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+
  
  
 
@@ -115,20 +116,26 @@ namespace Capa_Datos
                     // IN _Serie Varchar(3),
 
                     // Ejecutar el procedimiento almacenado y capturar el IdCash devuelto
-                    var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                     var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                  
+                     
 
-                        // Verificar si se obtuvo un IdCash válido
-                        if (idCash > 1)
+                    // Verificar si se obtuvo un IdCash válido
+                    if (idCash > 10)
                         {
                             try
                             {
+                            
+
                                 // Crear una instancia de ProcessStartInfo
                                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                                startInfo.FileName = @"C:\PuntoVenta\impresora\RetirosCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-                                startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                            //startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                                 startInfo.Arguments = $"{idCash}";
+                          //  startInfo.Arguments = $"{idCash} {Param}";
 
-                                // Ejecutar el programa externo
-                                Process.Start(startInfo);
+                            // Ejecutar el programa externo
+                            Process.Start(startInfo);
 
                             return "El retiro se ha registrado correctamente.";
                         }
@@ -142,11 +149,34 @@ namespace Capa_Datos
                         else
                         {
                         if (idCash == 1) {
-                            return  "YA EXISTE UNA APERTURA DE CAJA SE DEBE CERRAR ANTES";
+                            return  "EXISTE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE CERRAR ANTES";
 
 
 
-                        } else {
+                        } 
+                        else if (idCash == 2)
+                        {
+
+                            return "EXISTE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE CERRAR ANTES";
+
+                        }
+
+
+                        else if (idCash == 3)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        }
+
+                        else if (idCash == 4)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        } 
+                        else
+                        {
 
                             // Console.WriteLine("No se pudo obtener un IdCash válido.", "Error");
                             return "No se pudo obtener un IdCash válido.";
@@ -214,7 +244,7 @@ namespace Capa_Datos
                         ce.DfltsGroup = Convert.ToString(row[8]);
                         ce.Sucursal = Convert.ToString(row[9]);
 
-                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: " + Convert.ToString(row[6]) + " Nombre Cajero: " + Convert.ToString(row[7]) + " Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
+                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: -" + Convert.ToString(row[6]) + "- Nombre Cajero: -" + Convert.ToString(row[7]) + "- Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
 
 
                     }

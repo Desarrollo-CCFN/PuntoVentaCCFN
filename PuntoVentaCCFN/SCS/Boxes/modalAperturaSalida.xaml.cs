@@ -19,7 +19,11 @@ using Capa_Entidad;
 using System.Windows.Navigation;
 using System.Data;
 using System.Configuration;
- 
+using PuntoVentaCCFN;
+using static PuntoVentaCCFN.MainWindow;
+using System.Windows.Media.Media3D;
+using static Capa_Presentacion.Views.LoginView;
+
 
 
 
@@ -35,9 +39,10 @@ namespace Capa_Presentacion.SCS.Boxes
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
         MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        Decimal Monto = 0;
+       // Decimal Monto = 0;
 
         private string SucursalString;
+        private string NombreCompany;
         private string nombreCajaString;
        private  int nombreCajaInt;
        private int CodSuper;
@@ -55,96 +60,110 @@ namespace Capa_Presentacion.SCS.Boxes
         public void CargaInicial()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            nombreCajaString = "1";
-            SucursalString = "S24";
 
+            // Accede a la propiedad Caja desde AppConfig1
+            nombreCajaString = MainWindow.AppConfig1.Caja;   // ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
+
+            SucursalString = SettingSection.Filler;    //((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
+            NombreCompany = SettingSection.CompanyName;
             nombreCajaInt = int.Parse(nombreCajaString);
             int Control1 = 0;
             int Control2 = 0;
             string _status;
-         
+
 
 
 
             _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
 
-            if (_status.Substring(0, 1) == "O" )
+            if (SucursalString.Trim() == Nom_Cajera.Cod_Sucursal.Trim())
+             {
 
-            {
-                System.Windows.MessageBox.Show("Caja Abierta");
-
-                if ((_status.Substring(1, 1) == "Y") && (_status.Substring(3, 1) == "Y"))
-                {  Control1 = 1;
-                   
-                }
-
-                if ((_status.Substring(2, 1) == "Y") && (_status.Substring(4, 1) == "Y"))
-                {  Control2 = 1;
-                  
-                }
-
-                if (Control1 == 0 && Control2 == 0)
+                if (Retiro_Control.Retiro_Acceso == 1)  // = 1 
                 {
-
                     cbTipo.Items.Add("1- Apertura de Caja");
-                    cbTipo.Items.Add("2- Cerrado de Caja");
-                    cbTipo.Items.Add("3- Retiros Fondo de Caja");
-                }
-                else if (Control1 == 1)
-                {
-                     cbTipo.Items.Add("2- Cerrado de Caja");
-                     cbTipo.Items.Add("3- Retiros Fondo de Caja");
-
-                }else if (Control1 == 2)
-                {
-                     cbTipo.Items.Add("1- Apertura de Caja");
-                     cbTipo.Items.Add("3- Retiros Fondo de Caja");
+                   
+                    cbMoneda.Items.Add("Pesos");
+                    cbMoneda.Items.Add("Dólares");
 
                 }
+                else
+                {
+                    string _Moneda = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
 
-                    System.Windows.MessageBox.Show(_status);
+                    if (!string.IsNullOrEmpty(_status) && _status.Length >= 4) // Asegurarse de que la cadena tenga al menos 4 caracteres
+                    {
+                        char firstChar = _status[0];  // Primer carácter
+                        char secondChar = _status[1]; // Segundo carácter
+                        char tersChar = _status[2]; // Cuarto carácter
 
+                        // Mostrar el segundo y cuarto carácter
+                        //  System.Windows.Forms.MessageBox.Show($"Caracter 2: {secondChar}, Caracter 4: {fourthChar}");
+
+                       if (firstChar == 'Y' || tersChar == 'Y')
+                        {
+
+                            if (firstChar == 'N')
+                            {
+                                //System.Windows.Forms.MessageBox.Show(_status.Substring(7)+ " - Falta Apertura de Pesos");
+                                System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Pesos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                cbMoneda.Items.Add("Dólares");
+
+                            }
+                            else if (tersChar == 'N')
+                            {
+                                //System.Windows.Forms.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares");
+                                System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                cbMoneda.Items.Add("Pesos");
+                            } else
+                            {
+                                cbMoneda.Items.Add("Pesos");
+                                cbMoneda.Items.Add("Dólares");
+
+                            }
+                                                       
+                        }
+                    }
+                        
+
+                    // cbTipo.Items.Add("2- Retiro Apertura de Caja");
+                    cbTipo.Items.Add("3- Salida de Dinero");
+ 
+                }
+  
+              //  cbMoneda.Items.Add("Pesos");
+               // cbMoneda.Items.Add("Dólares");
+
+                cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
+
+
+
+                /*   List<CE_Denominacion> cajeras;
+
+                     //      cajeras  
+                     cajeras = objeto_CN_Denominacion.Cajeras(SucursalString);
+
+                     cbCajera.Items.Clear();        // Limpia los ítems actuales de cbCajera
+
+                     foreach (var Cajera in cajeras)
+                     {
+                        // cbCajera.Items.Add(Cajera.Name); // Agrega el objeto completo
+                                                          // CodCajera = Cajera.INTERNAL_K;
+
+                         cbCajera.Items.Add($"{Cajera.INTERNAL_K}- {Cajera.Name}");
+
+                     }*/
+
+                cbCajera.Items.Add($"{Nom_Cajera.Num_Cajera}- {Nom_Cajera.Nome_Cajera}");
             }
             else
             {
-
-
-                cbTipo.Items.Add("1- Apertura de Caja");
-                cbTipo.Items.Add("2- Cerrado de Caja");
-                cbTipo.Items.Add("3- Retiros Fondo de Caja");
-
-
-              
+               System.Windows.Forms.MessageBox.Show("Esta caja esta configurada para la sucursal: "+ NombreCompany + " la Cajera/o esta asignado en la sucursal: "+ Nom_Cajera.Nom_Sucursal+" Se debe de reasignar", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
             }
 
-            //   cbDenominacionesItems.Add
 
-            // Agregar evento para manejar la selección
 
-            cbMoneda.Items.Add("Pesos");
-            cbMoneda.Items.Add("Dólares");
-
-            cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
-
-          
-
-          List<CE_Denominacion> cajeras;
-
-            //      cajeras  
-            cajeras = objeto_CN_Denominacion.Cajeras(SucursalString);
-
-            cbCajera.Items.Clear();        // Limpia los ítems actuales de cbCajera
-
-            foreach (var Cajera in cajeras)
-            {
-               // cbCajera.Items.Add(Cajera.Name); // Agrega el objeto completo
-                                                 // CodCajera = Cajera.INTERNAL_K;
-
-                cbCajera.Items.Add($"{Cajera.INTERNAL_K}- {Cajera.Name}");
-
-            }
-
- 
 
         }
 

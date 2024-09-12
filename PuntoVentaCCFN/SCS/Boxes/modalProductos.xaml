@@ -209,12 +209,12 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" 
-                     Margin="10,22,435,69"
+                     Margin="10,36,435,55"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbSearchbox"
                      Style="{DynamicResource txtBoxCantidad}" />
-            <Button Margin="345,17,280,64" Style="{DynamicResource btnOk}" Click="Button_Click">
+            <Button Margin="345,31,280,50" Style="{DynamicResource btnOk}" Click="Button_Click">
                 <TextBlock Text="Buscar"
                            />
             </Button>
@@ -267,6 +267,10 @@
                        Margin="588,23,33,161" 
                        Grid.Row="2"/>
             <ComboBox x:Name="cbUnidades" Margin="585,54,30,130" Grid.Row="2"/>
+            <TextBlock Text="BUSQUEDA DE PRODUCTO"
+                Foreground="White"
+                FontSize="18"
+                Margin="245,-1,277,95"/>
         </Grid>
     </Border>
 

@@ -19,6 +19,7 @@ using System.Configuration;
 using Capa_Presentacion.Views;
 using System.Reflection;
 using System.ComponentModel;
+using static PuntoVentaCCFN.MainWindow;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -69,7 +70,7 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+         //   printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             whsCode = SettingSection.Filler;
@@ -824,6 +825,7 @@ namespace PuntoVentaCCFN.Views
             if (Acceso.ReturnValue >= 2)
             {
                 //  System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                Retiro_Control.Retiro_Acceso = 2;
                 GlobalVariables.CodSuper  = Acceso.ReturnValue;
                 var acdialog = new modalAperturaSalida();
                 acdialog.Show();

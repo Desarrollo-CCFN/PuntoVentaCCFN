@@ -202,7 +202,7 @@
     </Window.Resources>
 
     <Border CornerRadius="10" Background="#5b7bb2">
-        <Grid Margin="25">
+        <Grid Margin="25,10,25,25">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="10"/>
@@ -212,15 +212,25 @@
             </Grid.RowDefinitions>
 
             <TextBox Grid.Row="0" 
-                     Margin="10,22,435,69"
+                     Margin="10,40,435,51"
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbSearchbox"
                      Style="{DynamicResource txtBoxCantidad}" />
-            <Button Margin="345,17,280,64" Style="{DynamicResource btnOk}" Click="buscarCliente">
+            <Button Margin="345,35,280,46" Style="{DynamicResource btnOk}" Click="buscarCliente">
                 <TextBlock Text="Buscar"
                            />
             </Button>
+
+            <TextBlock Text="BUSQUEDA DE CLIENTE"
+                      Foreground="White"
+                       FontSize="18"
+                         Margin="273,-1,277,95"/>
+
+
+
+
+
 
             <Button  x:Name="BtnOk"
                     Grid.Row="4"

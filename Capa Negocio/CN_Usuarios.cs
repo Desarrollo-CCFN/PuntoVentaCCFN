@@ -41,9 +41,9 @@ namespace Capa_Negocio
 
 
         #region Alta
-        public void Alta(CE_Usuarios usuario)
+        public int Alta(CE_Usuarios usuario)
         {
-            objDatos.Alta(usuario);
+            return objDatos.Alta(usuario);
         }
         #endregion
 
