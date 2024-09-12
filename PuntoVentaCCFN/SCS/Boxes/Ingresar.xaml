@@ -10,7 +10,7 @@
         FontSize="20"
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
-        Title="Ingresar" Height="184" Width="266">
+        Title="Ingresar" Height="184" Width="266" KeyDown="Window_KeyDown" Loaded="Window_Loaded" GotFocus="Window_GotFocus">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>

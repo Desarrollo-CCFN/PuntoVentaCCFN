@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="PuntoVentaInstalador" Language="1033" Version="1.0.0.0" Manufacturer="ComercialDeCarnesFriasDelNorte" UpgradeCode="bc966701-4fc9-4298-9d57-fc03a7ea51f0">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="PuntoVentaCCFN" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="PuntoVentaCCFN" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ProductComponent1">
+        <File Id="ProductComponent1"  Source="$(var.Capa Datos.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="ProductComponent2">
+        <File Id="ProductComponent2"  Source="$(var.Capa Entidad.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="ProductComponent3">
+        <File Id="ProductComponent3" Source="$(var.Capa Negocio.TargetPath)" KeyPath="yes"/>
+      </Component>
+      <Component Id="ProductComponent4" Guid="881b3688-487b-495f-9b30-9eea7cffdf54">
+        <File Id="ProductComponent4" Name="Capa Presentacion.exe" Source="$(var.Capa Presentacion.TargetPath)"/>
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>

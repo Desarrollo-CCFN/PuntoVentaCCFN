@@ -1,6 +1,5 @@
 ﻿using Capa_Datos;
 using Capa_Datos.TimbraCFDI40;
-using iTextSharp.tool.xml.html.head;
 using Mysqlx.Cursor;
 using System;
 using System.Collections.Generic;

@@ -55,9 +55,9 @@ namespace Capa_Presentacion.SCS.Boxes
         public void CargaInicial()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            //nombreCajaString = ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
-            //SucursalString = ((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
-           
+            nombreCajaString = "1";
+            SucursalString = "S24";
+
             nombreCajaInt = int.Parse(nombreCajaString);
             int Control1 = 0;
             int Control2 = 0;

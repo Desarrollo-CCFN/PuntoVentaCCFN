@@ -9,7 +9,7 @@
         Background="Transparent"
         FontSize="20"
         AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen" Height="250" Width="266">
+        WindowStartupLocation="CenterScreen" Height="250" Width="266" KeyDown="Window_KeyDown" GotFocus="Window_GotFocus">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
         <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
@@ -133,7 +133,7 @@
                 Grid.Row="1"
                 x:Name="tbVoucher"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center" Margin="15,4,15,36" Grid.RowSpan="3" Loaded="Focus"/>
+                VerticalContentAlignment="Center" Margin="15,4,15,36" Grid.RowSpan="3"/>
             <TextBox Style="{DynamicResource txtBoxCantidad}" 
                 Grid.Row="4"
                 x:Name="tbCantidad"

@@ -189,6 +189,8 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.Columns[i].IsReadOnly = true;
             }
             GridDatos.Columns[7].IsReadOnly = false;
+            
+
             saldo();
         }
         #endregion
@@ -833,7 +835,8 @@ namespace PuntoVentaCCFN.Views
         #region al cerrar ventana venta
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-           // printer.Dispose();
+            return;
+            printer.Dispose();
         }
 
 
@@ -887,6 +890,11 @@ namespace PuntoVentaCCFN.Views
             {
                 process.Dispose();
             }
+        }
+
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //IniciarConfiguracion();
         }
         #endregion
 

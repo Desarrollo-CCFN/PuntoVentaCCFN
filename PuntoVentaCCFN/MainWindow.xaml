@@ -9,6 +9,7 @@
         Title="Punto De Venta CCFN" Height="900" Width="1500"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
+
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
         Background="Transparent">
