@@ -52,9 +52,9 @@ namespace Capa_Negocio
 
         #region Movimiento Caja
         
-      public string VerificarCaja(int stationId, string Sucursal)
+      public bool VerificarCaja(int stationId, string Sucursal, ref string sMensaje)
         {
-           return objDatos.VerificarCaja(stationId, Sucursal);
+           return objDatos.VerificarCaja(stationId, Sucursal, ref sMensaje);
         }
 
 

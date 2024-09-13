@@ -5,10 +5,11 @@ namespace Capa_Entidad
     public class CE_Denominacion
     {
  
+        public int IdCash { get; set; }
         public string PayForm { get; set; }
-        public string IdCDenom { get; set; }
-        public string Quantity { get; set; }
-        public string TotAmount { get; set; }
+        public int IdCDenom { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotAmount { get; set; }
         public int Usuario { get; set; }
 
         public string Sucursal { get; set; }

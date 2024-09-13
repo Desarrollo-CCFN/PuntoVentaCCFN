@@ -7,13 +7,9 @@ using Capa_Presentacion.SCS.Boxes;
 using Capa_Presentacion.Reportes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
-using static Org.BouncyCastle.Math.EC.ECCurve;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Linq;
-using System.Windows.Controls;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad;
 using Capa_Negocio;
@@ -34,15 +30,13 @@ namespace PuntoVentaCCFN
 
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
-
+        public string sMensaje = null;
 
         public static class Retiro_Control
         {
             public static int Retiro_Acceso  { get; set; }
        
         }
-
-
 
         public MainWindow()
         {
@@ -181,82 +175,38 @@ namespace PuntoVentaCCFN
         private void Pos_Click(object sender, RoutedEventArgs e)
         {
 
-
-            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-
-           string nombreCajaString = MainWindow.AppConfig1.Caja;   // ((Capa_Presentacion.App_Preferences)SettingSection).NombreCaja.ToString();
-
-           string SucursalString = SettingSection.Filler;    //((Capa_Presentacion.App_Preferences)SettingSection).Sucursal.ToString();
-           string  NombreCompany = SettingSection.CompanyName;
+            // obteniendo valores de configuracion de PDV
+           var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+           string nombreCajaString = MainWindow.AppConfig1.Caja;  
+           string SucursalString = SettingSection.Filler;    
+           string NombreCompany = SettingSection.CompanyName;
            int nombreCajaInt = int.Parse(nombreCajaString);
-               
 
+            // verificar si existe la caja abierta
+           bool _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
 
-            string _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
-
-            if (!string.IsNullOrEmpty(_status) && _status.Length >= 4) // Asegurarse de que la cadena tenga al menos 4 caracteres
+            if (!_status)
             {
-                char firstChar = _status[0];  // Primer carácter
-                char secondChar = _status[1]; // Segundo carácter
-                char tersChar = _status[2]; // Cuarto carácter
 
-                // Mostrar el segundo y cuarto carácter
-              //  System.Windows.Forms.MessageBox.Show($"Caracter 2: {secondChar}, Caracter 4: {fourthChar}");
-
-                if (firstChar == 'N' && tersChar == 'N')
-                {
-                    // Mostrar el mensaje si el primer carácter es 'N'
-                    //System.Windows.Forms.MessageBox.Show("No se tiene Apartura de Caja se debe de abrir Caja");
-                    System.Windows.MessageBox.Show("No se tiene Apartura de Caja se debe de abrir Caja", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
-
-                    InitializeComponent();
-                }
-                else if (firstChar == 'Y' || tersChar == 'Y')
-                {
-
-                    if (firstChar == 'N')
-                    {
-                        //System.Windows.Forms.MessageBox.Show(_status.Substring(7)+ " - Falta Apertura de Pesos");
-                        System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Pesos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-
-                    }
-                    else if (tersChar == 'N')
-                    {
-                        //System.Windows.Forms.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares");
-                        System.Windows.MessageBox.Show(_status.Substring(7) + " - Falta Apertura de Dolares", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-
-                    string[] partes = _status.Substring(7).Split('-');
-                    // Las partes relevantes están en los índices 1 y 3
-                    string codigoCajero = partes[1].Trim(); // "623"
-                    string nombreCajero = partes[3].Trim(); // "ERIKA LOPEZ"
-
-                    if (codigoCajero == Nom_Cajera.Num_Cajera.Trim())
-                    {
-                        InitializeComponent();
-                        // Continuar con la asignación de DataContext si es 'Y'
-                        DataContext = new POS();
-                    }
-                    else
-                    {
-                       // System.Windows.Forms.MessageBox.Show("Error: la cajera que desea ingresar no coincide con la cajera que abrió caja: " + nombreCajero+ " Cod."+ codigoCajero);
-                        System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + nombreCajero+ " Cod."+ codigoCajero, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        // Mostrar los resultados
-                        //  System.Windows.Forms.MessageBox.Show($"Código Cajero: {codigoCajero}, Nombre Cajero: {nombreCajero}");
-                    }
-                }
+                System.Windows.MessageBox.Show("Caja no abierta comunicarse con el supervisor/a!!");
+                return;
+                  
             }
             else
             {
-                InitializeComponent();
-                // Manejo de casos en los que _status no tiene suficientes caracteres o es null
-                System.Windows.Forms.MessageBox.Show("Error: El estado de la caja no es válido o la cadena es demasiado corta.");
+
+                if (sMensaje == Nom_Cajera.Num_Cajera.Trim())
+                {
+                    InitializeComponent();
+                    DataContext = new POS();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + " Cod Cajero." + sMensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
             }
-
-
-            // DataContext = new POS();
-
 
         }
 
@@ -378,21 +328,14 @@ namespace PuntoVentaCCFN
         {
 
             var Acceso = new Acceso(3);
-            //  Acceso.Show();
-            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
-                                                         // 1 = Confinguracion Pantalla Principal
-                                                         // 2= Cancelar la Factura
-                                                         // 3= abre venta de rendicion de caja
+            Acceso.ShowDialog();
 
             if (Acceso.ReturnValue >= 3)
             {
- 
-              //  System.Windows.MessageBox.Show(Nom_Cajera.Cod_Cajera, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                GlobalVariables.CodSuper = Acceso.ReturnValue;
+                var acdialog = new modalAperturaSalida(1);
 
-                Retiro_Control.Retiro_Acceso = 1;
-
-                    GlobalVariables.CodSuper = Acceso.ReturnValue;
-                var acdialog = new modalAperturaSalida();
+                if (!acdialog.status) return;
                 acdialog.Show();
             }
 
