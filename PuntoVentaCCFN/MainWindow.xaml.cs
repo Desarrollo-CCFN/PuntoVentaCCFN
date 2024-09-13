@@ -7,6 +7,16 @@ using Capa_Presentacion.SCS.Boxes;
 using Capa_Presentacion.Reportes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Linq;
+using System.Windows.Controls;
+using static Capa_Presentacion.Views.LoginView;
+using Capa_Entidad;
+using Capa_Negocio;
 
 
 

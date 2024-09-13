@@ -69,7 +69,7 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            //printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             whsCode = SettingSection.Filler;

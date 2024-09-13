@@ -93,7 +93,13 @@ namespace Capa_Presentacion.Views
                         this.Close();                   // EN LA PANTALLA ORIGEN
 
                     }
-   
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 4)   // cuando pide autorizacion para rendicion de caja
+                    {
+                        ReturnValue = 1;     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
+                        this.Close();                   // EN LA PANTALLA ORIGEN
+
+                    }
+
                     else
                         {
                                System.Windows.MessageBox.Show("No esta validado esta funcion (Anexar)", "No se tiene Registro", MessageBoxButton.OK, MessageBoxImage.Information);
