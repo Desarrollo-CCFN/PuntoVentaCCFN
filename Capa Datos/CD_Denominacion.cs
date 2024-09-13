@@ -42,6 +42,7 @@ namespace Capa_Datos
             {
                 CE_Denominacion ce = new CE_Denominacion
                 {
+                    IdCDenom = Convert.ToInt32(row["Id"]),
                     PayForm = Convert.ToString(row["PayForm"]),
                     Descrip = Convert.ToString(row["Descrip"]),
                     AmountValue = Convert.ToDecimal(row["AmountValue"])
@@ -107,9 +108,9 @@ namespace Capa_Datos
                         cmd.Parameters.AddWithValue("_TotAmount", retiro.TotAmount);
                         cmd.Parameters.AddWithValue("_User", retiro.Usuario);
                         cmd.Parameters.AddWithValue("_Super", retiro.Super);
-                    cmd.Parameters.AddWithValue("_Sucursal", retiro.Sucursal);
-                    cmd.Parameters.AddWithValue("_StationId", retiro.StationId);
-                    cmd.Parameters.AddWithValue("_StatusCaja", retiro.StatusCaja);
+                        cmd.Parameters.AddWithValue("_Sucursal", retiro.Sucursal);
+                        cmd.Parameters.AddWithValue("_StationId", retiro.StationId);
+                        cmd.Parameters.AddWithValue("_StatusCaja", retiro.StatusCaja);
 
 
 
@@ -208,9 +209,9 @@ namespace Capa_Datos
 
 
         #region Movimiento Caja
-        public string VerificarCaja(int stationId, string Sucursal)
+        public bool VerificarCaja(int stationId, string Sucursal, ref string sMensaje)
         {
-            string Cadena="";
+            string Cadena = "";
             try
             {
                 MySqlDataAdapter da = new MySqlDataAdapter("SP_V_VerificarCaja", conn.AbrirConexion());
@@ -230,34 +231,25 @@ namespace Capa_Datos
                         DataRow row = dt.Rows[0];
 
                         ce.status = Convert.ToString(row[0]);
+                        ce.INTERNAL_K = Convert.ToInt32(row[2]);
 
-                        ce.AperturaP = Convert.ToString(row[1]);
-                        ce.CierreP = Convert.ToString(row[2]);
-                        ce.AperturaD = Convert.ToString(row[3]);
-                        ce.CierreD = Convert.ToString(row[4]);
-
-
-
-                        ce.OpenDate = Convert.ToString(row[5]);
-                        ce.INTERNAL_K = Convert.ToInt32(row[6]);
-                        ce.Name = Convert.ToString(row[7]);
-                        ce.DfltsGroup = Convert.ToString(row[8]);
-                        ce.Sucursal = Convert.ToString(row[9]);
-
-                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: -" + Convert.ToString(row[6]) + "- Nombre Cajero: -" + Convert.ToString(row[7]) + "- Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
-
-
+                        if (ce.status.Equals("O"))
+                        {
+                            sMensaje = ce.INTERNAL_K.ToString();
+                            return true;
+                        }
                     }
                 }
 
                 conn.CerrarConexion();
-                return Cadena;
+                sMensaje = "Caja Cerrada";
+                return false;
             }
             catch (Exception ex)
             {
                 conn.CerrarConexion();
-                // Maneja o registra el error según sea necesario
-                throw new Exception("Error al verificar la caja: " + ex.Message, ex);
+                sMensaje = "Ocurrio un error al verificar caja";
+                return false;
             }
         }
 
