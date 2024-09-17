@@ -8,6 +8,7 @@ using System.Data;
 using Capa_Entidad;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+
  
  
 
@@ -41,6 +42,7 @@ namespace Capa_Datos
             {
                 CE_Denominacion ce = new CE_Denominacion
                 {
+                    IdCDenom = Convert.ToInt32(row["Id"]),
                     PayForm = Convert.ToString(row["PayForm"]),
                     Descrip = Convert.ToString(row["Descrip"]),
                     AmountValue = Convert.ToDecimal(row["AmountValue"])
@@ -106,29 +108,35 @@ namespace Capa_Datos
                         cmd.Parameters.AddWithValue("_TotAmount", retiro.TotAmount);
                         cmd.Parameters.AddWithValue("_User", retiro.Usuario);
                         cmd.Parameters.AddWithValue("_Super", retiro.Super);
-                    cmd.Parameters.AddWithValue("_Sucursal", retiro.Sucursal);
-                    cmd.Parameters.AddWithValue("_StationId", retiro.StationId);
-                    cmd.Parameters.AddWithValue("_StatusCaja", retiro.StatusCaja);
+                        cmd.Parameters.AddWithValue("_Sucursal", retiro.Sucursal);
+                        cmd.Parameters.AddWithValue("_StationId", retiro.StationId);
+                        cmd.Parameters.AddWithValue("_StatusCaja", retiro.StatusCaja);
 
 
 
                     // IN _Serie Varchar(3),
 
                     // Ejecutar el procedimiento almacenado y capturar el IdCash devuelto
-                    var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                     var idCash = Convert.ToInt32(cmd.ExecuteScalar());
+                  
+                     
 
-                        // Verificar si se obtuvo un IdCash válido
-                        if (idCash > 1)
+                    // Verificar si se obtuvo un IdCash válido
+                    if (idCash > 10)
                         {
                             try
                             {
+                            
+
                                 // Crear una instancia de ProcessStartInfo
                                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                                startInfo.FileName = @"C:\PuntoVenta\impresora\RetirosCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-                                startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                            //startInfo.Arguments = idCash.ToString(); // Pasar el IdCash como argumento
+                                 startInfo.Arguments = $"{idCash}";
+                          //  startInfo.Arguments = $"{idCash} {Param}";
 
-                                // Ejecutar el programa externo
-                                Process.Start(startInfo);
+                            // Ejecutar el programa externo
+                            Process.Start(startInfo);
 
                             return "El retiro se ha registrado correctamente.";
                         }
@@ -142,11 +150,34 @@ namespace Capa_Datos
                         else
                         {
                         if (idCash == 1) {
-                            return  "YA EXISTE UNA APERTURA DE CAJA SE DEBE CERRAR ANTES";
+                            return  "EXISTE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE CERRAR ANTES";
 
 
 
-                        } else {
+                        } 
+                        else if (idCash == 2)
+                        {
+
+                            return "EXISTE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE CERRAR ANTES";
+
+                        }
+
+
+                        else if (idCash == 3)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN PESOS EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        }
+
+                        else if (idCash == 4)
+                        {
+
+                            return "NO EXISTE REGISTRO DE UNA APERTURA EN DOLARES EN ESTA CAJA SE DEBE REALIZAR ANTES UNA APERTURA";
+
+                        } 
+                        else
+                        {
 
                             // Console.WriteLine("No se pudo obtener un IdCash válido.", "Error");
                             return "No se pudo obtener un IdCash válido.";
@@ -178,9 +209,9 @@ namespace Capa_Datos
 
 
         #region Movimiento Caja
-        public string VerificarCaja(int stationId, string Sucursal)
+        public bool VerificarCaja(int stationId, string Sucursal, ref string sMensaje)
         {
-            string Cadena="";
+            string Cadena = "";
             try
             {
                 MySqlDataAdapter da = new MySqlDataAdapter("SP_V_VerificarCaja", conn.AbrirConexion());
@@ -200,34 +231,25 @@ namespace Capa_Datos
                         DataRow row = dt.Rows[0];
 
                         ce.status = Convert.ToString(row[0]);
+                        ce.INTERNAL_K = Convert.ToInt32(row[2]);
 
-                        ce.AperturaP = Convert.ToString(row[1]);
-                        ce.CierreP = Convert.ToString(row[2]);
-                        ce.AperturaD = Convert.ToString(row[3]);
-                        ce.CierreD = Convert.ToString(row[4]);
-
-
-
-                        ce.OpenDate = Convert.ToString(row[5]);
-                        ce.INTERNAL_K = Convert.ToInt32(row[6]);
-                        ce.Name = Convert.ToString(row[7]);
-                        ce.DfltsGroup = Convert.ToString(row[8]);
-                        ce.Sucursal = Convert.ToString(row[9]);
-
-                        Cadena = ce.AperturaP+ ce.CierreP+ ce.AperturaD + ce.CierreD + " - Cod Cajero: " + Convert.ToString(row[6]) + " Nombre Cajero: " + Convert.ToString(row[7]) + " Fecha Apertura: " + Convert.ToString(row[5]) + "  " + Convert.ToString(row[9]);
-
-
+                        if (ce.status.Equals("O"))
+                        {
+                            sMensaje = ce.INTERNAL_K.ToString();
+                            return true;
+                        }
                     }
                 }
 
                 conn.CerrarConexion();
-                return Cadena;
+                sMensaje = "Caja Cerrada";
+                return false;
             }
             catch (Exception ex)
             {
                 conn.CerrarConexion();
-                // Maneja o registra el error según sea necesario
-                throw new Exception("Error al verificar la caja: " + ex.Message, ex);
+                sMensaje = "Ocurrio un error al verificar caja";
+                return false;
             }
         }
 

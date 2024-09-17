@@ -163,9 +163,9 @@
             <!--#region CONTENIDO-->
             <TextBlock Grid.Row="4"
                        Grid.Column="1"
-                       Text="Usuario:"
-                       HorizontalAlignment="left"
-                       VerticalAlignment="Center"/>
+                       Text="Nombre Usuario:"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Bottom" Margin="0,0,0,3"/>
             <TextBox Style="{DynamicResource tbStyle}" Grid.Row="4"
                      Grid.Column="2"
                      x:Name="tbUsuario"/>
@@ -226,7 +226,7 @@
                 Grid.Column="4"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Margin="0,5,0,0" Width="101"> 
-                <Run Language="es-mx" Text="User Code"/>
+                <Run Language="es-mx" Text="Tipo Acceso"/>
                 <Run Text=":"/>
             </TextBlock>
             <TextBox Style="{DynamicResource tbStyle}" Grid.Row="3"
@@ -245,8 +245,8 @@
                 Grid.Column="1"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Margin="2,7,0,0"><Run Language="es-mx" 
-                Text="Super User"/>
-                <Run Text=":"/>
+                Text="Tipo Usuario:"/>
+                 
             </TextBlock>
             <ComboBox Grid.Row="12"
                 Grid.Column="2"

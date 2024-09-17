@@ -19,6 +19,10 @@ using System.Configuration;
 using Capa_Presentacion.Views;
 using System.Reflection;
 using System.ComponentModel;
+using static PuntoVentaCCFN.MainWindow;
+using static Capa_Presentacion.Views.LoginView;
+using Capa_Entidad.OperacionesCaja;
+using Capa_Negocio.OperacionesCaja;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -36,11 +40,13 @@ namespace PuntoVentaCCFN.Views
     public partial class POS : System.Windows.Controls.UserControl
     {
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
-
         readonly CN_Clientes objeto_CN_Clientes = new CN_Clientes();
         readonly CN_TipoCambio objeto_CN_TipoCambio = new CN_TipoCambio();
         readonly CN_ListaPrecios objeto_CN_ListaPrecios = new CN_ListaPrecios();
         readonly CN_Productos objeto_CN_Productos = new CN_Productos();
+        CE_VentaCaja infoCaja = new CE_VentaCaja();
+        CE_MovCaja objMovCaja = new CE_MovCaja();
+        readonly CN_VentaCaja objCNVentaCaja = new CN_VentaCaja();
         readonly CN_Venta venta = new CN_Venta();
         CE_VentaHeader ventaI = new CE_VentaHeader();
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -57,7 +63,8 @@ namespace PuntoVentaCCFN.Views
         public decimal tipoCambio;
         public string sMensaje = null;
         public bool pagoUSD = false;
-      
+        private string nombreCajaString;
+        private int nombreCajaInt;
 
         public POS()
         {
@@ -72,6 +79,8 @@ namespace PuntoVentaCCFN.Views
             //printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
+            nombreCajaString = MainWindow.AppConfig1.Caja;
+            nombreCajaInt = int.Parse(nombreCajaString);
             whsCode = SettingSection.Filler;
             tipoCambio = SettingSection.DefRateCash;
             tbMoneda.Text = SettingSection.DefCurrency;
@@ -189,6 +198,8 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.Columns[i].IsReadOnly = true;
             }
             GridDatos.Columns[7].IsReadOnly = false;
+            
+
             saldo();
         }
         #endregion
@@ -782,6 +793,7 @@ namespace PuntoVentaCCFN.Views
                 else
                 {
                     GridDatos.ItemsSource = null;
+                    lista.Clear();
                     ventaI.Id = 0;
                     pagado = 0;
                     saldo();
@@ -813,19 +825,38 @@ namespace PuntoVentaCCFN.Views
         private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
         {
             var Acceso = new Acceso(3);
-            //  Acceso.Show();
-            bool? dialogResult = Acceso.ShowDialog();    // comtinua en otra pantalla el proceso
-                                                         // 1 = Confinguracion Pantalla Principal
-                                                         // 2= Cancelar la Factura
-                                                         // 3= abre venta de rendicion de caja
+            Acceso.ShowDialog();
 
             if (Acceso.ReturnValue >= 2)
             {
-                //  System.Windows.MessageBox.Show("Acceso Autorizado ", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
-                GlobalVariables.CodSuper  = Acceso.ReturnValue;
-                var acdialog = new modalAperturaSalida();
-                acdialog.Show();
+
+                Retiro_Control.Retiro_Acceso = 2;
+                GlobalVariables.CodSuper = Acceso.ReturnValue;
+
+                infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, whsCode, nombreCajaInt);
+                objMovCaja = objCNVentaCaja.validateRetiro(infoCaja.IdCash);
+                if (objMovCaja.IdCash == -1)
+                {
+
+                    var acdialog = new modalAperturaSalida(2);
+                    acdialog.Show();
+                }
+                else
+                {
+                    var acdialog = new modalAperturaSalida(3);
+                    acdialog.Show();
+                }
+
+
             }
+
+
+
+
+
+
+
+
              
         }
         #endregion
@@ -833,7 +864,8 @@ namespace PuntoVentaCCFN.Views
         #region al cerrar ventana venta
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-           // printer.Dispose();
+            return;
+            printer.Dispose();
         }
 
 
@@ -887,6 +919,11 @@ namespace PuntoVentaCCFN.Views
             {
                 process.Dispose();
             }
+        }
+
+        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //IniciarConfiguracion();
         }
         #endregion
 

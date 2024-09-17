@@ -7,18 +7,17 @@ using Capa_Presentacion.SCS.Boxes;
 using Capa_Presentacion.Reportes;
 using System.Windows.Media.Animation;
 using Capa_Presentacion.Views;
-using static Org.BouncyCastle.Math.EC.ECCurve;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using System.Linq;
-using System.Windows.Controls;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad;
 using Capa_Negocio;
 
 
+
+
+  
 
 namespace PuntoVentaCCFN
 {
@@ -28,16 +27,101 @@ namespace PuntoVentaCCFN
     public partial class MainWindow : Window
     {
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+        readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
+        readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
+        public string sMensaje = null;
+
+        public static class Retiro_Control
+        {
+            public static int Retiro_Acceso  { get; set; }
+       
+        }
+
         public MainWindow()
         {
-            InitializeComponent();
+            
 
+            InitializeComponent();
+            LoadJson();
             if (AppConfig.Sections["App_Preferences"] is null)
-            {
+            {   
                 AppConfig.Sections.Add("App_Preferences", new App_Preferences());
                 AppConfig.Save();
             }
+
+            // Realizar el casting adecuado a App_Preferences
+            //var preferences = AppConfig.Sections[11] as App_Preferences;
+            string Empresa = Nom_Cajera.Nom_Sucursal;     //preferences.CompanyName;     //Nombre de la empresa
+            txtSucursal.Text = "Sucursal: " + Empresa+" Bienvenida/o: "+ Nom_Cajera.Nome_Cajera;
+
+           
+
         }
+
+         
+
+        public void LoadJson()
+        {
+            try
+            {
+                if (File.Exists("C:\\PuntoVenta\\config.json"))
+                {
+                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\config.json"))
+                    {
+
+                        string json = r.ReadToEnd();
+                        JObject jsons = JObject.Parse(json);
+
+                        AppConfig1.IP = jsons["IP"].ToString();
+                        AppConfig1.Sucursal = jsons["Sucursal"].ToString();
+                        AppConfig1.Puerto = jsons["Puerto"].ToString();
+                        AppConfig1.Caja = jsons["Caja"].ToString();
+                        AppConfig1.Copia = jsons["Copia"].ToString();
+
+
+                    }
+                }
+                else
+                {
+                    if (!Directory.Exists("C:\\PuntoVenta"))
+                    {
+                        Directory.CreateDirectory("C:\\PuntoVenta");
+                    }
+                    var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
+
+
+
+                    string json = JsonConvert.SerializeObject(_data);
+                    File.WriteAllText(@"C:\\PuntoVenta\\config.json", json);
+
+                    // System.Windows.Forms.MessageBox.Show("Se ha creado un archivo de configuracion en el disco local, C:\\PuntoVenta ", "Configuracion");
+                    System.Windows.Forms.MessageBox.Show("Se creo la configuracion, salir y volver entrar ", "Configuracion");
+                    Cerrar(this, new RoutedEventArgs());
+
+                }
+            }
+            catch (Exception EX)
+            {
+                System.Windows.Forms.MessageBox.Show("Error en ejecucion");
+            }
+        }
+
+
+
+        public static class AppConfig1
+        {
+            public static string IP { get; set; }
+            public static string Sucursal { get; set; }
+            public static string Puerto { get; set; }
+
+            public static string Caja { get; set; }
+
+            public static string Copia { get; set; }
+
+        }
+
+
 
         private void TBShow(object sender, RoutedEventArgs e)
         {
@@ -65,7 +149,7 @@ namespace PuntoVentaCCFN
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 var applicationConfiguration = ConfigurationManager
-        .OpenExeConfiguration(ConfigurationUserLevel.None);
+                .OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = applicationConfiguration.GetSection("App_Preferences");
 
                 if(section != null)
@@ -90,7 +174,40 @@ namespace PuntoVentaCCFN
 
         private void Pos_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new POS();
+
+            // obteniendo valores de configuracion de PDV
+           var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+           string nombreCajaString = MainWindow.AppConfig1.Caja;  
+           string SucursalString = SettingSection.Filler;    
+           string NombreCompany = SettingSection.CompanyName;
+           int nombreCajaInt = int.Parse(nombreCajaString);
+
+            // verificar si existe la caja abierta
+           bool _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
+
+            if (!_status)
+            {
+
+                System.Windows.MessageBox.Show("Caja no abierta comunicarse con el supervisor/a!!");
+                return;
+                  
+            }
+            else
+            {
+
+                if (sMensaje == Nom_Cajera.Num_Cajera.Trim())
+                {
+                    InitializeComponent();
+                    DataContext = new POS();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + " Cod Cajero." + sMensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+            }
+
         }
 
        private void Productos_Click(object sender, RoutedEventArgs e)
@@ -113,10 +230,10 @@ namespace PuntoVentaCCFN
             var Acceso = new Acceso(1);
             Acceso.Show();
 
-              //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-               // configuracionWindow.Show();
+            //  var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+            // configuracionWindow.Show();
 
-           
+
             // 1 = Confinguracion Pantalla Principal
             // 2= Cancelar la Factura
 
@@ -170,7 +287,7 @@ namespace PuntoVentaCCFN
         private void BtnLogOff_Click(object sender, RoutedEventArgs e)
         {
             // Muestra el mensaje de información
-            System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+           // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
 
 
 
@@ -182,11 +299,12 @@ namespace PuntoVentaCCFN
                     window.Close();
                 }
             }
-
+            
             // Almacena la nueva ventana que quieres abrir
             LoginView loginView = new LoginView();
             // Muestra la nueva ventana
             loginView.Show();
+            this.Close();
 
 
         }
@@ -204,5 +322,34 @@ namespace PuntoVentaCCFN
             }
 
         }
+
+        #region apertura y cerrado inicial
+        private void Caja_Click(object sender, RoutedEventArgs e)
+        {
+
+            var Acceso = new Acceso(3);
+            Acceso.ShowDialog();
+
+            if (Acceso.ReturnValue >= 3)
+            {
+                GlobalVariables.CodSuper = Acceso.ReturnValue;
+                var acdialog = new modalAperturaSalida(1);
+
+                if (!acdialog.status) return;
+                acdialog.Show();
+            }
+
+        }
+        #endregion
+
+        private void Cierre_Caja_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+ 
+
+        }
     }
 }
+
+
+

@@ -231,6 +231,7 @@
                      Grid.ColumnSpan="2"
                      FontSize="20"
                      TextAlignment="Center"
+                     IsEnabled="False"
                      Style="{DynamicResource txtBoxCantidad}"/>
             <TextBlock Text="Cambio a regresar USD " 
                        x:Name="lblU"

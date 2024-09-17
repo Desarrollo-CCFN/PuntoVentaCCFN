@@ -34,7 +34,24 @@ namespace Capa_Presentacion.Views
     {
         readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
         readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
-     //   private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+        //   private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
+
+
+
+        public static class Nom_Cajera
+        {
+            public static string Nome_Cajera { get; set; }
+            public static string Num_Cajera { get; set; }
+
+            public static string Cod_Cajera { get; set; }
+
+            public static string Nom_Sucursal { get; set; }
+
+            public static string Cod_Sucursal { get; set; }
+
+        }
+
+
         public LoginView()
         {
             InitializeComponent();
@@ -76,14 +93,13 @@ namespace Capa_Presentacion.Views
 
             InitializeComponent();
 
-            if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
-            {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            else
-            {
+            Nom_Cajera.Nome_Cajera = "";
+            Nom_Cajera.Num_Cajera = "";
+            Nom_Cajera.Cod_Cajera = "";
+            Nom_Cajera.Nom_Sucursal = "";
+            Nom_Cajera.Cod_Sucursal = "";
+
+      
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
                 // Asignar los valores de la interfaz a la entidad
@@ -99,6 +115,12 @@ namespace Capa_Presentacion.Views
                 {
                     string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
 
+                    Nom_Cajera.Nome_Cajera = dtResultado.Rows[0].ItemArray[1]?.ToString();
+                    Nom_Cajera.Num_Cajera = dtResultado.Rows[0].ItemArray[0]?.ToString();
+                    Nom_Cajera.Cod_Cajera = dtResultado.Rows[0].ItemArray[2]?.ToString();
+                    Nom_Cajera.Nom_Sucursal = dtResultado.Rows[0].ItemArray[7]?.ToString();
+                    Nom_Cajera.Cod_Sucursal = dtResultado.Rows[0].ItemArray[3]?.ToString();
+
                     if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
                         MainWindow mainWindow = new MainWindow();
@@ -109,6 +131,7 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                             mainWindow.menuItemReportes.Visibility = Visibility.Visible;
+                          //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
                         }
                         else
                         {
@@ -116,10 +139,11 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
-                        } 
+                           // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
+                        }
 
-                      //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                      
+                        //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+ 
                         mainWindow.Show();
                         this.Close();
                     }
@@ -134,14 +158,13 @@ namespace Capa_Presentacion.Views
 
 
                 }
-            }
-
+           
         }
 
         private void txtUser_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
-            if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
+           /* if (this.txtUser.Text == "AJ" || this.txtUser.Text == "aj")
             {
                 // System.Windows.MessageBox.Show("Inicio de sesión exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 Mouse.OverrideCursor = null;
@@ -152,7 +175,7 @@ namespace Capa_Presentacion.Views
                 // Cerrar la ventana LoginView.xaml
                 this.Close();
 
-            }
+            }*/
 
             if (e.Key == Key.Enter || e.Key == Key.Tab)
             {

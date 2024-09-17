@@ -19,7 +19,13 @@ using Capa_Entidad;
 using System.Windows.Navigation;
 using System.Data;
 using System.Configuration;
- 
+using PuntoVentaCCFN;
+using static PuntoVentaCCFN.MainWindow;
+using System.Windows.Media.Media3D;
+using static Capa_Presentacion.Views.LoginView;
+using Capa_Entidad.OperacionesCaja;
+using Capa_Negocio.OperacionesCaja;
+
 
 
 
@@ -33,154 +39,133 @@ namespace Capa_Presentacion.SCS.Boxes
          
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
-        MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+        readonly CN_VentaCaja   objCNVentaCaja = new CN_VentaCaja();
+        public CE_VentaCaja cev = new CE_VentaCaja();
+        CE_VentaCaja infoCaja = new CE_VentaCaja();
         Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        Decimal Monto = 0;
 
         private string SucursalString;
+        private string NombreCompany;
         private string nombreCajaString;
-       private  int nombreCajaInt;
-       private int CodSuper;
-     
+        private  int nombreCajaInt;
+        private int CodSuper;
+        public int OpcValue = 0;
+        public string sMensaje = null;
+        public bool status = true;
 
-        
-        public modalAperturaSalida()
+
+        public modalAperturaSalida(int opcValue)
         {
-            CodSuper = GlobalVariables.CodSuper; ;
-
+            CodSuper = GlobalVariables.CodSuper;
+            OpcValue = opcValue;
+            nombreCajaString = MainWindow.AppConfig1.Caja;
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            SucursalString = SettingSection.Filler;
+            NombreCompany = SettingSection.CompanyName;
+            nombreCajaInt = int.Parse(nombreCajaString);
             InitializeComponent();
-            CargaInicial();
+
+            if (opcValue == 1)
+            {
+                CargaInicial();
+            } else if(opcValue == 2)
+            {
+                CargaInicialF();
+            } else
+            {
+                CargaIncialR();
+            }
+            
+            
         }
 
         public void CargaInicial()
         {
-            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-            nombreCajaString = "1";
-            SucursalString = "S24";
 
-            nombreCajaInt = int.Parse(nombreCajaString);
-            int Control1 = 0;
-            int Control2 = 0;
-            string _status;
-         
+            bool _status;
 
+            _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
 
-
-            _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString);
-
-            if (_status.Substring(0, 1) == "O" )
-
+            if(_status)
             {
-                System.Windows.MessageBox.Show("Caja Abierta");
+                System.Windows.MessageBox.Show("La caja ya esta abierta!!");
+                status = false;
+                return;
+            }
 
-                if ((_status.Substring(1, 1) == "Y") && (_status.Substring(3, 1) == "Y"))
-                {  Control1 = 1;
-                   
-                }
+            if (SucursalString.Trim() == Nom_Cajera.Cod_Sucursal.Trim())
+            {
 
-                if ((_status.Substring(2, 1) == "Y") && (_status.Substring(4, 1) == "Y"))
-                {  Control2 = 1;
-                  
-                }
-
-                if (Control1 == 0 && Control2 == 0)
-                {
-
-                    cbTipo.Items.Add("1- Apertura de Caja");
-                    cbTipo.Items.Add("2- Cerrado de Caja");
-                    cbTipo.Items.Add("3- Retiros Fondo de Caja");
-                }
-                else if (Control1 == 1)
-                {
-                     cbTipo.Items.Add("2- Cerrado de Caja");
-                     cbTipo.Items.Add("3- Retiros Fondo de Caja");
-
-                }else if (Control1 == 2)
-                {
-                     cbTipo.Items.Add("1- Apertura de Caja");
-                     cbTipo.Items.Add("3- Retiros Fondo de Caja");
-
-                }
-
-                    System.Windows.MessageBox.Show(_status);
-
+                lblCajera.Content = Nom_Cajera.Nome_Cajera;
+                lblTitulo.Content = "Apertura de Caja";
+                lblMov.Content = "Apertura";
+                cbMoneda.Items.Add("Pesos");
+                cbMoneda.Items.Add("Dólares");
+                cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
             }
             else
             {
-
-
-                cbTipo.Items.Add("1- Apertura de Caja");
-                cbTipo.Items.Add("2- Cerrado de Caja");
-                cbTipo.Items.Add("3- Retiros Fondo de Caja");
-
-
-              
+                System.Windows.Forms.MessageBox.Show("Caja configurada para la sucursal: " + NombreCompany + " la Cajera/o esta asignado en la sucursal: " + Nom_Cajera.Nom_Sucursal + " Se debe de reasignar", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                status = false;
+                return;
             }
-
-            //   cbDenominacionesItems.Add
-
-            // Agregar evento para manejar la selección
-
-            cbMoneda.Items.Add("Pesos");
-            cbMoneda.Items.Add("Dólares");
-
-            cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
-
-          
-
-          List<CE_Denominacion> cajeras;
-
-            //      cajeras  
-            cajeras = objeto_CN_Denominacion.Cajeras(SucursalString);
-
-            cbCajera.Items.Clear();        // Limpia los ítems actuales de cbCajera
-
-            foreach (var Cajera in cajeras)
-            {
-               // cbCajera.Items.Add(Cajera.Name); // Agrega el objeto completo
-                                                 // CodCajera = Cajera.INTERNAL_K;
-
-                cbCajera.Items.Add($"{Cajera.INTERNAL_K}- {Cajera.Name}");
-
-            }
-
- 
 
         }
 
+        public void CargaInicialF()
+        {
+            if (SucursalString.Trim() == Nom_Cajera.Cod_Sucursal.Trim())
+            {
+
+                lblCajera.Content = Nom_Cajera.Nome_Cajera;
+                lblTitulo.Content = "Retiro Fondo Caja";
+                lblMov.Content = "Retiro de Fondo Caja";
+                cbMoneda.Items.Add("Pesos");
+                cbMoneda.Items.Add("Dólares");
+                cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
+
+                infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Caja configurada para la sucursal: " + NombreCompany + " la Cajera/o esta asignado en la sucursal: " + Nom_Cajera.Nom_Sucursal + " Se debe de reasignar", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
+            }
 
 
+        }
+
+        public void CargaIncialR()
+        {
+            if (SucursalString.Trim() == Nom_Cajera.Cod_Sucursal.Trim())
+            {
+
+                lblCajera.Content = Nom_Cajera.Nome_Cajera;
+                lblTitulo.Content = "Retiro De Efectivo";
+                lblMov.Content = "Retiro De Efectivo";
+                cbMoneda.Items.Add("Pesos");
+                cbMoneda.Items.Add("Dólares");
+                cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
+
+                infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Caja configurada para la sucursal: " + NombreCompany + " la Cajera/o esta asignado en la sucursal: " + Nom_Cajera.Nom_Sucursal + " Se debe de reasignar", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return;
+            }
+        }
         private void CbMoneda_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             tbCantidad.Clear();
             string selectedMoneda = cbMoneda.SelectedItem.ToString();
      
-
-             
-
             List<CE_Denominacion> denominaciones;
           
 
             if (selectedMoneda == "Pesos")
             {
                 denominaciones = objeto_CN_Denominacion.Consulta("EF");
-         
-
-
-                /* string EF = "EF";
-                 List<CE_Denominacion> denominaciones = objeto_CN_Denominacion.Consulta(EF);
-
-                 cbDenominaciones.Items.Clear(); // Limpia los ítems actuales
-
-                 foreach (var denominacion in denominaciones)
-                 {
-                     // cbDenominaciones.Items.Add($"{denominacion.Descrip} - {denominacion.AmountValue}");
-                     cbDenominaciones.Items.Add($"{denominacion.Descrip}");
-
-                     //  Monto = Convert.ToDecimal(cbDenominaciones.Items.Add(denominacion.AmountValue));
-
-
-                 }*/
 
             }
             else if (selectedMoneda == "Dólares")
@@ -199,13 +184,10 @@ namespace Capa_Presentacion.SCS.Boxes
             {
                 cbDenominaciones.Items.Add(denominacion); // Agrega el objeto completo
                 
-
             }
 
 
         }
-
-
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
@@ -214,117 +196,281 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
        {
-            string selectCajera = cbCajera.SelectedItem.ToString();
-            string Status =   cbTipo.SelectedItem.ToString();
-           
-
-            //NomeCajera = selectCajera;
-            // Separar el número del nombre
-            string[] parts = selectCajera.Split(new[] { "- " }, StringSplitOptions.None);
-            string[] parts1 = Status.Split(new[] { "- " }, StringSplitOptions.None);
-
-            // Extraer y convertir el número en un int
-            int CodUser = int.Parse(parts[0]);
-            int StatusCaja = int.Parse(parts1[0]);
-
-            // Extraer el nombre
-            string NombreCajera = parts[1];
-
-
-
-            if (GridDatos.Items == null || GridDatos.Items.Count == 0)
+           if(OpcValue == 1)
             {
-                System.Windows.Forms.MessageBox.Show("No hay elementos que ingresar. Por favor, agregue datos antes de continuar.", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return; // Salir de la función si no hay datos
+                AperturaCaja();
+            } else if (OpcValue == 2)
+            {
+                RetiroFondoCaja();
+            } else
+            {
+                RetiroEfectivo();
             }
 
-            string selectedMoneda = cbMoneda.SelectedItem.ToString();
-            string _PayForm;
-            List<string> _PayFormArray = new List<string>();
-            List<decimal> _AmountValueArray = new List<decimal>();
-            List<int> _QuantityArray = new List<int>();
-            List<decimal> _TotAmountArray = new List<decimal>();
+        }
 
-            if (selectedMoneda == "Pesos")
-            {
-                _PayForm = "EF";
-            } 
-            
-            else
-            {
-                _PayForm = "EFU";
-            }
+        public void AperturaCaja()
+        {
+            string selectCajera = Nom_Cajera.Num_Cajera;
+
+            decimal beginAmount = 0;
+            decimal beginAmountFC = 0;
+
+            string WhsCode = Nom_Cajera.Cod_Sucursal;
+            string User = CodSuper.ToString();
+            int StationId = nombreCajaInt;
 
 
-
-            // Aquí recorremos los elementos en GridDatos y los mostramos
-          //  foreach (GridItem item in GridDatos.Items)
-            //{
-              //  string message = $"Denominación: {item.Denominacion}, Cantidad: {item.Cantidad}, Total: {item.Total}";
-                //System.Windows.Forms.MessageBox.Show(message);
-            //}
+            //string Status =   cbTipo.SelectedItem.ToString();
 
             foreach (GridItem item in GridDatos.Items)
             {
-                // Añadir valores a los arreglos
-                _PayFormArray.Add(_PayForm);
-                _AmountValueArray.Add(item.AmountValue);
-                //  _IdCDenomArray.Add(item.); // Asume que IdCDenom es parte de GridItem
-                _QuantityArray.Add(item.Cantidad);
-                _TotAmountArray.Add(item.Total);
-
-                // Mostrar cada línea en un MessageBox
-                string message = $"Denominación: {item.Denominacion}, Cantidad: {item.Cantidad}, Total: {item.Total}";
-            //    System.Windows.Forms.MessageBox.Show(message);    //muestra lo que hay linea por linea
+                if (item.PayForm.Equals("EF"))
+                {
+                    beginAmount += item.Total;
+                }
+                else
+                {
+                    beginAmountFC += item.Total;
+                }
             }
-            // Convertir los arreglos a cadenas separadas por comas
-      //      string _PayFormStr = string.Join(",", _PayFormArray);
-            string _AmountValueStr = string.Join(",", _AmountValueArray);
-            string _QuantityStr = string.Join(",", _QuantityArray);
-            string _TotAmountStr = string.Join(",", _TotAmountArray);
 
-            // Mostrar los arreglos como cadenas
-            //    System.Windows.Forms.MessageBox.Show($"_PayForm: {_PayFormStr}");
-            //  System.Windows.Forms.MessageBox.Show($"_AmountValue: {_AmountValueStr}");
-            //   System.Windows.Forms.MessageBox.Show($"_Quantity: {_QuantityStr}");
-            //   System.Windows.Forms.MessageBox.Show($"_TotAmount: {_TotAmountStr}");
-
-          
-            
-            if (cbCajera.SelectedItem is CE_Denominacion selectedusuario)
+            CE_VentaCaja objVc = new CE_VentaCaja
             {
-                int n = selectedusuario.INTERNAL_K;
-            }
+                User = User,
+                WhsCode = WhsCode,
+                BegAmount = beginAmount,
+                BegAmountFC = beginAmountFC,
+                Cashier = selectCajera,
+                StationId = StationId,
+            };
 
 
+            cev = objCNVentaCaja.insertVentaCaja(objVc);
 
-            objeto_CE_Denominacion.PayForm = _PayForm; //_PayFormStr;
-            objeto_CE_Denominacion.IdCDenom = _AmountValueStr;
-            objeto_CE_Denominacion.Quantity = _QuantityStr;
-            objeto_CE_Denominacion.TotAmount = _TotAmountStr;
-              objeto_CE_Denominacion.Usuario = CodUser;
-            objeto_CE_Denominacion.Super = CodSuper;
-            // objeto_CE_Denominacion.retiro = nombreCajaString;
-            objeto_CE_Denominacion.Sucursal = SucursalString;
-            objeto_CE_Denominacion.StationId = nombreCajaInt;
-            objeto_CE_Denominacion.StatusCaja = StatusCaja;
-
-
-            // Llamar a InsertarRetiro para insertar los valores en la base de datos
-           string mensaje = objeto_CN_Denominacion.InsertarRetiro(objeto_CE_Denominacion);
-
-            if (!string.IsNullOrEmpty(mensaje))
+            if (cev.IdCash < 0)
             {
-                System.Windows.Forms.MessageBox.Show(mensaje);
+                System.Windows.MessageBox.Show("Hubo un error al crear apertura de caja!!");
+                return;
             }
-          
 
-            tbCantidad.Clear();
-            GridDatos.Items.Clear();
+            foreach (GridItem item in GridDatos.Items)
+            {
+                CE_Denominacion objCed = new CE_Denominacion
+                {
+                    IdCash = cev.IdCash,
+                    PayForm = item.PayForm,
+                    IdCDenom = item.IdCDenom,
+                    Quantity = item.Cantidad,
+                    TotAmount = item.Total,
+                    Usuario = CodSuper
+                };
+
+                objCNVentaCaja.insertCajaDenom(objCed);
+            }
+
+
+            if (beginAmount > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = cev.IdCash,
+                    Type = "AC",
+                    Currency = "MXN",
+                    Amount = beginAmount,
+                    Comments = "APERTURA DE CAJA",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Num_Cajera
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+            if (beginAmountFC > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = cev.IdCash,
+                    Type = "AC",
+                    Currency = "USD",
+                    Amount = beginAmountFC,
+                    Comments = "APERTURA DE CAJA",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Cod_Sucursal
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+
+            System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+            this.Close();
+        }
+
+        public void RetiroFondoCaja()
+        {
+
+            decimal beginAmount = 0;
+            decimal beginAmountFC = 0;
+
+            //string Status =   cbTipo.SelectedItem.ToString();
+
+            foreach (GridItem item in GridDatos.Items)
+            {
+                if (item.PayForm.Equals("EF"))
+                {
+                    beginAmount += item.Total;
+                }
+                else
+                {
+                    beginAmountFC += item.Total;
+                }
+            }
+
+            if(infoCaja.BegAmount != 0)
+            {
+                if(infoCaja.BegAmount != beginAmount)
+                {
+                    System.Windows.MessageBox.Show("Debes retirar la cantidad igual a apartura de caja en MXN");
+                    return;
+                }
+            }
+
+            if (infoCaja.BegAmountFC != 0)
+            {
+                if (infoCaja.BegAmountFC != beginAmountFC)
+                {
+                    System.Windows.MessageBox.Show("Debes retirar la cantidad igual a apartura de caja en USD");
+                    return;
+                }
+            }
+
+            foreach (GridItem item in GridDatos.Items)
+            {
+                CE_Denominacion objCed = new CE_Denominacion
+                {
+                    IdCash = infoCaja.IdCash,
+                    PayForm = item.PayForm,
+                    IdCDenom = item.IdCDenom,
+                    Quantity = item.Cantidad,
+                    TotAmount = item.Total,
+                    Usuario = CodSuper
+                };
+
+                objCNVentaCaja.insertCajaDenom(objCed);
+            }
+
+            if (beginAmount > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = infoCaja.IdCash,
+                    Type = "RF",
+                    Currency = "MXN",
+                    Amount = beginAmount,
+                    Comments = "RETIRO DE FONDO",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Num_Cajera
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+            if (beginAmountFC > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = infoCaja.IdCash,
+                    Type = "RF",
+                    Currency = "USD",
+                    Amount = beginAmountFC,
+                    Comments = "RETIRO DE FONDO",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Cod_Sucursal
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+            System.Windows.MessageBox.Show("Retiro de Fondo Exitoso!!");
+            this.Close();
 
         }
-         
-    
+
+        public void RetiroEfectivo()
+        {
+
+            decimal beginAmount = 0;
+            decimal beginAmountFC = 0;
+
+            foreach (GridItem item in GridDatos.Items)
+            {
+                if (item.PayForm.Equals("EF"))
+                {
+                    beginAmount += item.Total;
+                }
+                else
+                {
+                    beginAmountFC += item.Total;
+                }
+            }
+
+            foreach (GridItem item in GridDatos.Items)
+            {
+                CE_Denominacion objCed = new CE_Denominacion
+                {
+                    IdCash = infoCaja.IdCash,
+                    PayForm = item.PayForm,
+                    IdCDenom = item.IdCDenom,
+                    Quantity = item.Cantidad,
+                    TotAmount = item.Total,
+                    Usuario = CodSuper
+                };
+
+                objCNVentaCaja.insertCajaDenom(objCed);
+            }
+
+            if (beginAmount > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = infoCaja.IdCash,
+                    Type = "RE",
+                    Currency = "MXN",
+                    Amount = beginAmount,
+                    Comments = "RETIRO DE EFECTIVO",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Num_Cajera
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+            if (beginAmountFC > 0)
+            {
+                CE_MovCaja objMovC = new CE_MovCaja
+                {
+                    IdCash = infoCaja.IdCash,
+                    Type = "RE",
+                    Currency = "USD",
+                    Amount = beginAmountFC,
+                    Comments = "RETIRO DE EFECTIVO",
+                    User = Nom_Cajera.Num_Cajera,
+                    Supervisor = CodSuper.ToString(),
+                    Sucursal = Nom_Cajera.Cod_Sucursal
+                };
+
+                objCNVentaCaja.insertMovCaja(objMovC);
+            }
+
+            System.Windows.MessageBox.Show("Retiro de Efectivo Exitoso!!");
+            this.Close();
+        }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
         {
@@ -338,7 +484,9 @@ namespace Capa_Presentacion.SCS.Boxes
                     // Crear una nueva instancia de GridItem y asignar los valores
                     GridItem newItem = new GridItem
                     {
+                        IdCDenom = selectedDenominacion.IdCDenom,
                         Denominacion = selectedDenominacion.Descrip,
+                        PayForm = selectedDenominacion.PayForm,
                         AmountValue = amountValue, // Cambiado a AmountValue
                         Cantidad = cantidad,
                         Total = resultado
@@ -415,7 +563,9 @@ namespace Capa_Presentacion.SCS.Boxes
 
         public class GridItem
         {
+            public int IdCDenom {  get; set; }
             public string Denominacion { get; set; }
+            public string PayForm { get; set; }
             public int Cantidad { get; set; }
             public decimal Total { get; set; }
 
