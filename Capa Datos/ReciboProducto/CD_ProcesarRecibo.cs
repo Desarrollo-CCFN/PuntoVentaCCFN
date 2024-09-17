@@ -17,7 +17,7 @@ namespace Capa_Datos.ReciboProducto
 
 
         #region Procesar Solicitud de Traslado
-        public bool CD_ProcesarSolTraslado(ref DataTable dt, ref string sMensaje)
+        public bool CD_ProcesarSolTraslado(ref DataTable dt, ref string sMensaje, string sComentario)
         {
             // Validar si el DataTable tiene filas
             if (dt == null || dt.Rows.Count == 0)
@@ -41,27 +41,31 @@ namespace Capa_Datos.ReciboProducto
             string sItemCode = "";
             int iDocEntry = 0;
             string sJson = "";
+          //  string sComentarios = "";
 
             try
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (Convert.ToDouble(dt.Rows[i]["InQty"]) > 0)
+                    if (dt.Rows[i]["InQty"].ToString() != "")
                     {
-                        iRows++;
-                        sItemCode = dt.Rows[i]["ItemCode"].ToString();
+                        if (Convert.ToDouble(dt.Rows[i]["InQty"]) > 0)
+                        {
+                            iRows++;
+                            sItemCode = dt.Rows[i]["ItemCode"].ToString();
 
-                        if (sJson == "")
-                        {
-                            sJson = "[[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
-                        }
-                        else
-                        {
-                            sJson += ",[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
+                            if (sJson == "")
+                            {
+                                sJson = "[[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
+                            }
+                            else
+                            {
+                                sJson += ",[" + Convert.ToString(dt.Rows[i]["LineNum"]) + "," + Convert.ToString(dt.Rows[i]["InQty"]) + "]";
+                            }
                         }
                     }
-
                     iDocEntry = Convert.ToInt32(dt.Rows[i]["DocEntry"]);
+                  //   sComentarios = Convert.ToString(dt.Rows[0]["Comentarios"]); // en renglo cero se graba el comentario
                 }
 
                 sJson += "]";
@@ -80,6 +84,8 @@ namespace Capa_Datos.ReciboProducto
                 cmdprocesa.Parameters.Add("DocEntry_", MySqlDbType.Int32).Value = iDocEntry;
                 cmdprocesa.Parameters.Add("UserId_", MySqlDbType.Int32).Value = 0;
                 cmdprocesa.Parameters.Add("TransId_", MySqlDbType.Int32).Value = iSequence;
+                cmdprocesa.Parameters.Add("Comentarios_", MySqlDbType.VarChar).Value = sComentario;
+                
 
                 MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
