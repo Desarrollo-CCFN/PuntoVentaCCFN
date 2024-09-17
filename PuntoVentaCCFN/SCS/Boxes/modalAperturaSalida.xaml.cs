@@ -106,6 +106,7 @@ namespace Capa_Presentacion.SCS.Boxes
             else
             {
                 System.Windows.Forms.MessageBox.Show("Caja configurada para la sucursal: " + NombreCompany + " la Cajera/o esta asignado en la sucursal: " + Nom_Cajera.Nom_Sucursal + " Se debe de reasignar", "Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                status = false;
                 return;
             }
 
