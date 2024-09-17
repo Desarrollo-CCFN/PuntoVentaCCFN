@@ -48,6 +48,8 @@ namespace PuntoVentaCCFN.Views
 
             int iNoTst = 0;
 
+            
+
             if (this.tb_tsr.Text == "")
             {
                 System.Windows.MessageBox.Show("Se debe de ingresar Número de transferencia para la busqueda !!!");
@@ -56,6 +58,8 @@ namespace PuntoVentaCCFN.Views
 
             else
             {
+                tb_FechaDoc.Text = "";
+                
                 try
                 {
                     iNoTst = Convert.ToInt32(tb_tsr.Text);
@@ -69,6 +73,15 @@ namespace PuntoVentaCCFN.Views
                 dt = objeto_CN_SolTraslado.CargarSolTraslado(iNoTst);
 
                 GridSt.ItemsSource = dt.DefaultView; // objeto_CN_SolTraslado.CargarSolTraslado(iNoTst).DefaultView;
+
+                if (dt.Rows.Count == 0 )
+                {
+                    System.Windows.MessageBox.Show("Numero de TSR Inexistente");
+                    return;
+                }
+
+                tb_FechaDoc.Text = string.Format("{0:dd-MM-yyyy}", Convert.ToDateTime(dt.Rows[0][16]));
+                tb_Comentarios.Text = "";
 
                 for (int i = 0; GridSt.Columns.Count > i; i++)
                 {
@@ -92,6 +105,8 @@ namespace PuntoVentaCCFN.Views
                 //   GridSt.Columns[10].Header = "Cant.Recibo";
                 //   GridSt.CellEditEnding += GridSt_CellEditEnding;
                 GridSt.Columns[10].IsReadOnly = false;
+             //   GridSt.Columns[10].CellStyle.Equals
+               //  GridSt.Columns[10]. Columns[10]. = false;
                 ////  -- GridSt.Columns[10].header
 
                 //   GridSt.Columns[11].Header = "Base";
@@ -121,7 +136,16 @@ namespace PuntoVentaCCFN.Views
 
         private void BtnProcesar_Click(object sender, RoutedEventArgs e)
         {
-            if (objeto_CD_ProcesarRecibo.CD_ProcesarSolTraslado(ref dt, ref sMensaje))
+            /*
+            if (dt.Columns.Count == 17)
+            {
+                // Agrego la columna de comentarios
+                DataColumn Col = dt.Columns.Add("Comentarios", System.Type.GetType("System.String"));
+                Col.DefaultValue = tb_Comentarios.Text; 
+            }
+*/
+
+            if (objeto_CD_ProcesarRecibo.CD_ProcesarSolTraslado(ref dt, ref sMensaje, tb_Comentarios.Text))
             {
                 System.Windows.MessageBox.Show("Proceso exitoso !!!");
                 RefrescarGrid();
@@ -130,6 +154,11 @@ namespace PuntoVentaCCFN.Views
             {
                 System.Windows.MessageBox.Show(sMensaje);
             }
+        }
+
+        private void tb_FechaDoc_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
         }
     }
 }

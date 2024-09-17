@@ -224,6 +224,9 @@
                      GridLinesVisibility="Horizontal"
                       
                      HorizontalGridLinesBrush="#35baf6" Margin="25,116,20,230" Grid.ColumnSpan="2">
+                <DataGrid.CellStyle>
+                    <Style/>
+                </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Linea" Width="50" Binding="{Binding LineNum}" />
                     <DataGridTextColumn Header="Status" Width="50" Binding="{Binding LineStatus}" />
@@ -235,12 +238,17 @@
                     <DataGridTextColumn Header="Total" Width="100" Binding="{Binding ImporteTotal}" />
                     <DataGridTextColumn Header="Moneda" Width="100" Binding="{Binding Currency}" />
                     <DataGridTextColumn Header="Saldo" Width="100" Binding="{Binding OpenQty}" />
-                    <DataGridTextColumn Header="Cant. Recibo" Width="100" Binding="{Binding Path=InQty}" IsReadOnly="False"/>
+                    <DataGridTextColumn Header="Cant. Recibo" Width="100" Binding="{Binding Path=InQty}" IsReadOnly="False" Foreground="#FF002EFF" FontWeight="Bold">
+                        <DataGridTextColumn.CellStyle>
+                            <Style/>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="Base" Width="100" Binding="{Binding BaseQty}" />
                     <DataGridTextColumn Header="UMI" Width="70" Binding="{Binding Umi}" />
                     <DataGridTextColumn Header="Almacen" Width="100" Binding="{Binding WhsCode}" />
                     <DataGridTextColumn Header="DocEntry" Width="100" Binding="{Binding DocEntry}" Visibility="Hidden" />
                     <DataGridTextColumn Header="UomEntry" Width="100" Binding="{Binding WhsCode}" Visibility="Hidden"/>
+                    <DataGridCheckBoxColumn Visibility="Hidden"/>
                 </DataGrid.Columns>
             </DataGrid>
             <TextBlock x:Name="lb_tsr" 
@@ -287,6 +295,39 @@
                     FontSize="15" 
                     FontWeight="Bold" 
                     Click="BtnProcesar_Click" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy" 
+                Text="Fecha Documento:" 
+                HorizontalAlignment="Left" 
+                Margin="332,77,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="146" Grid.Column="1"/>
+            <TextBox x:Name="tb_FechaDoc" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="483,74,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="143" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown"/>
+            <TextBlock x:Name="lb_tsr_Copy1" 
+                Text="Comentarios:" 
+                HorizontalAlignment="Left" 
+                Margin="31,669,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="146" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tb_Comentarios" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="23,666,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                HorizontalContentAlignment="Left"
+                Width="895" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown" FontSize="12"/>
 
         </Grid>
     </Border>
