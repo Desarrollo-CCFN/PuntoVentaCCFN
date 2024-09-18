@@ -27,8 +27,13 @@ namespace PuntoVentaCCFN.Views
 
     public partial class EntradaRecibo : System.Windows.Controls.UserControl
     {
+
+        //objeto_CD_ProcesarRecibo.CD_ProcesarSolTraslado 
         readonly CN_SolTraslado objeto_CN_SolTraslado = new CN_SolTraslado();
         readonly CD_ProcesarRecibo objeto_CD_ProcesarRecibo = new CD_ProcesarRecibo();
+        
+      //  readonly CD_ProcesarRecibo objeto_CD_ProcesarRecibo = new CD_ProcesarRecibo();
+
         private bool nonNumberEntered = false;
         public DataTable dt = null;
         public string sMensaje = null;

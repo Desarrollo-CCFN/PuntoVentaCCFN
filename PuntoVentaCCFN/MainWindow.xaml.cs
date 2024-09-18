@@ -248,6 +248,12 @@ namespace PuntoVentaCCFN
         {
             DataContext = new EntradaRecibo();
         }
+
+        private void EntradaManualClick(object sender, RoutedEventArgs e)
+        {
+            DataContext = new EntradaManual();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DoubleAnimation animation = new DoubleAnimation(0, 1,

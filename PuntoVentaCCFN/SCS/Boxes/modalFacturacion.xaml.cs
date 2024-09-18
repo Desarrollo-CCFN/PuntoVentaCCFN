@@ -23,7 +23,7 @@ using System.Reflection;
 using System.Data;
 using MySql.Data.MySqlClient;
 using Capa_Datos;
-using iTextSharp.text.pdf;
+
 
 namespace Capa_Presentacion.SCS.Boxes
 {
@@ -38,7 +38,7 @@ namespace Capa_Presentacion.SCS.Boxes
         //  readonly CD_ProcesarRecibo objeto_CD_ProcesarRecibo = new CD_ProcesarRecibo();
         readonly CD_GeneraFactura objeto_CD_GeneraFactura = new CD_GeneraFactura();
 
-        private readonly CD_Conexion conn = new CD_Conexion();
+        //private readonly CD_Conexion conn = new CD_Conexion();
 
 
         public int idTickNumb;
