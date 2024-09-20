@@ -48,7 +48,7 @@ namespace PuntoVentaCCFN.Views
         public EntradaManual()
         {
             InitializeComponent();
-            CreateEMTable();
+            //CreateEMTable();
         }
 
         public void CreateEMTable()
@@ -158,13 +158,10 @@ namespace PuntoVentaCCFN.Views
 
             EMTable.Columns.Add(dtColumn);
 
+            
 
             // Add custTable to the DataSet.
             dtSet.Tables.Add(EMTable);
-
-
-
-
 
 
         }
@@ -363,5 +360,7 @@ namespace PuntoVentaCCFN.Views
             EMTable.Rows.Add(myDataRow);
 
         }
+
+
     }
 }
