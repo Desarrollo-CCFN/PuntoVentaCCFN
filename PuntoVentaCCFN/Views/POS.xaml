@@ -439,7 +439,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto" Width="*" Binding="{Binding Impuesto, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Impuesto" Width="*" Binding="{Binding Impuesto, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -455,7 +455,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto FC" Width="*" Binding="{Binding Impuesto_FC, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Impuesto FC" Width="*" Binding="{Binding Impuesto_FC, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -471,7 +471,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Importe" Width="*" Binding="{Binding Total, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Importe" Width="*" Binding="{Binding Total, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>

@@ -12,6 +12,9 @@ namespace Capa_Entidad.OperacionesCaja
         private string user;
         private string supervisor;
         private string sucursal;
+        private int idtrans;
+
+
 
         public int IdCash { get => idCash; set => idCash = value; }
         public string Type { get => type; set => type = value; }
@@ -21,5 +24,8 @@ namespace Capa_Entidad.OperacionesCaja
         public string User { get => user; set => user = value; }
         public string Supervisor { get => supervisor; set => supervisor = value; }
         public string Sucursal { get => sucursal; set => sucursal = value; }
+
+        public int Idtrans { get => idtrans; set => idtrans = value; }
+
     }
 }
