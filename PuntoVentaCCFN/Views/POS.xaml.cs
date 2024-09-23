@@ -76,7 +76,7 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-            //printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             nombreCajaString = MainWindow.AppConfig1.Caja;
@@ -184,8 +184,8 @@ namespace PuntoVentaCCFN.Views
             l.Unidad = Convert.ToString(row[4]);
             l.UomEntry = Convert.ToInt32(row[5]);
             l.Total = Convert.ToDecimal(row[6]);
-            l.Impuesto_FC = Convert.ToDecimal(row[7]);
-            l.Impuesto = Convert.ToDecimal(row[10]);
+            l.Impuesto_FC = Convert.ToDecimal(row[10]);
+            l.Impuesto = Convert.ToDecimal(row[7]);
             l.Precio_Base_FC = Convert.ToDecimal(row[9]);
             l.LineNum = Convert.ToInt32(row[11]);
             l.Cantidad = Convert.ToDecimal(row[12]);
