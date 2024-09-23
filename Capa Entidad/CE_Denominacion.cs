@@ -33,6 +33,8 @@ namespace Capa_Entidad
         public string CierreD { get; set; }
 
         public int Super { get; set; }
+
+        public int Idtrans { get; set; }
         public string Descrip { get; set; }
 
         public decimal AmountValue { get; set; }
