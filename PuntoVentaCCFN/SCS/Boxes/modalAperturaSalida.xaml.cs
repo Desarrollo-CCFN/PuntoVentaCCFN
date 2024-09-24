@@ -26,6 +26,7 @@ using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
 using Org.BouncyCastle.Crypto;
+using System.Diagnostics;
 
 
 
@@ -315,7 +316,18 @@ namespace Capa_Presentacion.SCS.Boxes
 
             if (Error == 1)
             {
-                //System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+                startInfo.Arguments = $"{IdTra}";
+                //  startInfo.Arguments = $"{idCash} {Param}";
+
+                // Ejecutar el programa externo
+                Process.Start(startInfo);
+
+
                 System.Windows.MessageBox.Show("Apertura Creada Con Exito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -425,6 +437,17 @@ namespace Capa_Presentacion.SCS.Boxes
 
             if (Error == 1)
             {
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                                                                                      
+                startInfo.Arguments = $"{IdTra}";
+                //  startInfo.Arguments = $"{idCash} {Param}";
+
+                // Ejecutar el programa externo
+                Process.Start(startInfo);
+
                 //System.Windows.MessageBox.Show("Apertura Creada Con Exito");
                 System.Windows.MessageBox.Show("Retiro de Fondo Exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -511,6 +534,19 @@ namespace Capa_Presentacion.SCS.Boxes
 
                 objCNVentaCaja.insertMovCaja(objMovC);
             }
+
+            // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+            startInfo.Arguments = $"{IdTra}";
+            //  startInfo.Arguments = $"{idCash} {Param}";
+
+            // Ejecutar el programa externo
+            Process.Start(startInfo);
+
+            //System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+
 
             System.Windows.MessageBox.Show("Retiro de Efectivo Exitoso!!");
             this.Close();
