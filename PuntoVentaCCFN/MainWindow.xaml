@@ -468,18 +468,22 @@
                   Width="1425" 
                   PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDownBG"
                   >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="73*"/>
+                        <RowDefinition Height="100*"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1117*"/>
                         <ColumnDefinition Width="308*"/>
                     </Grid.ColumnDefinitions>
-                    <Border CornerRadius="0,0,0,10" Background="#5b7bb2" Grid.ColumnSpan="2" />
+                    <Border CornerRadius="0,0,0,10" Background="#5b7bb2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
                     <!--  
                     <TextBlock Text="PuntoVentaCCFN"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="50"/>
                     -->
-                    <Image Source="/Images/PuntoVenta.jpg" Margin="950,638,72,46" RenderTransformOrigin="1.835,2.142" Grid.ColumnSpan="2">
+                    <Image Source="/Images/PuntoVenta.jpg" Margin="950,273,72,46" RenderTransformOrigin="1.835,2.142" Grid.ColumnSpan="2" Grid.Row="1">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -490,7 +494,7 @@
                         </Image.RenderTransform>
                     </Image>
 
-                    <ContentControl Content="{Binding}" Margin="0,0,0,10" Grid.ColumnSpan="2"/>
+                    <ContentControl Content="{Binding}" Margin="0,0,0,10" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
                 </Grid>
                 <!--#endregion-->
@@ -613,7 +617,13 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <MenuItem Click="EntradaClick" Header="Entradas" Template="{StaticResource Item_Template}">
+                                <MenuItem Click="EntradaClick" Header="EntradasTSR" Template="{StaticResource Item_Template}">
+                                    <MenuItem.Icon>
+                                        <Image Source="/SCS/IMG/entrada.png"></Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <MenuItem Click="EntradaManualClick" Header="EntradaManual" Template="{StaticResource Item_Template}">
                                     <MenuItem.Icon>
                                         <Image Source="/SCS/IMG/entrada.png"></Image>
                                     </MenuItem.Icon>

@@ -24,6 +24,7 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using Capa_Datos;
 
+
 namespace Capa_Presentacion.SCS.Boxes
 {
     /// <summary>
@@ -36,6 +37,10 @@ namespace Capa_Presentacion.SCS.Boxes
         private readonly CD_Conexion conn = new CD_Conexion();
         //  readonly CD_ProcesarRecibo objeto_CD_ProcesarRecibo = new CD_ProcesarRecibo();
         readonly CD_GeneraFactura objeto_CD_GeneraFactura = new CD_GeneraFactura();
+
+        //private readonly CD_Conexion conn = new CD_Conexion();
+
+
         public int idTickNumb;
 
         public modalFacturacion()
@@ -68,22 +73,8 @@ namespace Capa_Presentacion.SCS.Boxes
             string sUsoCfdi = cbUsos.SelectedValue.ToString();
             int iDocEntry;
 
-            if (idTickNumb == 0)
-            {
-                // Me traigo el numero de ticket
-
-                MySqlCommand cmd = new MySqlCommand("SP_V_QryTickets", conn.AbrirConexion());
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.Add("@_IdHeader", MySqlDbType.Int32).Value = 0; ;
-                cmd.Parameters.Add("@_NumTck", MySqlDbType.VarChar).Value = tbTicket.Text.ToUpper();
-                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                ds.Clear();
-                da.Fill(ds);
-                idTickNumb = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
-            }
             
+
 
             // public int GenerarFactura(int _IdHeader, string _CardCode, string _UsoCfdi, ref string _Mensaje)
             iDocEntry = objeto_CD_GeneraFactura.GenerarFactura(idTickNumb, sCardCode, sUsoCfdi,  ref sMensaje);
