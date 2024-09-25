@@ -77,7 +77,12 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            try
+            {
+                printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            }
+            catch (Exception ex) { }
+
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             nombreCajaString = MainWindow.AppConfig1.Caja;
@@ -463,7 +468,7 @@ namespace PuntoVentaCCFN.Views
             DataGridRow row = e.Row;
             GridList item = row.Item as GridList;
             var obj = lista.FirstOrDefault(x => x.LineNum == item.LineNum);
-            var Acceso = new Acceso(3);
+            var Acceso = new Acceso(2);
             Acceso.ShowDialog();
 
             if (Acceso.ReturnValue == 1)
@@ -495,6 +500,9 @@ namespace PuntoVentaCCFN.Views
             else
             {
                 MessageBox.Show("No tienes acceso a cambiar cantidad!!");
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista; saldo();
+                
             }
         }
         #endregion
@@ -1108,7 +1116,7 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.ScrollIntoView(GridDatos.Items[index]);
                 fila = (DataGridRow)GridDatos.ItemContainerGenerator.ContainerFromIndex((int)index);
             }
-
+            GridDatos.UpdateLayout();
             return fila;
         }
 

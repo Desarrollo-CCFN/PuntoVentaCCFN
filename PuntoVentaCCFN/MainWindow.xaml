@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:PuntoVentaCCFN" 
         xmlns:viewmodels="clr-namespace:PuntoVentaCCFN.Views"
         mc:Ignorable="d"
-        Title="Punto De Venta CCFN" Height="900" Width="1500"
+        Title="Punto De Venta CCFN" Height="850" Width="1500"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-
+        ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
         Background="Transparent" Closing="Window_Closing">
@@ -262,8 +262,9 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
+    
     <!--#region PROYECTO-->
-    <Border CornerRadius="12" >
+    <Border CornerRadius="12" Height="910">
 
         <Border.Background>
             <ImageBrush ImageSource="/Images/HomeCarnes.jpg"
@@ -494,7 +495,7 @@
                         </Image.RenderTransform>
                     </Image>
 
-                    <ContentControl Content="{Binding}" Margin="0,0,0,10" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                    <ContentControl Content="{Binding}" Margin="0,0,0,60" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
 
                 </Grid>
                 <!--#endregion-->
@@ -594,7 +595,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}">
+                            <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}" x:Name="posButton">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/ventaccfn.png"></Image>
                                 </MenuItem.Icon>
@@ -606,7 +607,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}">
+                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>
                                 </MenuItem.Icon>

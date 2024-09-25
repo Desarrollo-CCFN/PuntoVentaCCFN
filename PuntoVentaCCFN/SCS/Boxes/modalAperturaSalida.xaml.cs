@@ -127,6 +127,8 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+                lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
+                lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
             }
             else
             {
@@ -148,8 +150,9 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.Items.Add("Pesos");
                 cbMoneda.Items.Add("Dólares");
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
-
+                
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+
             }
             else
             {

@@ -203,6 +203,8 @@ namespace PuntoVentaCCFN
                 {
                     InitializeComponent();
                     DataContext = new POS();
+                    posButton.IsEnabled = false;
+                    prodbutton.IsEnabled = false;
                 }
                 else
                 {
