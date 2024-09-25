@@ -258,7 +258,45 @@ namespace Capa_Datos
 
         #endregion
 
+        #region verificar id cash
+        public CE_Denominacion GetIdCash(int stationId, string Sucursal, string Cashier, ref string sMensaje)
+        {
+            
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_V_GETIDCASH", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.AddWithValue("_StationId", stationId);
+                da.SelectCommand.Parameters.AddWithValue("_WhsCode", Sucursal);
+                da.SelectCommand.Parameters.AddWithValue("_Cashier", Cashier);
 
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+
+                if (ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        DataRow row = dt.Rows[0];
+
+                        ce.IdCash = Convert.ToInt32(row[0]);
+
+                    }
+                }
+
+                conn.CerrarConexion();
+                return ce;
+            }
+            catch (Exception ex)
+            {
+                conn.CerrarConexion();
+                sMensaje = "Ocurrio un error al verificar caja";
+                return ce;
+            }
+        }
+        #endregion
 
     }
 }

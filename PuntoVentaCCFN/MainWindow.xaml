@@ -12,7 +12,7 @@
 
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Background="Transparent">
+        Background="Transparent" Closing="Window_Closing">
     <Window.Resources>
 
 

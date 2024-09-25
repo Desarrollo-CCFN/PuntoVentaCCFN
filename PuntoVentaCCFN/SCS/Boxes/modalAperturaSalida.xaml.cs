@@ -240,11 +240,11 @@ namespace Capa_Presentacion.SCS.Boxes
 
             CE_VentaCaja objVc = new CE_VentaCaja
             {
-                User = selectCajera,  // User,
+                User = User,  // User,
                 WhsCode = WhsCode,
                 BegAmount = beginAmount,
                 BegAmountFC = beginAmountFC,
-                Cashier = User, // selectCajera,
+                Cashier = selectCajera, // selectCajera,
                 StationId = StationId,
             };
 

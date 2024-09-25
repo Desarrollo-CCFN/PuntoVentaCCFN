@@ -395,6 +395,7 @@
                       CanUserAddRows="False"
                       CanUserResizeColumns="True"
                       CanUserResizeRows="False"
+                      CanUserDeleteRows="False"
                       CanUserSortColumns="False"
                       SelectionMode="Single"
                       CellEditEnding="GridDatos_CellEditEnding"

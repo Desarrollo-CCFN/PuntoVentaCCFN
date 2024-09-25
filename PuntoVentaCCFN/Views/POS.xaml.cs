@@ -23,6 +23,7 @@ using static PuntoVentaCCFN.MainWindow;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
+using Capa_Entidad;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -119,7 +120,7 @@ namespace PuntoVentaCCFN.Views
         #region busqueda e inserción header y detalle primera vez
         private void tbCodigoProducto_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
+            //if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
 
             if (e.Key == Key.Enter)
             {
@@ -138,7 +139,9 @@ namespace PuntoVentaCCFN.Views
 
             if (ventaI.Id.Equals(0))
             {
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                string numCajera = Nom_Cajera.Num_Cajera;
+                CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -1030,6 +1033,13 @@ namespace PuntoVentaCCFN.Views
             loadAnularProducto();
         }
 
+       
+
+        //private void GridDatos_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    if (Key.Delete == e.Key) e.Handled = false;
+        //}
+
         public void loadAnularProducto()
         {
             var seleccionado = GridDatos.SelectedItem as GridList;
@@ -1041,6 +1051,12 @@ namespace PuntoVentaCCFN.Views
                 Acceso.ShowDialog();
                 if (Acceso.ReturnValue == 1)
                 {
+                    if(!objeto_CN_Productos.AnularProducto(ventaI.Id, seleccionado.LineNum))
+                    {
+                        MessageBox.Show("Error al anular producto!!");
+                        return;
+                    }
+
                     lista.Remove(seleccionado);
                     GridDatos.ItemsSource = null;
                     GridDatos.ItemsSource = lista;

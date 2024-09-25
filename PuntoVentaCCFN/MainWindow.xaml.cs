@@ -146,23 +146,27 @@ namespace PuntoVentaCCFN
         private void Cerrar(object sender, RoutedEventArgs e)
         {
             //Close();
-            foreach (Window window in System.Windows.Application.Current.Windows)
-            {
-                var applicationConfiguration = ConfigurationManager
-                .OpenExeConfiguration(ConfigurationUserLevel.None);
-                var section = applicationConfiguration.GetSection("App_Preferences");
 
-                if(section != null)
+
+                foreach (Window window in System.Windows.Application.Current.Windows)
                 {
-                    applicationConfiguration.Sections.Remove("App_Preferences");
-                    section.SectionInformation.ForceSave = true;
-                    applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                    var applicationConfiguration = ConfigurationManager
+                    .OpenExeConfiguration(ConfigurationUserLevel.None);
+                    var section = applicationConfiguration.GetSection("App_Preferences");
+
+                    if (section != null)
+                    {
+                        applicationConfiguration.Sections.Remove("App_Preferences");
+                        section.SectionInformation.ForceSave = true;
+                        applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                    }
+
+                    //ConfigurationManager.RefreshSection("App_Preferences");
+
+                    window.Close();
                 }
 
-                //ConfigurationManager.RefreshSection("App_Preferences");
 
-                window.Close();
-            }
 
 
         }
@@ -353,6 +357,32 @@ namespace PuntoVentaCCFN
             System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
  
 
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult r = System.Windows.MessageBox.Show("Desea Cerrar El Aplicativo?", "Terminacion de PDV", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (r == MessageBoxResult.Yes)
+            {
+                foreach (Window window in System.Windows.Application.Current.Windows)
+                {
+                    var applicationConfiguration = ConfigurationManager
+                    .OpenExeConfiguration(ConfigurationUserLevel.None);
+                    var section = applicationConfiguration.GetSection("App_Preferences");
+
+                    if (section != null)
+                    {
+                        applicationConfiguration.Sections.Remove("App_Preferences");
+                        section.SectionInformation.ForceSave = true;
+                        applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                    }
+
+                    //ConfigurationManager.RefreshSection("App_Preferences");
+
+                    window.Visibility = Visibility.Hidden;
+                }
+            }
+            else { e.Cancel = true; }
         }
     }
 }
