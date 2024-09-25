@@ -788,90 +788,96 @@ namespace PuntoVentaCCFN.Views
 
             var e = new EPSON();
 
-
-            printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
-
-                  ByteSplicer.Combine(
-                    e.CenterAlign(),
-                    e.PrintLine(""),
-                    //e.SetBarcodeHeightInDots(360),
-                    //e.SetBarWidth(BarWidth.Default),
-                    //e.SetBarLabelPosition(BarLabelPrintPosition.None),
-                    //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
-                    e.PrintLine(""),
-                    e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
-                    e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
-                    e.PrintLine("Mexicali, Baja California"),
-                    e.PrintLine("(686) 554 1535"),
-                    e.SetStyles(PrintStyle.Underline),
-                    e.PrintLine("www.ccfn.com"),
-                    e.SetStyles(PrintStyle.None),
-                    e.PrintLine(""),
-                    e.LeftAlign(),
-                    e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
-                    e.PrintLine(""),
-                    e.PrintLine(""),
-                    e.SetStyles(PrintStyle.FontB),
-                    e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
-
-
-            for (int i = 0; i < GridDatos.Items.Count; i++)
+            try
             {
-                string nombre;
-                decimal cantidad, preciounitario, totalarticulo;
+                printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
 
-                int j = 1;
-                DataGridCell cell1 = GetCelda(i, j);
-                TextBlock tb1 = cell1.Content as TextBlock;
-                nombre = tb1.Text;
-
-                int k = 4;
-                DataGridCell cell2 = GetCelda(i, k);
-                TextBlock tb12 = cell2.Content as TextBlock;
-                cantidad = Decimal.Parse(tb12.Text);
-
-                int l = 6;
-                DataGridCell cell23 = GetCelda(i, l);
-                TextBlock tb13 = cell23.Content as TextBlock;
-                totalarticulo = Decimal.Parse(tb13.Text);
-
-                int m = 3;
-                DataGridCell cell4 = GetCelda(i, m);
-                TextBlock tb14 = cell4.Content as TextBlock;
-                preciounitario = Decimal.Parse(tb14.Text);
-
-                //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
-                printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
-            };
+                      ByteSplicer.Combine(
+                        e.CenterAlign(),
+                        e.PrintLine(""),
+                        //e.SetBarcodeHeightInDots(360),
+                        //e.SetBarWidth(BarWidth.Default),
+                        //e.SetBarLabelPosition(BarLabelPrintPosition.None),
+                        //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
+                        e.PrintLine(""),
+                        e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
+                        e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
+                        e.PrintLine("Mexicali, Baja California"),
+                        e.PrintLine("(686) 554 1535"),
+                        e.SetStyles(PrintStyle.Underline),
+                        e.PrintLine("www.ccfn.com"),
+                        e.SetStyles(PrintStyle.None),
+                        e.PrintLine(""),
+                        e.LeftAlign(),
+                        e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
+                        e.PrintLine(""),
+                        e.PrintLine(""),
+                        e.SetStyles(PrintStyle.FontB),
+                        e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
 
 
-            printer.Write(
-                ByteSplicer.Combine(
-                     e.PrintLine("----------------------------------------------------------------"),
-                            e.RightAlign(),
-                            e.PrintLine("Total:                 $" + total),
-                            e.PrintLine("Pagado:                $" + pagado),
-                            e.PrintLine("Cambio:                $" + cambio),
-                            e.PrintLine(""),
-                            e.PrintLine("----------------------------------------------------------------")
-                    //e.LeftAlign(),
-                    //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                    //e.PrintLine("SOLD TO:                        SHIP TO:"),
-                    //e.SetStyles(PrintStyle.FontB),
-                    //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
-                    //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                    //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                    //e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                    //e.PrintLine("  CUST: 87654321"),
-                    //e.PrintLine(""),
-                    //e.PrintLine("")
-                    ));
+                for (int i = 0; i < GridDatos.Items.Count; i++)
+                {
+                    string nombre;
+                    decimal cantidad, preciounitario, totalarticulo;
 
-            // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
-            //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+                    int j = 1;
+                    DataGridCell cell1 = GetCelda(i, j);
+                    TextBlock tb1 = cell1.Content as TextBlock;
+                    nombre = tb1.Text;
+
+                    int k = 4;
+                    DataGridCell cell2 = GetCelda(i, k);
+                    TextBlock tb12 = cell2.Content as TextBlock;
+                    cantidad = Decimal.Parse(tb12.Text);
+
+                    int l = 6;
+                    DataGridCell cell23 = GetCelda(i, l);
+                    TextBlock tb13 = cell23.Content as TextBlock;
+                    totalarticulo = Decimal.Parse(tb13.Text);
+
+                    int m = 3;
+                    DataGridCell cell4 = GetCelda(i, m);
+                    TextBlock tb14 = cell4.Content as TextBlock;
+                    preciounitario = Decimal.Parse(tb14.Text);
+
+                    //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
+                    printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
+                };
 
 
-            System.Windows.MessageBox.Show("Venta realizada con exito!");
+                printer.Write(
+                    ByteSplicer.Combine(
+                         e.PrintLine("----------------------------------------------------------------"),
+                                e.RightAlign(),
+                                e.PrintLine("Total:                 $" + total),
+                                e.PrintLine("Pagado:                $" + pagado),
+                                e.PrintLine("Cambio:                $" + cambio),
+                                e.PrintLine(""),
+                                e.PrintLine("----------------------------------------------------------------")
+                        //e.LeftAlign(),
+                        //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
+                        //e.PrintLine("SOLD TO:                        SHIP TO:"),
+                        //e.SetStyles(PrintStyle.FontB),
+                        //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
+                        //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
+                        //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
+                        //e.PrintLine("  (123)456-7890                   (123)456-7890"),
+                        //e.PrintLine("  CUST: 87654321"),
+                        //e.PrintLine(""),
+                        //e.PrintLine("")
+                        ));
+
+                // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
+                //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+
+
+                System.Windows.MessageBox.Show("Venta realizada con exito!");
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
+            }
 
         }
         #endregion
