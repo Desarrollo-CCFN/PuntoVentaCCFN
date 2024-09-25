@@ -119,6 +119,8 @@ namespace PuntoVentaCCFN.Views
         #region busqueda e inserción header y detalle primera vez
         private void tbCodigoProducto_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
+
             if (e.Key == Key.Enter)
             {
 
@@ -201,6 +203,7 @@ namespace PuntoVentaCCFN.Views
             
 
             saldo();
+            
         }
         #endregion
 
@@ -243,10 +246,15 @@ namespace PuntoVentaCCFN.Views
         #region formas de pago de la venta
         private void Efectivo(object sender, RoutedEventArgs e)
         {
+            loadEMXN();
+        }
+
+        public void loadEMXN()
+        {
             var ingresar = new Ingresar();
             ingresar.ShowDialog();
 
-            if(ingresar.Efectivo == 0)
+            if (ingresar.Efectivo == 0)
             {
                 return;
             }
@@ -277,10 +285,14 @@ namespace PuntoVentaCCFN.Views
             {
                 MessageBox.Show("Ingresa una cantidad valida!!");
             }
-
         }
 
         private void EfectivoUSD(object sender, RoutedEventArgs e)
+        {
+            loadEUSD();
+        }
+
+        public void loadEUSD()
         {
             var ingresar = new Ingresar();
             ingresar.ShowDialog();
@@ -321,6 +333,11 @@ namespace PuntoVentaCCFN.Views
         }
         private void Tarjeta(object sender, RoutedEventArgs e)
         {
+            loadDebit();
+        }
+
+        public void loadDebit()
+        {
             var ingresar = new ingresarT();
             ingresar.ShowDialog();
 
@@ -354,10 +371,14 @@ namespace PuntoVentaCCFN.Views
             {
                 MessageBox.Show("Ingresa una cantidad valida!!");
             }
-
         }
 
         private void TarjetaC(object sender, RoutedEventArgs e)
+        {
+            loadCredit();
+        }
+
+        public void loadCredit()
         {
             var ingresar = new ingresarT();
             ingresar.ShowDialog();
@@ -392,7 +413,6 @@ namespace PuntoVentaCCFN.Views
             {
                 MessageBox.Show("Ingresa una cantidad valida!!");
             }
-
         }
         #endregion
 
@@ -415,6 +435,11 @@ namespace PuntoVentaCCFN.Views
         #region busqueda de producto
         private void buscarProd_Click(object sender, RoutedEventArgs e)
         {
+            loadModal();
+        }
+
+        public void loadModal()
+        {
             var busquedaProducto = new modalProductos();
             busquedaProducto.ShowDialog();
 
@@ -424,6 +449,7 @@ namespace PuntoVentaCCFN.Views
                 operacionBusquedaInsercio();
                 tbCodigoProducto.Text = "";
             }
+
         }
         #endregion
 
@@ -477,6 +503,70 @@ namespace PuntoVentaCCFN.Views
             {
                 System.Windows.MessageBox.Show("Tecla Recalculo");
             }
+
+            if (e.Key == Key.F2)
+            {
+                if (GridDatos.Items.Count >= 1)
+                {
+                    if (pagado <= 0)
+                    {
+                        System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                        return;
+                    }
+                    ventaCambio();
+
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("No se han agregado productos!");
+                }
+            }
+
+            if (e.Key == Key.F3)
+            {
+                loadAnularVenta();
+            }
+
+            if(e.Key == Key.F4)
+            {
+                loadAnularProducto();
+            }
+
+            if (e.Key == Key.F5)
+            {
+                loadAnularFPago();
+            }
+
+            if (e.Key == Key.P)
+            {
+                loadModal();
+                
+            }
+
+            if(e.Key == Key.E) {
+                loadEMXN();
+            }
+
+            if(e.Key == Key.U) {
+                loadEUSD();
+            }
+
+            if(e.Key == Key.D)
+            {
+                loadDebit();
+            }
+
+            if(e.Key == Key.C) { 
+                loadCredit();
+            }
+
+            if(e.Key == Key.R)
+            {
+                loadRetiros();
+            }
+
+            
+
         }
         #endregion
 
@@ -784,6 +874,11 @@ namespace PuntoVentaCCFN.Views
         #region logica para anular venta
         private void AnularVenta(object sender, RoutedEventArgs e)
         {
+            loadAnularVenta();
+        }
+
+        public void loadAnularVenta()
+        {
             var Acceso = new Acceso(4);
             Acceso.ShowDialog();
 
@@ -813,14 +908,20 @@ namespace PuntoVentaCCFN.Views
         #region logica anular formas de pago
         private void AnularFPago(object sender, RoutedEventArgs e)
         {
+            loadAnularFPago();
+        }
+
+        public void loadAnularFPago()
+        {
             cN_Venta = new CN_Venta();
 
-            if(cN_Venta.AnularFpago(ventaI.Id))
+            if (cN_Venta.AnularFpago(ventaI.Id))
             {
-                System.Windows.MessageBox.Show("Formas de pago anuladas correctamente!!","",MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Formas de pago anuladas correctamente!!", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 pagado = 0;
                 saldo();
-            } else
+            }
+            else
             {
                 System.Windows.MessageBox.Show("Error al anular Formas de pago!!", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -830,6 +931,10 @@ namespace PuntoVentaCCFN.Views
         #region apertura y cerrado inicial
         private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
         {
+            loadRetiros();
+        }
+
+        public void loadRetiros() {
             var Acceso = new Acceso(3);
             Acceso.ShowDialog();
 
@@ -855,15 +960,6 @@ namespace PuntoVentaCCFN.Views
 
 
             }
-
-
-
-
-
-
-
-
-             
         }
         #endregion
 
@@ -880,6 +976,7 @@ namespace PuntoVentaCCFN.Views
         #region logica al abrir venta
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            
             tbCodigoProducto.Focus();
             ConsultarCliente();
             ConsultarListaPrecio();
@@ -936,8 +1033,13 @@ namespace PuntoVentaCCFN.Views
         #region logica para eliminar producto de la venta
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
+            loadAnularProducto();
+        }
+
+        public void loadAnularProducto()
+        {
             var seleccionado = GridDatos.SelectedItem as GridList;
-            
+
 
             if (seleccionado != null)
             {
@@ -949,7 +1051,7 @@ namespace PuntoVentaCCFN.Views
                     GridDatos.ItemsSource = null;
                     GridDatos.ItemsSource = lista;
                     //GridDatos.Items.Remove(seleccio/*nado);*/
-            if (GridDatos.Items.Count < 1)
+                    if (GridDatos.Items.Count < 1)
                     {
                         pagado = 0;
                     }
@@ -962,10 +1064,7 @@ namespace PuntoVentaCCFN.Views
                 MessageBox.Show("Debes seleccionar un producto!!");
                 return;
             }
-
         }
-
-
 
         #endregion
 
