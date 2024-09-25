@@ -258,6 +258,7 @@
                     <DataGridTextColumn Header="Cod Producto" Width="100" Binding="{Binding ItemCode}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Descripcion" Width="*" Binding="{Binding ItemName}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Disponible" Width="*" Binding="{Binding OnHand}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="UOM" Width="*" Binding="{Binding InvntryUom}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
 

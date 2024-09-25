@@ -202,17 +202,18 @@
     <Border Background="#5b7bb2" CornerRadius="10">
         <Grid Margin="14,0,-14,-21" Height="865" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="52*"/>
+                <ColumnDefinition Width="125*"/>
+                <ColumnDefinition Width="846*"/>
+                <ColumnDefinition Width="454*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Entrada de Mercancia Manual" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="230,6,434,803"/>
+            <TextBlock Text="Entrada de Mercancia Manual" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="230,6,434,803" Grid.ColumnSpan="2"/>
             <DataGrid x:Name="GridSt"
                       Style="{DynamicResource DataGridStyle}"
                       AutoGenerateColumns="False"
                      Background="GhostWhite"
                      Foreground="Black"
                      FontSize="15"
-                     CanUserAddRows="False"
+                     CanUserAddRows="True"
                      CanUserResizeColumns="True"
                      CanUserResizeRows="False"
                      CanUserSortColumns="False"
@@ -223,7 +224,7 @@
                     CellEditEnding="GridSt_CellEditEnding"
                      GridLinesVisibility="Horizontal"
                       
-                     HorizontalGridLinesBrush="#35baf6" Margin="0,129,81,217" RenderTransformOrigin="0.443,0.513" Grid.Column="1">
+                     HorizontalGridLinesBrush="#35baf6" Margin="0,129,81,217" RenderTransformOrigin="0.505,0.52" Grid.Column="1" HorizontalAlignment="Right" Width="1219" ItemsSource="{Binding CanUserAddRows.TrueString, ElementName=GridSt}" Grid.ColumnSpan="2">
                 <DataGrid.CellStyle>
                     <Style/>
                 </DataGrid.CellStyle>
@@ -269,12 +270,12 @@
                     Style="{DynamicResource btnSide}" 
                     Content="Agregar" 
                     Foreground="White" 
-                    FontWeight="Bold" Grid.Column="1" Click="btn_Agregar_Click"/>
+                    FontWeight="Bold" Grid.Column="1" Click="btn_Agregar_Click" Grid.ColumnSpan="2"/>
             <Button x:Name="BtnProcesar" 
                     Content="Procesar Entrada" 
                     HorizontalAlignment="Left" 
                     Height="44" 
-                    Margin="1066,670,0,0" 
+                    Margin="220,670,0,0" 
                     VerticalAlignment="Top" 
                     Width="209" 
                     Background="Green"
@@ -282,7 +283,7 @@
                     Foreground="White" 
                     FontSize="15" 
                     FontWeight="Bold" 
-                    Click="BtnProcesar_Click" Grid.Column="1"/>
+                    Click="BtnProcesar_Click" Grid.Column="2"/>
             <TextBlock x:Name="lb_tsr_Copy" 
                 Text="Cantidad" 
                 HorizontalAlignment="Left" 
@@ -324,7 +325,7 @@
                 Width="895" 
                 Style="{DynamicResource tbStyle}"
                 RenderTransformOrigin="-0.113,0.822" 
-                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown" FontSize="12"/>
+                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown" FontSize="12" Grid.ColumnSpan="2"/>
             <TextBox x:Name="tb_Costo" 
                 HorizontalAlignment="Left" 
                 Height="26" Margin="418,87,0,0" 
