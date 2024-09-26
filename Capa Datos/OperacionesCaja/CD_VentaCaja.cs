@@ -49,9 +49,10 @@ namespace Capa_Datos.OperacionesCaja
             }
         }
 
-        public void insertarCajaDenom(CE_Denominacion obj)
+        public int insertarCajaDenom(CE_Denominacion obj)
         {
             string sItemCode = "";
+            int Out = 0;
 
             try
             {
@@ -64,16 +65,37 @@ namespace Capa_Datos.OperacionesCaja
                 da.SelectCommand.Parameters.Add("Quantity", MySqlDbType.Int32).Value = obj.Quantity;
                 da.SelectCommand.Parameters.Add("TotAmount", MySqlDbType.Decimal).Value = obj.TotAmount;
                 da.SelectCommand.Parameters.Add("User", MySqlDbType.Int32).Value = obj.Usuario;
+                da.SelectCommand.Parameters.Add("IdTran", MySqlDbType.Int32).Value = obj.Idtrans;
+
+                // da.SelectCommand.ExecuteNonQuery();
+                // da.SelectCommand.Parameters.Clear();
+
+                MySqlParameter outIdCash = new MySqlParameter("_Idtrans", MySqlDbType.Int32);
+                outIdCash.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outIdCash);
+
                 da.SelectCommand.ExecuteNonQuery();
+
                 da.SelectCommand.Parameters.Clear();
+
+                Out = Convert.ToInt32(outIdCash.Value);
+
+              //  return objventaCaja;
+ 
 
             }
             catch { }
+
+
+
+            return Out;
+
         }
 
-        public void isertarMovCaja(CE_MovCaja obj)
+        public int isertarMovCaja(CE_MovCaja obj)
         {
             string sItemCode = "";
+            int Out = 0;
 
             try
             {
@@ -88,10 +110,32 @@ namespace Capa_Datos.OperacionesCaja
                 da.SelectCommand.Parameters.Add("User", MySqlDbType.VarChar).Value = obj.User;
                 da.SelectCommand.Parameters.Add("Supervisor", MySqlDbType.VarChar).Value = obj.Supervisor;
                 da.SelectCommand.Parameters.Add("Sucursal", MySqlDbType.VarChar).Value = obj.Sucursal;
+                  da.SelectCommand.Parameters.Add("IdTran", MySqlDbType.Int32).Value = obj.Idtrans;
+
+                //    da.SelectCommand.ExecuteNonQuery();
+                //    da.SelectCommand.Parameters.Clear();
+
+               MySqlParameter outIdCash = new MySqlParameter("_out", MySqlDbType.Int32);
+            //    MySqlParameter outIdCash = new MySqlParameter("_out", MySqlDbType.VarChar);
+                outIdCash.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outIdCash);
+
                 da.SelectCommand.ExecuteNonQuery();
+
                 da.SelectCommand.Parameters.Clear();
+
+                  Out = Convert.ToInt32(outIdCash.Value);
+
+               // Out = Convert.ToString(outIdCash.Value);
+
+               
+
             }
+
             catch { }
+
+            return Out;
+
         }
 
         public CE_VentaCaja infoApertura(string User, string whsCode, int stationId)
@@ -103,9 +147,9 @@ namespace Capa_Datos.OperacionesCaja
                 sItemCode = "SP_V_InfoCaja";
                 MySqlDataAdapter da = new MySqlDataAdapter(sItemCode, conn.AbrirConexion());
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                da.SelectCommand.Parameters.Add("User", MySqlDbType.VarChar).Value = User;
-                da.SelectCommand.Parameters.Add("WhsCode", MySqlDbType.VarChar).Value = whsCode;
-                da.SelectCommand.Parameters.Add("StationId", MySqlDbType.Int32).Value = stationId;
+                da.SelectCommand.Parameters.Add("usuario", MySqlDbType.VarChar).Value = User;
+                da.SelectCommand.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = whsCode;
+                da.SelectCommand.Parameters.Add("_StationId", MySqlDbType.Int32).Value = stationId;
                 DataSet ds = new DataSet();
 
                 ds.Clear();

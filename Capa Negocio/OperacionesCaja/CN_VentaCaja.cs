@@ -12,17 +12,16 @@ namespace Capa_Negocio.OperacionesCaja
 
         public CE_VentaCaja insertVentaCaja(CE_VentaCaja obj)
         {
-            return _cdVentaCaja.InsertarVentaCaja(
-                obj);
+            return _cdVentaCaja.InsertarVentaCaja(obj);
         }
 
-        public void insertCajaDenom(CE_Denominacion obj)
+        public int insertCajaDenom(CE_Denominacion obj)
         {
-            _cdVentaCaja.insertarCajaDenom(obj);
+           return  _cdVentaCaja.insertarCajaDenom(obj);
         }
 
-        public void insertMovCaja(CE_MovCaja obj) {
-            _cdVentaCaja.isertarMovCaja(obj);
+        public int  insertMovCaja(CE_MovCaja obj) {
+           return _cdVentaCaja.isertarMovCaja(obj);
         }
 
         public CE_VentaCaja infoCaja(string User, string whsCode, int stationId)

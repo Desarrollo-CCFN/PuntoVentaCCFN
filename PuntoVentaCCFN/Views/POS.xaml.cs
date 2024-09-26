@@ -23,6 +23,9 @@ using static PuntoVentaCCFN.MainWindow;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
+using Capa_Entidad;
+using System.Windows.Threading;
+using Org.BouncyCastle.Crypto;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -70,6 +73,7 @@ namespace PuntoVentaCCFN.Views
         {
             InitializeComponent();
             IniciarConfiguracion();
+            VerificarVenta();
         }
 
         void IniciarConfiguracion()
@@ -79,10 +83,12 @@ namespace PuntoVentaCCFN.Views
             {
                 printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
 
+            try
+            {
+                printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             }
             catch (Exception ex) { }
 
-            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             nombreCajaString = MainWindow.AppConfig1.Caja;
@@ -93,7 +99,56 @@ namespace PuntoVentaCCFN.Views
             nombreCaja = "1";
         }
 
-        
+        #region verificar venta activa
+        public void VerificarVenta()
+        {
+            CE_VentaHeader ventaActiva = venta.VentaActiva(whsCode, nombreCajaInt);
+
+
+            if (ventaActiva.Id != -1)
+            {
+                ventaI.Id = ventaActiva.Id;
+                System.Windows.MessageBox.Show("Se encontro una venta sin terminar. Recuperando..", "Venta Activa", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                List<CE_VentaDetalle> listaProductos = venta.GetVentaDetalle(ventaActiva.Id);
+
+
+                foreach (CE_VentaDetalle item in listaProductos)
+                {
+                    GridList l = new GridList();
+                    l.ItemCode = item.ItemCode;
+                    l.ItemName = item.Dscription;
+                    l.CodeBar = item.CodeBars;
+                    l.Precio_Base = item.Price2;
+                    l.Unidad = item.Unidad;
+                    l.UomEntry = item.UomEntry;
+                    l.Total = item.LineTotal;
+                    l.Impuesto_FC = item.VatSumFrgn;
+                    l.Impuesto = item.VatSum;
+                    l.Precio_Base_FC = item.PriceList;
+                    l.LineNum = item.LineNum;
+                    l.Cantidad = item.Cantidad;
+                    lista.Add(l);
+
+                }
+
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista;
+                for (int i = 0; GridDatos.Columns.Count > i; i++)
+                {
+                    GridDatos.Columns[i].IsReadOnly = true;
+                }
+                GridDatos.Columns[7].IsReadOnly = false;
+                pagado = venta.GetVentaActivaPagado(ventaActiva.Id);
+                Dispatcher.InvokeAsync(() => { saldo(); },
+                DispatcherPriority.ApplicationIdle);
+
+            }
+        }
+        #endregion
+
+
 
         #region consulta del tipo de cambio
         public void ConsultarTC()
@@ -124,7 +179,7 @@ namespace PuntoVentaCCFN.Views
         #region busqueda e inserción header y detalle primera vez
         private void tbCodigoProducto_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
+            //if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
 
             if (e.Key == Key.Enter)
             {
@@ -143,7 +198,9 @@ namespace PuntoVentaCCFN.Views
 
             if (ventaI.Id.Equals(0))
             {
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                string numCajera = Nom_Cajera.Num_Cajera;
+                CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -189,8 +246,8 @@ namespace PuntoVentaCCFN.Views
             l.Unidad = Convert.ToString(row[4]);
             l.UomEntry = Convert.ToInt32(row[5]);
             l.Total = Convert.ToDecimal(row[6]);
-            l.Impuesto_FC = Convert.ToDecimal(row[7]);
-            l.Impuesto = Convert.ToDecimal(row[10]);
+            l.Impuesto_FC = Convert.ToDecimal(row[10]);
+            l.Impuesto = Convert.ToDecimal(row[7]);
             l.Precio_Base_FC = Convert.ToDecimal(row[9]);
             l.LineNum = Convert.ToInt32(row[11]);
             l.Cantidad = Convert.ToDecimal(row[12]);
@@ -205,10 +262,10 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.Columns[i].IsReadOnly = true;
             }
             GridDatos.Columns[7].IsReadOnly = false;
-            
+
 
             saldo();
-            
+
         }
         #endregion
 
@@ -465,7 +522,7 @@ namespace PuntoVentaCCFN.Views
             DataGridRow row = e.Row;
             GridList item = row.Item as GridList;
             var obj = lista.FirstOrDefault(x => x.LineNum == item.LineNum);
-            var Acceso = new Acceso(3);
+            var Acceso = new Acceso(2);
             Acceso.ShowDialog();
 
             if (Acceso.ReturnValue == 1)
@@ -497,6 +554,9 @@ namespace PuntoVentaCCFN.Views
             else
             {
                 MessageBox.Show("No tienes acceso a cambiar cantidad!!");
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista; saldo();
+
             }
         }
         #endregion
@@ -532,7 +592,7 @@ namespace PuntoVentaCCFN.Views
                 loadAnularVenta();
             }
 
-            if(e.Key == Key.F4)
+            if (e.Key == Key.F4)
             {
                 loadAnularProducto();
             }
@@ -545,32 +605,35 @@ namespace PuntoVentaCCFN.Views
             if (e.Key == Key.P)
             {
                 loadModal();
-                
+
             }
 
-            if(e.Key == Key.E) {
+            if (e.Key == Key.E)
+            {
                 loadEMXN();
             }
 
-            if(e.Key == Key.U) {
+            if (e.Key == Key.U)
+            {
                 loadEUSD();
             }
 
-            if(e.Key == Key.D)
+            if (e.Key == Key.D)
             {
                 loadDebit();
             }
 
-            if(e.Key == Key.C) { 
+            if (e.Key == Key.C)
+            {
                 loadCredit();
             }
 
-            if(e.Key == Key.R)
+            if (e.Key == Key.R)
             {
                 loadRetiros();
             }
 
-            
+
 
         }
         #endregion
@@ -640,7 +703,8 @@ namespace PuntoVentaCCFN.Views
                 cN_Venta.insertarDetalle(numTck, itemCode, cantidad, monto);
             }
 
-            Imprimir(numTck);
+            //  Imprimir(numTck);
+            Imprimir(ventaI.Id);
         }
         #endregion
 
@@ -677,11 +741,11 @@ namespace PuntoVentaCCFN.Views
 
             //if (!pagoUSD)
             //{
-                modalc.tbCambioU.Visibility = Visibility.Collapsed;
-                modalc.lblU.Visibility = Visibility.Collapsed;
-                modalc.lblConvert.Visibility = Visibility.Collapsed;
-                modalc.lblcamu.Visibility = Visibility.Collapsed;
-                modalc.tbCambioNU.Visibility = Visibility.Collapsed;
+            modalc.tbCambioU.Visibility = Visibility.Collapsed;
+            modalc.lblU.Visibility = Visibility.Collapsed;
+            modalc.lblConvert.Visibility = Visibility.Collapsed;
+            modalc.lblcamu.Visibility = Visibility.Collapsed;
+            modalc.tbCambioNU.Visibility = Visibility.Collapsed;
             //}
             modalc.ShowDialog();
 
@@ -695,7 +759,8 @@ namespace PuntoVentaCCFN.Views
                 MessageBox.Show(sMensaje);
                 return;
             }
-            Imprimir(ventaI.NumTck);
+            //   Imprimir(ventaI.NumTck);
+            Imprimir(ventaI.Id);
             FacturarVenta();
 
 
@@ -760,7 +825,9 @@ namespace PuntoVentaCCFN.Views
                     MessageBox.Show(sMensaje);
                     return;
                 }
-                Imprimir(ventaI.NumTck);
+
+                // Imprimir(ventaI.NumTck);
+                Imprimir(ventaI.Id);
                 GridDatos.Items.Clear();
                 ventaI.Id = 0;
                 pagado = 0;
@@ -775,11 +842,29 @@ namespace PuntoVentaCCFN.Views
         #endregion
 
         #region impresion ticket de venta
-        void Imprimir(string numTck)
+        void Imprimir(int numTck)
         {
             //var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
             //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
 
+
+            int Param = 2;
+            // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+            // startInfo.Arguments = $"{IdTra}";
+            startInfo.Arguments = $"{numTck} {Param}";
+
+            // Ejecutar el programa externo
+            Process.Start(startInfo);
+
+
+
+
+            System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+
+        /*
             var e = new EPSON();
 
             try
@@ -872,7 +957,7 @@ namespace PuntoVentaCCFN.Views
             {
                 System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
             }
-
+          */
         }
         #endregion
 
@@ -939,7 +1024,8 @@ namespace PuntoVentaCCFN.Views
             loadRetiros();
         }
 
-        public void loadRetiros() {
+        public void loadRetiros()
+        {
             var Acceso = new Acceso(3);
             Acceso.ShowDialog();
 
@@ -981,7 +1067,7 @@ namespace PuntoVentaCCFN.Views
         #region logica al abrir venta
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
             tbCodigoProducto.Focus();
             ConsultarCliente();
             ConsultarListaPrecio();
@@ -995,12 +1081,12 @@ namespace PuntoVentaCCFN.Views
 
             string sRutaTimbrado = sRutaAplicacion + @"\Timbrado\TimbradoCCFN40.exe";
             string sRutaXmlFiles = sRutaAplicacion + @"\Timbrado\XmlFiles\";
-            string sXmlFiles =  @"documento";
+            string sXmlFiles = @"documento";
 
 
             if (!Directory.Exists(sRutaXmlFiles))
             {
-                 Directory.CreateDirectory(sRutaXmlFiles);
+                Directory.CreateDirectory(sRutaXmlFiles);
             }
 
             MessageBox.Show(sRutaAplicacion);
@@ -1012,12 +1098,12 @@ namespace PuntoVentaCCFN.Views
             // StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
             StartInfo.Arguments = "13 " + sRutaXmlFiles + " " + sXmlFiles;
             process.StartInfo = StartInfo;
-            
+
             try
             {
                 process.Start();
                 process.WaitForExit();
-                
+
             }
             catch (Win32Exception ex)
             {
@@ -1041,6 +1127,13 @@ namespace PuntoVentaCCFN.Views
             loadAnularProducto();
         }
 
+
+
+        //private void GridDatos_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    if (Key.Delete == e.Key) e.Handled = false;
+        //}
+
         public void loadAnularProducto()
         {
             var seleccionado = GridDatos.SelectedItem as GridList;
@@ -1052,6 +1145,12 @@ namespace PuntoVentaCCFN.Views
                 Acceso.ShowDialog();
                 if (Acceso.ReturnValue == 1)
                 {
+                    if (!objeto_CN_Productos.AnularProducto(ventaI.Id, seleccionado.LineNum))
+                    {
+                        MessageBox.Show("Error al anular producto!!");
+                        return;
+                    }
+
                     lista.Remove(seleccionado);
                     GridDatos.ItemsSource = null;
                     GridDatos.ItemsSource = lista;
@@ -1103,7 +1202,7 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.ScrollIntoView(GridDatos.Items[index]);
                 fila = (DataGridRow)GridDatos.ItemContainerGenerator.ContainerFromIndex((int)index);
             }
-
+            GridDatos.UpdateLayout();
             return fila;
         }
 
@@ -1117,9 +1216,11 @@ namespace PuntoVentaCCFN.Views
 
                 if (celda == null)
                 {
+                    GridDatos.UpdateLayout();
                     GridDatos.ScrollIntoView(filaCon, GridDatos.Columns[columna]);
                     celda = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(columna);
                 }
+                GridDatos.UpdateLayout();
                 return celda;
             }
             return null;
@@ -1127,24 +1228,24 @@ namespace PuntoVentaCCFN.Views
         #endregion
 
 
-    }
-    #region entidad para row de datagrid
-    public class GridList
-    {
-        public string ItemCode { get; set; }
-        public string ItemName { get; set; }
-        public string CodeBar { get; set; }
-        public string Unidad { get; set; }
-        public decimal Precio_Base { get; set; }
-        public int UomEntry { get; set; }
-        public decimal Cantidad { get; set; }
-        public decimal Impuesto { get; set; }
-        public decimal Precio_Base_FC { get; set; }
-        public decimal Impuesto_FC { get; set; }
-        public decimal Total { get; set; }
-        public int LineNum { get; set; }
-    }
-    #endregion
 
+        #region entidad para row de datagrid
+        public class GridList
+        {
+            public string ItemCode { get; set; }
+            public string ItemName { get; set; }
+            public string CodeBar { get; set; }
+            public string Unidad { get; set; }
+            public decimal Precio_Base { get; set; }
+            public int UomEntry { get; set; }
+            public decimal Cantidad { get; set; }
+            public decimal Impuesto { get; set; }
+            public decimal Precio_Base_FC { get; set; }
+            public decimal Impuesto_FC { get; set; }
+            public decimal Total { get; set; }
+            public int LineNum { get; set; }
+        }
+        #endregion
+
+    }
 }
-

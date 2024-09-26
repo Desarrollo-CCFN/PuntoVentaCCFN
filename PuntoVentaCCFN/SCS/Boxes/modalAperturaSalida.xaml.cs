@@ -25,6 +25,8 @@ using System.Windows.Media.Media3D;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
+using Org.BouncyCastle.Crypto;
+using System.Diagnostics;
 
 
 
@@ -125,6 +127,8 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+                lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
+                lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
             }
             else
             {
@@ -146,8 +150,9 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.Items.Add("Pesos");
                 cbMoneda.Items.Add("Dólares");
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
-
+                
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
+
             }
             else
             {
@@ -219,6 +224,8 @@ namespace Capa_Presentacion.SCS.Boxes
             string WhsCode = Nom_Cajera.Cod_Sucursal;
             string User = CodSuper.ToString();
             int StationId = nombreCajaInt;
+            int IdTra = 0;
+            int Error = 0;
 
 
             //string Status =   cbTipo.SelectedItem.ToString();
@@ -237,11 +244,11 @@ namespace Capa_Presentacion.SCS.Boxes
 
             CE_VentaCaja objVc = new CE_VentaCaja
             {
-                User = User,
+                User = User, // selectCajera,  // User,
                 WhsCode = WhsCode,
                 BegAmount = beginAmount,
                 BegAmountFC = beginAmountFC,
-                Cashier = selectCajera,
+                Cashier = User, // selectCajera,
                 StationId = StationId,
             };
 
@@ -263,10 +270,14 @@ namespace Capa_Presentacion.SCS.Boxes
                     IdCDenom = item.IdCDenom,
                     Quantity = item.Cantidad,
                     TotAmount = item.Total,
-                    Usuario = CodSuper
+                    Usuario = CodSuper,
+                    Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertCajaDenom(objCed);
+                IdTra = objCNVentaCaja.insertCajaDenom(objCed);
+
+                
+
             }
 
 
@@ -281,10 +292,11 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "APERTURA DE CAJA",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Num_Cajera
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                      Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertMovCaja(objMovC);
+                Error = objCNVentaCaja.insertMovCaja(objMovC);
             }
 
             if (beginAmountFC > 0)
@@ -298,14 +310,35 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "APERTURA DE CAJA",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Cod_Sucursal
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                    Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertMovCaja(objMovC);
+                Error = objCNVentaCaja.insertMovCaja(objMovC);
             }
 
+            if (Error == 1)
+            {
+                int Param = 1;
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
-            System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+               // startInfo.Arguments = $"{IdTra}";
+                  startInfo.Arguments = $"{IdTra} {Param}";
+
+                // Ejecutar el programa externo
+                Process.Start(startInfo);
+
+
+                System.Windows.MessageBox.Show("Apertura Creada Con Exito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Apertura No Creada", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+            
             this.Close();
         }
 
@@ -314,6 +347,8 @@ namespace Capa_Presentacion.SCS.Boxes
 
             decimal beginAmount = 0;
             decimal beginAmountFC = 0;
+            int IdTra = 0;
+            int Error = 0;
 
             //string Status =   cbTipo.SelectedItem.ToString();
 
@@ -356,10 +391,12 @@ namespace Capa_Presentacion.SCS.Boxes
                     IdCDenom = item.IdCDenom,
                     Quantity = item.Cantidad,
                     TotAmount = item.Total,
-                    Usuario = CodSuper
+                    Usuario = CodSuper,
+                    Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertCajaDenom(objCed);
+                IdTra = objCNVentaCaja.insertCajaDenom(objCed);
+               
             }
 
             if (beginAmount > 0)
@@ -373,10 +410,11 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "RETIRO DE FONDO",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Num_Cajera
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                    Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertMovCaja(objMovC);
+               Error = objCNVentaCaja.insertMovCaja(objMovC);
             }
 
             if (beginAmountFC > 0)
@@ -390,13 +428,39 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "RETIRO DE FONDO",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Cod_Sucursal
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                    Idtrans = IdTra
                 };
 
-                objCNVentaCaja.insertMovCaja(objMovC);
+               Error = objCNVentaCaja.insertMovCaja(objMovC);
             }
 
-            System.Windows.MessageBox.Show("Retiro de Fondo Exitoso!!");
+           // System.Windows.MessageBox.Show("Retiro de Fondo Exitoso!!");
+
+
+            if (Error == 1)
+            {
+                int Param = 1;
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                                                                                      
+              //  startInfo.Arguments = $"{IdTra}";
+                 startInfo.Arguments = $"{IdTra} {Param}";
+
+                // Ejecutar el programa externo
+                Process.Start(startInfo);
+
+                //System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+                System.Windows.MessageBox.Show("Retiro de Fondo Exitoso", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Retiro de Fondo No Creada", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+
             this.Close();
 
         }
@@ -406,6 +470,7 @@ namespace Capa_Presentacion.SCS.Boxes
 
             decimal beginAmount = 0;
             decimal beginAmountFC = 0;
+            int IdTra = 0;
 
             foreach (GridItem item in GridDatos.Items)
             {
@@ -428,10 +493,13 @@ namespace Capa_Presentacion.SCS.Boxes
                     IdCDenom = item.IdCDenom,
                     Quantity = item.Cantidad,
                     TotAmount = item.Total,
-                    Usuario = CodSuper
+                    Usuario = CodSuper,
+                    Idtrans = IdTra
+
                 };
 
-                objCNVentaCaja.insertCajaDenom(objCed);
+                IdTra = objCNVentaCaja.insertCajaDenom(objCed);
+               // IdTra = IdTra + 1;
             }
 
             if (beginAmount > 0)
@@ -445,7 +513,8 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "RETIRO DE EFECTIVO",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Num_Cajera
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                    Idtrans = IdTra
                 };
 
                 objCNVentaCaja.insertMovCaja(objMovC);
@@ -462,14 +531,34 @@ namespace Capa_Presentacion.SCS.Boxes
                     Comments = "RETIRO DE EFECTIVO",
                     User = Nom_Cajera.Num_Cajera,
                     Supervisor = CodSuper.ToString(),
-                    Sucursal = Nom_Cajera.Cod_Sucursal
+                    Sucursal = Nom_Cajera.Cod_Sucursal,
+                    Idtrans = IdTra
                 };
 
                 objCNVentaCaja.insertMovCaja(objMovC);
             }
+            int Param = 1;
+            // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+           // startInfo.Arguments = $"{IdTra}";
+              startInfo.Arguments = $"{IdTra} {Param}";
+
+            // Ejecutar el programa externo
+            Process.Start(startInfo);
+
+            //System.Windows.MessageBox.Show("Apertura Creada Con Exito");
+
 
             System.Windows.MessageBox.Show("Retiro de Efectivo Exitoso!!");
             this.Close();
+        
+        
+        
+        
+        
+        
         }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)

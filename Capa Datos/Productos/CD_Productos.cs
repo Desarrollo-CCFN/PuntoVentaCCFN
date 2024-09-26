@@ -58,7 +58,7 @@ namespace Capa_Datos.Productos
         }
         #endregion
 
-        #region anular producto
+        #region actualizar cantidad
         public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
         {
             string pName = "";
@@ -70,6 +70,31 @@ namespace Capa_Datos.Productos
                 conm.Parameters.Add("_Idheader", MySqlDbType.Int32).Value = idHeader;
                 conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
                 conm.Parameters.Add("_Quantity", MySqlDbType.Decimal).Value = Cantidad;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex1)
+            {
+                //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region anular producto
+        public bool AnularProducto(int idHeader, int LineNum)
+        {
+            string pName = "";
+            try
+            {
+                pName = "SP_P_Anular";
+                MySqlCommand conm = new MySqlCommand("SP_P_Anular", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_Idheader", MySqlDbType.Int32).Value = idHeader;
+                conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
                 conm.ExecuteNonQuery();
                 conm.Parameters.Clear();
                 conn.CerrarConexion();

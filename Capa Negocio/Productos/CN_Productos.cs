@@ -30,11 +30,18 @@ namespace Capa_Negocio.Productos
         }
         #endregion
 
-        #region anulacion de producto
+        #region actualizar de producto
         public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
         {
             return objDatos.AnulacionProducto(idHeader, LineNum, Cantidad);
         }
         #endregion
+        #region anulacion de producto
+        public bool AnularProducto(int idHeader, int LineNum)
+        {
+            return objDatos.AnularProducto(idHeader, LineNum);
+        }
+        #endregion
+
     }
 }

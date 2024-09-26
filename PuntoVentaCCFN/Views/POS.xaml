@@ -395,6 +395,7 @@
                       CanUserAddRows="False"
                       CanUserResizeColumns="True"
                       CanUserResizeRows="False"
+                      CanUserDeleteRows="False"
                       CanUserSortColumns="False"
                       SelectionMode="Single"
                       CellEditEnding="GridDatos_CellEditEnding"
@@ -431,7 +432,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario" Width="*" Binding="{Binding Precio_Base}">
+                    <DataGridTextColumn Header="Precio Unitario" Width="*" Binding="{Binding Precio_Base, StringFormat={}{0:#,##0.0000}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -439,7 +440,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto" Width="*" Binding="{Binding Impuesto, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Impuesto" Width="*" Binding="{Binding Impuesto, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -447,7 +448,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario FC" Width="*" Binding="{Binding Precio_Base_FC}">
+                    <DataGridTextColumn Header="Precio Unitario FC" Width="*" Binding="{Binding Precio_Base_FC, StringFormat={}{0:#,##0.0000}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -455,7 +456,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto FC" Width="*" Binding="{Binding Impuesto_FC, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Impuesto FC" Width="*" Binding="{Binding Impuesto_FC, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -471,7 +472,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Importe" Width="*" Binding="{Binding Total, StringFormat={}{0:#,##0.00}}">
+                    <DataGridTextColumn Header="Importe" Width="*" Binding="{Binding Total, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -531,7 +532,7 @@
                 Background="Green" 
                 RenderTransformOrigin="11.5,9.75"
                 Grid.Column="9" 
-                Margin="440,132,10,4" 
+                Margin="433,125,17,2" 
                 Grid.Row="14"
                 Style="{DynamicResource btnSide}" Click="PagoFinal">
                 <TextBlock Text="Pagar" Foreground="White"/>
@@ -566,42 +567,51 @@
                 Text="$0"
                 IsEnabled="false"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="14" Margin="125,10,340,144"/>
+                Grid.Row="14" Margin="122,65,343,69" RenderTransformOrigin="0.5,0.5">
+                <TextBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="-0.826"/>
+                        <RotateTransform/>
+                        <TranslateTransform X="-0.236"/>
+                    </TransformGroup>
+                </TextBox.RenderTransform>
+            </TextBox>
             <TextBox
                 Grid.Column="9"
                 x:Name="tbPagado"
                 IsEnabled="false"
                 Text="$0"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="14" Margin="440,48,25,105"/>
+                Grid.Row="14" Margin="440,22,25,116"/>
             <TextBox
                 Grid.Column="9"
                 x:Name="tbCambio"
                 IsEnabled="false"
                 Text="$0"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="14" Margin="440,91,25,63"/>
+                Grid.Row="14" Margin="440,71,25,62"/>
             <TextBlock Grid.Row="14"
                 Grid.Column="9"
                 Text="Total USD"
                 FontSize="18"
                 Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="84" Margin="10,10,0,0" RenderTransformOrigin="0.452,1.131"/>
+                VerticalAlignment="Center" Height="28" Width="84" Margin="25,0,0,0" RenderTransformOrigin="0.452,1.131"/>
             <TextBlock Grid.Row="14"
                 Grid.Column="9"
                 Text="Pagado"
                 FontSize="18"
                 Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="64" Margin="351,49,0,0"/>
+                VerticalAlignment="Top" Height="28" Width="64" Margin="351,32,0,0"/>
             <TextBlock Grid.Row="14"
                 Grid.Column="9"
                 Text="Cambio"
                 FontSize="18"
                 Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="64" Margin="351,91,0,0" RenderTransformOrigin="0.828,0.56"/>
+                VerticalAlignment="Top" Height="28" Width="64" Margin="351,81,0,0" RenderTransformOrigin="0.828,0.56"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
@@ -619,14 +629,14 @@
                 FontSize="18"
                 Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="70" Margin="351,13,0,0" Grid.RowSpan="2"/>
+                VerticalAlignment="Top" Height="28" Width="70" Margin="25,26,0,0" Grid.RowSpan="2"/>
             <TextBox
                 Grid.Column="9"
                 x:Name="tbSubtotal"
                 Text="$0"
                 IsEnabled="false"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="13" Margin="440,13,25,180" Grid.RowSpan="2"/>
+                Grid.Row="13" Margin="125,15,340,158" Grid.RowSpan="2"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="6"
@@ -638,20 +648,20 @@
                     VerticalAlignment="Center"
                            />
             </Button>
-            <TextBlock Grid.Row="14"
+            <TextBlock Grid.Row="13"
                 Grid.Column="9"
-                Text="Total MXN"
+                Text="Total"
                 FontSize="18"
                 Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="84" Margin="351,10,0,0" RenderTransformOrigin="0.452,1.131"/>
+                VerticalAlignment="Top" Height="28" Width="58" Margin="351,21,0,0" RenderTransformOrigin="0.452,1.131" Grid.RowSpan="2"/>
             <TextBox
                 Grid.Column="9"
                 x:Name="tbImporte"
                 Text="$0"
                 IsEnabled="false"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="14" Margin="440,10,25,144"/>
+                Grid.Row="13" Margin="440,10,25,165" Grid.RowSpan="2"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Red"
                 Grid.Column="2"
