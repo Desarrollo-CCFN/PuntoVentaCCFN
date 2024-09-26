@@ -24,6 +24,7 @@ using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
 using Capa_Entidad;
+using System.Windows.Threading;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -71,6 +72,7 @@ namespace PuntoVentaCCFN.Views
         {
             InitializeComponent();
             IniciarConfiguracion();
+            VerificarVenta();
         }
 
         void IniciarConfiguracion()
@@ -94,7 +96,56 @@ namespace PuntoVentaCCFN.Views
 
         }
 
-        
+        #region verificar venta activa
+        public void VerificarVenta()
+        {
+            CE_VentaHeader ventaActiva = venta.VentaActiva(whsCode, nombreCajaInt);
+            
+
+            if (ventaActiva.Id != -1)
+            {
+                ventaI.Id = ventaActiva.Id;
+                System.Windows.MessageBox.Show("Se encontro una venta sin terminar. Recuperando..", "Venta Activa", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                List<CE_VentaDetalle> listaProductos = venta.GetVentaDetalle(ventaActiva.Id);
+                
+
+                foreach (CE_VentaDetalle item in listaProductos)
+                {
+                    GridList l = new GridList();
+                    l.ItemCode = item.ItemCode;
+                    l.ItemName = item.Dscription;
+                    l.CodeBar = item.CodeBars;
+                    l.Precio_Base = item.Price2;
+                    l.Unidad = item.Unidad;
+                    l.UomEntry = item.UomEntry;
+                    l.Total = item.LineTotal;
+                    l.Impuesto_FC = item.VatSumFrgn;
+                    l.Impuesto = item.VatSum;
+                    l.Precio_Base_FC = item.PriceList;
+                    l.LineNum = item.LineNum;
+                    l.Cantidad = item.Cantidad;
+                    lista.Add(l);
+
+                }
+
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista;
+                for (int i = 0; GridDatos.Columns.Count > i; i++)
+                {
+                    GridDatos.Columns[i].IsReadOnly = true;
+                }
+                GridDatos.Columns[7].IsReadOnly = false;
+                pagado = venta.GetVentaActivaPagado(ventaActiva.Id);
+                Dispatcher.InvokeAsync(() => { saldo(); },
+                DispatcherPriority.ApplicationIdle);
+
+            }
+        }
+        #endregion
+
+
 
         #region consulta del tipo de cambio
         public void ConsultarTC()
@@ -146,7 +197,7 @@ namespace PuntoVentaCCFN.Views
             {
                 string numCajera = Nom_Cajera.Num_Cajera;
                 CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -209,7 +260,7 @@ namespace PuntoVentaCCFN.Views
             }
             GridDatos.Columns[7].IsReadOnly = false;
             
-
+            
             saldo();
             
         }
@@ -1136,9 +1187,11 @@ namespace PuntoVentaCCFN.Views
 
                 if (celda == null)
                 {
+                    GridDatos.UpdateLayout();
                     GridDatos.ScrollIntoView(filaCon, GridDatos.Columns[columna]);
                     celda = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(columna);
                 }
+                GridDatos.UpdateLayout();
                 return celda;
             }
             return null;

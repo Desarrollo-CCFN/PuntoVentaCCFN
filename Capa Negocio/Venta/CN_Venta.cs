@@ -11,9 +11,9 @@ namespace Capa_Negocio.Venta
 
 
         #region insert venta headerInical
-        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash)
+        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash, int idStation)
         {
-            return objDatos.Venta(sucursal, caja, cardCode, idCash);
+            return objDatos.Venta(sucursal, caja, cardCode, idCash, idStation);
 
         }
         #endregion
@@ -55,5 +55,21 @@ namespace Capa_Negocio.Venta
         {
             return objDatos.AnularFPagos(idHeader);
         }
+
+        public CE_VentaHeader VentaActiva(string WhsCode, int idStation)
+        {
+            return objDatos.VentaActiva(WhsCode, idStation);
+        }
+
+        public List<CE_VentaDetalle> GetVentaDetalle(int idHeader)
+        {
+            return objDatos.GetVentaDetalles(idHeader);
+        }
+
+        public decimal GetVentaActivaPagado(int idHeader)
+        {
+            return objDatos.VentaActivaPagado(idHeader);
+        }
+
     }
 }
