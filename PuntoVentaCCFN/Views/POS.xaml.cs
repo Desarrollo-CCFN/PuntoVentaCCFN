@@ -76,7 +76,7 @@ namespace PuntoVentaCCFN.Views
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-            printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+         //   printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             nombreCajaString = MainWindow.AppConfig1.Caja;
@@ -635,7 +635,8 @@ namespace PuntoVentaCCFN.Views
                 cN_Venta.insertarDetalle(numTck, itemCode, cantidad, monto);
             }
 
-            Imprimir(numTck);
+            //  Imprimir(numTck);
+               Imprimir(ventaI.Id); 
         }
         #endregion
 
@@ -690,7 +691,8 @@ namespace PuntoVentaCCFN.Views
                 MessageBox.Show(sMensaje);
                 return;
             }
-            Imprimir(ventaI.NumTck);
+         //   Imprimir(ventaI.NumTck);
+            Imprimir(ventaI.Id);
             FacturarVenta();
 
 
@@ -755,7 +757,9 @@ namespace PuntoVentaCCFN.Views
                     MessageBox.Show(sMensaje);
                     return;
                 }
-                Imprimir(ventaI.NumTck);
+               
+               // Imprimir(ventaI.NumTck);
+                Imprimir(ventaI.Id);
                 GridDatos.Items.Clear();
                 ventaI.Id = 0;
                 pagado = 0;
@@ -770,11 +774,16 @@ namespace PuntoVentaCCFN.Views
         #endregion
 
         #region impresion ticket de venta
-        void Imprimir(string numTck)
+        void Imprimir(int numTck)
         {
             //var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
             //printer = new SerialPrinter(portName: SettingSection.Puerto, baudRate: 9600);
+ 
 
+            System.Windows.MessageBox.Show("Venta realizada con exito! "+ numTck);
+
+
+            /*
             var e = new EPSON();
 
 
@@ -858,7 +867,7 @@ namespace PuntoVentaCCFN.Views
 
             // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
             //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
-
+          */
 
             System.Windows.MessageBox.Show("Venta realizada con exito!");
 

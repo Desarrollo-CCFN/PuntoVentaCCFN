@@ -241,11 +241,11 @@ namespace Capa_Presentacion.SCS.Boxes
 
             CE_VentaCaja objVc = new CE_VentaCaja
             {
-                User = selectCajera,  // User,
+                User = User, // selectCajera,  // User,
                 WhsCode = WhsCode,
                 BegAmount = beginAmount,
                 BegAmountFC = beginAmountFC,
-                Cashier = User, // selectCajera,
+                Cashier = selectCajera, // User, // selectCajera,
                 StationId = StationId,
             };
 
@@ -316,13 +316,13 @@ namespace Capa_Presentacion.SCS.Boxes
 
             if (Error == 1)
             {
-
+                int Param = 1;
                 // Crear una instancia de ProcessStartInfo
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
-                startInfo.Arguments = $"{IdTra}";
-                //  startInfo.Arguments = $"{idCash} {Param}";
+               // startInfo.Arguments = $"{IdTra}";
+                  startInfo.Arguments = $"{IdTra} {Param}";
 
                 // Ejecutar el programa externo
                 Process.Start(startInfo);
@@ -437,13 +437,13 @@ namespace Capa_Presentacion.SCS.Boxes
 
             if (Error == 1)
             {
-
+                int Param = 1;
                 // Crear una instancia de ProcessStartInfo
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
                                                                                       
-                startInfo.Arguments = $"{IdTra}";
-                //  startInfo.Arguments = $"{idCash} {Param}";
+              //  startInfo.Arguments = $"{IdTra}";
+                 startInfo.Arguments = $"{IdTra} {Param}";
 
                 // Ejecutar el programa externo
                 Process.Start(startInfo);
@@ -534,13 +534,13 @@ namespace Capa_Presentacion.SCS.Boxes
 
                 objCNVentaCaja.insertMovCaja(objMovC);
             }
-
+            int Param = 1;
             // Crear una instancia de ProcessStartInfo
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
-            startInfo.Arguments = $"{IdTra}";
-            //  startInfo.Arguments = $"{idCash} {Param}";
+           // startInfo.Arguments = $"{IdTra}";
+              startInfo.Arguments = $"{IdTra} {Param}";
 
             // Ejecutar el programa externo
             Process.Start(startInfo);
