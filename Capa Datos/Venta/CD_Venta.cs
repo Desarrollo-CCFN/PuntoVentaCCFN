@@ -42,7 +42,7 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash)
+        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int idStation)
         {
             string sItemCode = "";
 
@@ -56,7 +56,7 @@ namespace Capa_Datos.Venta
                 da.SelectCommand.Parameters.Add("CodCaja", MySqlDbType.VarChar).Value = caja;
                 da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
                 da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
-
+                da.SelectCommand.Parameters.Add("stationId_", MySqlDbType.Int32).Value = idStation;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
@@ -250,6 +250,110 @@ namespace Capa_Datos.Venta
             }
 
             return true;
+        }
+
+        public CE_VentaHeader VentaActiva(string WhsCode, int idStation)
+        {
+            string sItemCode = "";
+
+            try
+            {
+                sItemCode = "SP_V_VentaActiva";
+
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_V_VentaActiva", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = WhsCode;
+                da.SelectCommand.Parameters.Add("_IdStation", MySqlDbType.Int32).Value = idStation;
+                da.SelectCommand.ExecuteNonQuery();
+
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                ce.Id = Convert.ToInt32(row[0]);
+                ce.IdCash = Convert.ToInt32(row[1]);
+
+                da.SelectCommand.Parameters.Clear();
+
+
+                return ce;
+            }
+            catch (Exception ex)
+            {
+                ce.Id = -1;
+                return ce;
+            }
+        }
+
+        public List<CE_VentaDetalle> GetVentaDetalles(int idHeader)
+        {
+            string sItemCode = "SP_V_ObtenerVentaDetalle";
+            List<CE_VentaDetalle> ceLista = new List<CE_VentaDetalle> ();
+
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_V_ObtenerVentaDetalle", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idHeader;
+                da.SelectCommand.ExecuteNonQuery();
+                DataSet ds = new DataSet();
+
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    CE_VentaDetalle ce = new CE_VentaDetalle
+                    {
+                        ItemCode = Convert.ToString(row[0]),
+                        Dscription = Convert.ToString(row[1]),
+                        CodeBars = Convert.ToString(row[2]),
+                        Price2 = Convert.ToDecimal(row[3]),
+                        Unidad = Convert.ToString(row[4]),
+                        UomEntry = Convert.ToInt32(row[5]),
+                        LineTotal = Convert.ToDecimal(row[6]),
+                        VatSumFrgn = Convert.ToDecimal(row[7]),
+                        VatSum = Convert.ToDecimal(row[8]),
+                        PriceList = Convert.ToDecimal(row[9]),
+                        LineNum = Convert.ToInt32(row[10]),
+                        Cantidad = Convert.ToDecimal(row[11])
+                    };
+
+                    ceLista.Add(ce);
+                }
+                return ceLista;
+
+            } catch (Exception ex) {
+                return ceLista;
+            }
+        }
+
+        public decimal VentaActivaPagado(int idHeader)
+        {
+            string sItemCode = "SP_C_Pagados";
+            decimal value = 0;
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_C_Pagados", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("IdHeaderIn", MySqlDbType.Int32).Value = idHeader;
+                da.SelectCommand.ExecuteNonQuery();
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                value = Convert.ToInt32(row[0]);
+                da.SelectCommand.Parameters.Clear();
+
+                return value;
+            } catch (Exception ex) {
+                return value;
+            }
         }
     }
 }

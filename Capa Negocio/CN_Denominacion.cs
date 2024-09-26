@@ -60,5 +60,10 @@ namespace Capa_Negocio
 
         #endregion
 
+        public CE_Denominacion GetIdCash(int stationId, string Sucursal, string Cashier, ref string sMensaje)
+        {
+            return objDatos.GetIdCash(stationId, Sucursal, Cashier, ref sMensaje);
+        }
+
     }
 }

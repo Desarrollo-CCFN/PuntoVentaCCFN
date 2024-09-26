@@ -23,6 +23,8 @@ using static PuntoVentaCCFN.MainWindow;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio.OperacionesCaja;
+using Capa_Entidad;
+using System.Windows.Threading;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -70,13 +72,19 @@ namespace PuntoVentaCCFN.Views
         {
             InitializeComponent();
             IniciarConfiguracion();
+            VerificarVenta();
         }
 
         void IniciarConfiguracion()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
 
-         //   printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            try
+            {
+                printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+            }
+            catch (Exception ex) { }
+
             listPrecios = SettingSection.DefListNum;
             cardCode = SettingSection.DefCardCode;
             nombreCajaString = MainWindow.AppConfig1.Caja;
@@ -88,7 +96,56 @@ namespace PuntoVentaCCFN.Views
 
         }
 
-        
+        #region verificar venta activa
+        public void VerificarVenta()
+        {
+            CE_VentaHeader ventaActiva = venta.VentaActiva(whsCode, nombreCajaInt);
+            
+
+            if (ventaActiva.Id != -1)
+            {
+                ventaI.Id = ventaActiva.Id;
+                System.Windows.MessageBox.Show("Se encontro una venta sin terminar. Recuperando..", "Venta Activa", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+                List<CE_VentaDetalle> listaProductos = venta.GetVentaDetalle(ventaActiva.Id);
+                
+
+                foreach (CE_VentaDetalle item in listaProductos)
+                {
+                    GridList l = new GridList();
+                    l.ItemCode = item.ItemCode;
+                    l.ItemName = item.Dscription;
+                    l.CodeBar = item.CodeBars;
+                    l.Precio_Base = item.Price2;
+                    l.Unidad = item.Unidad;
+                    l.UomEntry = item.UomEntry;
+                    l.Total = item.LineTotal;
+                    l.Impuesto_FC = item.VatSumFrgn;
+                    l.Impuesto = item.VatSum;
+                    l.Precio_Base_FC = item.PriceList;
+                    l.LineNum = item.LineNum;
+                    l.Cantidad = item.Cantidad;
+                    lista.Add(l);
+
+                }
+
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista;
+                for (int i = 0; GridDatos.Columns.Count > i; i++)
+                {
+                    GridDatos.Columns[i].IsReadOnly = true;
+                }
+                GridDatos.Columns[7].IsReadOnly = false;
+                pagado = venta.GetVentaActivaPagado(ventaActiva.Id);
+                Dispatcher.InvokeAsync(() => { saldo(); },
+                DispatcherPriority.ApplicationIdle);
+
+            }
+        }
+        #endregion
+
+
 
         #region consulta del tipo de cambio
         public void ConsultarTC()
@@ -119,7 +176,7 @@ namespace PuntoVentaCCFN.Views
         #region busqueda e inserción header y detalle primera vez
         private void tbCodigoProducto_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
+            //if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
 
             if (e.Key == Key.Enter)
             {
@@ -138,7 +195,9 @@ namespace PuntoVentaCCFN.Views
 
             if (ventaI.Id.Equals(0))
             {
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), 1); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                string numCajera = Nom_Cajera.Num_Cajera;
+                CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -201,7 +260,7 @@ namespace PuntoVentaCCFN.Views
             }
             GridDatos.Columns[7].IsReadOnly = false;
             
-
+            
             saldo();
             
         }
@@ -460,7 +519,7 @@ namespace PuntoVentaCCFN.Views
             DataGridRow row = e.Row;
             GridList item = row.Item as GridList;
             var obj = lista.FirstOrDefault(x => x.LineNum == item.LineNum);
-            var Acceso = new Acceso(3);
+            var Acceso = new Acceso(2);
             Acceso.ShowDialog();
 
             if (Acceso.ReturnValue == 1)
@@ -492,6 +551,9 @@ namespace PuntoVentaCCFN.Views
             else
             {
                 MessageBox.Show("No tienes acceso a cambiar cantidad!!");
+                GridDatos.ItemsSource = null;
+                GridDatos.ItemsSource = lista; saldo();
+                
             }
         }
         #endregion
@@ -786,90 +848,96 @@ namespace PuntoVentaCCFN.Views
             /*
             var e = new EPSON();
 
-
-            printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
-
-                  ByteSplicer.Combine(
-                    e.CenterAlign(),
-                    e.PrintLine(""),
-                    //e.SetBarcodeHeightInDots(360),
-                    //e.SetBarWidth(BarWidth.Default),
-                    //e.SetBarLabelPosition(BarLabelPrintPosition.None),
-                    //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
-                    e.PrintLine(""),
-                    e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
-                    e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
-                    e.PrintLine("Mexicali, Baja California"),
-                    e.PrintLine("(686) 554 1535"),
-                    e.SetStyles(PrintStyle.Underline),
-                    e.PrintLine("www.ccfn.com"),
-                    e.SetStyles(PrintStyle.None),
-                    e.PrintLine(""),
-                    e.LeftAlign(),
-                    e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
-                    e.PrintLine(""),
-                    e.PrintLine(""),
-                    e.SetStyles(PrintStyle.FontB),
-                    e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
-
-
-            for (int i = 0; i < GridDatos.Items.Count; i++)
+            try
             {
-                string nombre;
-                decimal cantidad, preciounitario, totalarticulo;
+                printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
 
-                int j = 1;
-                DataGridCell cell1 = GetCelda(i, j);
-                TextBlock tb1 = cell1.Content as TextBlock;
-                nombre = tb1.Text;
-
-                int k = 4;
-                DataGridCell cell2 = GetCelda(i, k);
-                TextBlock tb12 = cell2.Content as TextBlock;
-                cantidad = Decimal.Parse(tb12.Text);
-
-                int l = 6;
-                DataGridCell cell23 = GetCelda(i, l);
-                TextBlock tb13 = cell23.Content as TextBlock;
-                totalarticulo = Decimal.Parse(tb13.Text);
-
-                int m = 3;
-                DataGridCell cell4 = GetCelda(i, m);
-                TextBlock tb14 = cell4.Content as TextBlock;
-                preciounitario = Decimal.Parse(tb14.Text);
-
-                //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
-                printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
-            };
+                      ByteSplicer.Combine(
+                        e.CenterAlign(),
+                        e.PrintLine(""),
+                        //e.SetBarcodeHeightInDots(360),
+                        //e.SetBarWidth(BarWidth.Default),
+                        //e.SetBarLabelPosition(BarLabelPrintPosition.None),
+                        //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
+                        e.PrintLine(""),
+                        e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
+                        e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
+                        e.PrintLine("Mexicali, Baja California"),
+                        e.PrintLine("(686) 554 1535"),
+                        e.SetStyles(PrintStyle.Underline),
+                        e.PrintLine("www.ccfn.com"),
+                        e.SetStyles(PrintStyle.None),
+                        e.PrintLine(""),
+                        e.LeftAlign(),
+                        e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
+                        e.PrintLine(""),
+                        e.PrintLine(""),
+                        e.SetStyles(PrintStyle.FontB),
+                        e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
 
 
-            printer.Write(
-                ByteSplicer.Combine(
-                     e.PrintLine("----------------------------------------------------------------"),
-                            e.RightAlign(),
-                            e.PrintLine("Total:                 $" + total),
-                            e.PrintLine("Pagado:                $" + pagado),
-                            e.PrintLine("Cambio:                $" + cambio),
-                            e.PrintLine(""),
-                            e.PrintLine("----------------------------------------------------------------")
-                    //e.LeftAlign(),
-                    //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                    //e.PrintLine("SOLD TO:                        SHIP TO:"),
-                    //e.SetStyles(PrintStyle.FontB),
-                    //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
-                    //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                    //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                    //e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                    //e.PrintLine("  CUST: 87654321"),
-                    //e.PrintLine(""),
-                    //e.PrintLine("")
-                    ));
+                for (int i = 0; i < GridDatos.Items.Count; i++)
+                {
+                    string nombre;
+                    decimal cantidad, preciounitario, totalarticulo;
+
+                    int j = 1;
+                    DataGridCell cell1 = GetCelda(i, j);
+                    TextBlock tb1 = cell1.Content as TextBlock;
+                    nombre = tb1.Text;
+
+                    int k = 4;
+                    DataGridCell cell2 = GetCelda(i, k);
+                    TextBlock tb12 = cell2.Content as TextBlock;
+                    cantidad = Decimal.Parse(tb12.Text);
+
+                    int l = 6;
+                    DataGridCell cell23 = GetCelda(i, l);
+                    TextBlock tb13 = cell23.Content as TextBlock;
+                    totalarticulo = Decimal.Parse(tb13.Text);
+
+                    int m = 3;
+                    DataGridCell cell4 = GetCelda(i, m);
+                    TextBlock tb14 = cell4.Content as TextBlock;
+                    preciounitario = Decimal.Parse(tb14.Text);
+
+                    //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
+                    printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
+                };
+
+
+                printer.Write(
+                    ByteSplicer.Combine(
+                         e.PrintLine("----------------------------------------------------------------"),
+                                e.RightAlign(),
+                                e.PrintLine("Total:                 $" + total),
+                                e.PrintLine("Pagado:                $" + pagado),
+                                e.PrintLine("Cambio:                $" + cambio),
+                                e.PrintLine(""),
+                                e.PrintLine("----------------------------------------------------------------")
+                        //e.LeftAlign(),
+                        //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
+                        //e.PrintLine("SOLD TO:                        SHIP TO:"),
+                        //e.SetStyles(PrintStyle.FontB),
+                        //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
+                        //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
+                        //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
+                        //e.PrintLine("  (123)456-7890                   (123)456-7890"),
+                        //e.PrintLine("  CUST: 87654321"),
+                        //e.PrintLine(""),
+                        //e.PrintLine("")
+                        ));
 
             // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
             //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
-          */
 
-            System.Windows.MessageBox.Show("Venta realizada con exito!");
+
+                System.Windows.MessageBox.Show("Venta realizada con exito!");
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
+            }
 
         }
         #endregion
@@ -1039,6 +1107,13 @@ namespace PuntoVentaCCFN.Views
             loadAnularProducto();
         }
 
+       
+
+        //private void GridDatos_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        //{
+        //    if (Key.Delete == e.Key) e.Handled = false;
+        //}
+
         public void loadAnularProducto()
         {
             var seleccionado = GridDatos.SelectedItem as GridList;
@@ -1050,6 +1125,12 @@ namespace PuntoVentaCCFN.Views
                 Acceso.ShowDialog();
                 if (Acceso.ReturnValue == 1)
                 {
+                    if(!objeto_CN_Productos.AnularProducto(ventaI.Id, seleccionado.LineNum))
+                    {
+                        MessageBox.Show("Error al anular producto!!");
+                        return;
+                    }
+
                     lista.Remove(seleccionado);
                     GridDatos.ItemsSource = null;
                     GridDatos.ItemsSource = lista;
@@ -1101,7 +1182,7 @@ namespace PuntoVentaCCFN.Views
                 GridDatos.ScrollIntoView(GridDatos.Items[index]);
                 fila = (DataGridRow)GridDatos.ItemContainerGenerator.ContainerFromIndex((int)index);
             }
-
+            GridDatos.UpdateLayout();
             return fila;
         }
 
@@ -1115,9 +1196,11 @@ namespace PuntoVentaCCFN.Views
 
                 if (celda == null)
                 {
+                    GridDatos.UpdateLayout();
                     GridDatos.ScrollIntoView(filaCon, GridDatos.Columns[columna]);
                     celda = (DataGridCell)presenter.ItemContainerGenerator.ContainerFromIndex(columna);
                 }
+                GridDatos.UpdateLayout();
                 return celda;
             }
             return null;

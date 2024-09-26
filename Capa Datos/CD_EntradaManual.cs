@@ -88,7 +88,7 @@ namespace Capa_Datos
                                                                       out ErrorMessage_ varchar(255) )*/
 
                 // Proceso el recibo de producto
-                MySqlCommand cmdprocesa = new MySqlCommand("SP_EN_ProcEntradaManual", conn.AbrirConexion());
+                MySqlCommand cmdprocesa = new MySqlCommand("SP_EM_ProcEntradaManual", conn.AbrirConexion());
                 cmdprocesa.CommandType = CommandType.StoredProcedure;
 
                 cmdprocesa.Parameters.Add("@JItems", MySqlDbType.JSON).Value = sJson;
