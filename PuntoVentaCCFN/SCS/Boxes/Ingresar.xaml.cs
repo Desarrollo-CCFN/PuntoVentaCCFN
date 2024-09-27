@@ -1,4 +1,5 @@
 ﻿
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,14 +11,29 @@ namespace Capa_Presentacion.SCS.Boxes
     /// </summary>
     public partial class Ingresar : Window
     {
+        private static readonly Regex _regex = new Regex("[^0-9.-]+");
         public Ingresar()
         {
             InitializeComponent();
             tbCantidad.Focus();
         }
 
+        #region regex para validacion de input numerico
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+        #endregion
+
         private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsTextAllowed(tbCantidad.Text))
+            {
+                System.Windows.MessageBox.Show("Dato incorrecto en cantidad!!");
+                return;
+            }
+
+
             bool esnumerico = decimal.TryParse(tbCantidad.Text, out _);
 
             if (esnumerico)
