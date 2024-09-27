@@ -248,7 +248,7 @@ namespace Capa_Presentacion.SCS.Boxes
                 WhsCode = WhsCode,
                 BegAmount = beginAmount,
                 BegAmountFC = beginAmountFC,
-                Cashier = User, // selectCajera,
+                Cashier = selectCajera, // selectCajera,
                 StationId = StationId,
             };
 
