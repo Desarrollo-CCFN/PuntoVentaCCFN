@@ -313,16 +313,18 @@ namespace PuntoVentaCCFN.Views
         #endregion
 
         #region calculo del saldo en cada insersion de producto
-        decimal total, cambio, pagado, subTotal, totalUSD;
+        decimal total, cambio, pagado, subTotal, totalUSD, qty;
         private void saldo()
         {
             total = 0;
             totalUSD = 0;
             subTotal = 0;
+            qty = 0;
             for (int i = 0; i < GridDatos.Items.Count; i++)
             {
                 decimal precioTotal;
                 decimal precioSubtotal;
+                decimal quan;
                 int j = 8;
                 DataGridCell celda = GetCelda(i, j);
                 TextBlock tb = celda.Content as TextBlock;
@@ -330,11 +332,17 @@ namespace PuntoVentaCCFN.Views
                 total += precioTotal;
                 totalUSD += precioTotal / Convert.ToDecimal(tbTipoCambio.Text);
 
+                int m = 7;
+                DataGridCell celda2 = GetCelda(i, m);
+                TextBlock tb2 = celda2.Content as TextBlock;
+                quan = decimal.Parse(tb2.Text);
+                qty = quan;
+
                 int k = 3;
                 DataGridCell celda1 = GetCelda(i, k);
                 TextBlock tb1 = celda1.Content as TextBlock;
                 precioSubtotal = decimal.Parse(tb1.Text);
-                subTotal += precioSubtotal;
+                subTotal += precioSubtotal * quan;
             }
 
             cambio = pagado - total;
