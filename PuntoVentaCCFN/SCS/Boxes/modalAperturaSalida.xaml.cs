@@ -54,6 +54,7 @@ namespace Capa_Presentacion.SCS.Boxes
         public int OpcValue = 0;
         public string sMensaje = null;
         public bool status = true;
+        
 
 
         public modalAperturaSalida(int opcValue)
@@ -127,8 +128,12 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
-                lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
-                lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
+               // lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
+               // lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
+
+                lbPesos.Content = "Monto Pesos: "; // + infoCaja.BegAmount.ToString();
+                lbDolares.Content = "Monto Dolares: "; //+ infoCaja.BegAmountFC.ToString();
+
             }
             else
             {

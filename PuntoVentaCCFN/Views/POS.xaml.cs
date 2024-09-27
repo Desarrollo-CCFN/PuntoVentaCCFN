@@ -82,7 +82,7 @@ namespace PuntoVentaCCFN.Views
 
             try
             {
-                printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+           //     printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
             }
             catch (Exception ex) { }
 
@@ -93,7 +93,7 @@ namespace PuntoVentaCCFN.Views
             whsCode = SettingSection.Filler;
             tipoCambio = SettingSection.DefRateCash;
             tbMoneda.Text = SettingSection.DefCurrency;
-            nombreCaja = "1";
+            nombreCaja = AppConfig1.Caja; //"1";
 
         }
 
@@ -271,6 +271,7 @@ namespace PuntoVentaCCFN.Views
         decimal total, cambio, pagado, subTotal, totalUSD;
         private void saldo()
         {
+            Nom_Cajera.logoff = 0;
             total = 0;
             totalUSD = 0;
             subTotal = 0;
@@ -290,6 +291,7 @@ namespace PuntoVentaCCFN.Views
                 TextBlock tb1 = celda1.Content as TextBlock;
                 precioSubtotal = decimal.Parse(tb1.Text);
                 subTotal += precioSubtotal;
+                Nom_Cajera.logoff = 1; // para no salir del logoff
             }
 
             cambio = pagado - total;
@@ -299,6 +301,8 @@ namespace PuntoVentaCCFN.Views
             tbSubtotal.Text = "$" + subTotal.ToString("0.00");
             tbPagado.Text = "$" + pagado.ToString("###,###.00");
             tbCambio.Text = "$" + cambio.ToString("0.00");
+           
+
 
         }
         #endregion
@@ -861,6 +865,7 @@ namespace PuntoVentaCCFN.Views
 
 
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+            Nom_Cajera.logoff = 0;
 
         /*
             var e = new EPSON();

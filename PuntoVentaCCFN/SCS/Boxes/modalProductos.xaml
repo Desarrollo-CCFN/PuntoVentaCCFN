@@ -213,7 +213,7 @@
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbSearchbox"
-                     Style="{DynamicResource txtBoxCantidad}" />
+                     Style="{DynamicResource txtBoxCantidad}" KeyDown="tbSearchbox_KeyDown" />
             <Button Margin="345,31,280,50" Style="{DynamicResource btnOk}" Click="Button_Click">
                 <TextBlock Text="Buscar"
                            />
