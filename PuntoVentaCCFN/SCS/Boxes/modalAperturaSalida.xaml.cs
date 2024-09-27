@@ -54,7 +54,9 @@ namespace Capa_Presentacion.SCS.Boxes
         public int OpcValue = 0;
         public string sMensaje = null;
         public bool status = true;
-        
+        public decimal Mpesos = 0;
+        public decimal MDolares = 0;
+
 
 
         public modalAperturaSalida(int opcValue)
@@ -86,7 +88,8 @@ namespace Capa_Presentacion.SCS.Boxes
         {
 
             bool _status;
-
+             Mpesos = 0;       //totalizado retiros
+             MDolares = 0;
             _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
 
             if(_status)
@@ -131,8 +134,8 @@ namespace Capa_Presentacion.SCS.Boxes
                // lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
                // lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
 
-                lbPesos.Content = "Monto Pesos: "; // + infoCaja.BegAmount.ToString();
-                lbDolares.Content = "Monto Dolares: "; //+ infoCaja.BegAmountFC.ToString();
+                lbPesos.Content = "Monto Pesos: $ 0.0"; // + infoCaja.BegAmount.ToString();
+                lbDolares.Content = "Monto Dolares: $0.0"; //+ infoCaja.BegAmountFC.ToString();
 
             }
             else
@@ -560,14 +563,13 @@ namespace Capa_Presentacion.SCS.Boxes
             this.Close();
         
         
-        
-        
-        
-        
         }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
         {
+            string selectedMoneda = cbMoneda.SelectedItem.ToString();
+          
+
             if (cbDenominaciones.SelectedItem is CE_Denominacion selectedDenominacion)
             {
                 if (int.TryParse(tbCantidad.Text, out int cantidad))
@@ -584,8 +586,21 @@ namespace Capa_Presentacion.SCS.Boxes
                         AmountValue = amountValue, // Cambiado a AmountValue
                         Cantidad = cantidad,
                         Total = resultado
+ 
                     };
 
+                    if ("Pesos" == selectedMoneda)
+                    {
+                        Mpesos = resultado + Mpesos;
+                        lbPesos.Content = "Monto Pesos: $ "+ Mpesos.ToString("N2");
+                        
+                    }
+                    else
+                    {
+                        MDolares = resultado + MDolares;
+                        lbDolares.Content = "Monto Dolares: $ "+ MDolares.ToString("N2");
+
+                    }
                     // Agregar el nuevo item al DataGrid
                     GridDatos.Items.Add(newItem);
                 }
