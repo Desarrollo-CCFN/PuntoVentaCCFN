@@ -1,6 +1,7 @@
 ﻿using Capa_Negocio.Clientes;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 
 namespace Capa_Presentacion.SCS.Boxes
@@ -16,6 +17,7 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             InitializeComponent();
             CargarClientes();
+            tbSearchbox.Focus();
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
@@ -59,6 +61,17 @@ namespace Capa_Presentacion.SCS.Boxes
                 numLista = (celda3.Column.GetCellContent(celda3.Item) as TextBlock).Text;
                 this.Close();
             }
+        }
+
+        private void tbSearchbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            
+
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                buscarCliente(sender, e);  
+            }
+
         }
     }
 }
