@@ -349,7 +349,7 @@
                 Grid.Row="13"
                 Grid.Column="2"
                 x:Name="tbCodigoProducto"
-                Style="{DynamicResource tbStyle}" Grid.ColumnSpan="3" Margin="0,5,190,8" KeyDown="tbCodigoProducto_KeyDown"/>
+                Style="{DynamicResource tbStyle}" Grid.ColumnSpan="3" Margin="0,5,190,8" KeyDown="tbCodigoProducto_KeyDown" GotFocus="tbCodigoProducto_GotFocus"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"

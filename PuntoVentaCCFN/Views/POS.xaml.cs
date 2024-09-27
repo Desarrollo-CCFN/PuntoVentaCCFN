@@ -68,7 +68,8 @@ namespace PuntoVentaCCFN.Views
         public bool pagoUSD = false;
         private string nombreCajaString;
         private int nombreCajaInt;
-
+        private string sCodigoBarra;
+        private bool bGs11128 = false;
         public POS()
         {
             InitializeComponent();
@@ -79,10 +80,10 @@ namespace PuntoVentaCCFN.Views
         void IniciarConfiguracion()
         {
             var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-
             try
             {
                 printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
+
             }
             catch (Exception ex) { }
 
@@ -94,7 +95,6 @@ namespace PuntoVentaCCFN.Views
             tipoCambio = SettingSection.DefRateCash;
             tbMoneda.Text = SettingSection.DefCurrency;
             nombreCaja = "1";
-
         }
 
         #region verificar venta activa
@@ -178,15 +178,59 @@ namespace PuntoVentaCCFN.Views
         private void tbCodigoProducto_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             //if(tbCodigoProducto.Text.Length < 5) { tbCodigoProducto.Text = "";  return; }
+           // int iCadenaLong = tbCodigoProducto.Text.Length;
 
             if (e.Key == Key.Enter)
             {
 
                 if (tbCodigoProducto.Text == "") return;
 
+                if (bGs11128 == true) 
+                {
+                    tbCodigoProducto.Text = sCodigoBarra;
+                }
                 operacionBusquedaInsercio();
 
                 tbCodigoProducto.Text = "";
+                sCodigoBarra = "";
+                bGs11128 = false;
+            }
+            else
+            {
+
+                // Get the character representation of the key pressed
+                char keyChar = (char)KeyInterop.VirtualKeyFromKey(e.Key);
+                int asci = Convert.ToInt32(keyChar);
+
+                if (asci > 31 && asci < 128) // numeric and chars only
+                {
+                    sCodigoBarra += keyChar;
+                }
+                else
+                {
+                    if ((asci == 29) || (asci == 162))
+                    {
+                        // GS1 Separator
+                        sCodigoBarra += "@"; // GS1 Seperator    
+                        bGs11128 = true;
+                    }
+                }
+
+
+                /*
+                //  e.InputSource
+                int asci = Convert.ToInt32(e.Key);
+                if (asci > 31 && asci < 128) // numeric and chars only
+                    sCodigoBarra += Convert.ToChar(asci); //Convert.ToChar((int)(e.Key & 0xffff));
+                else
+                {
+                    if (asci == 29)
+                    {
+                        //rawbcode += "<GS>"; // GS1 Seperator    
+                        sCodigoBarra += "@"; // GS1 Seperator    
+                    }
+                }
+                */
             }
         }
 
@@ -208,9 +252,10 @@ namespace PuntoVentaCCFN.Views
             }
 
             DataTable dt;
+            sMensaje = "";
             dt = carrito.buscarProducto(tbCodigoProducto.Text, listPrecios, tbMoneda.Text, whsCode, ventaI.Id, ref sMensaje);
 
-            if (dt == null)
+            if ((dt == null) || (sMensaje != ""))
             {
                 MessageBox.Show(sMensaje);
                 return;
@@ -862,100 +907,100 @@ namespace PuntoVentaCCFN.Views
 
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
 
-        /*
-            var e = new EPSON();
+        
+            //var e = new EPSON();
 
-            try
-            {
-                printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
+            //try
+            //{
+            //    printer.Write( // or, if using and immediate printer, use await printer.WriteAsync
 
-                      ByteSplicer.Combine(
-                        e.CenterAlign(),
-                        e.PrintLine(""),
-                        //e.SetBarcodeHeightInDots(360),
-                        //e.SetBarWidth(BarWidth.Default),
-                        //e.SetBarLabelPosition(BarLabelPrintPosition.None),
-                        //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
-                        e.PrintLine(""),
-                        e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
-                        e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
-                        e.PrintLine("Mexicali, Baja California"),
-                        e.PrintLine("(686) 554 1535"),
-                        e.SetStyles(PrintStyle.Underline),
-                        e.PrintLine("www.ccfn.com"),
-                        e.SetStyles(PrintStyle.None),
-                        e.PrintLine(""),
-                        e.LeftAlign(),
-                        e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
-                        e.PrintLine(""),
-                        e.PrintLine(""),
-                        e.SetStyles(PrintStyle.FontB),
-                        e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
-
-
-                for (int i = 0; i < GridDatos.Items.Count; i++)
-                {
-                    string nombre;
-                    decimal cantidad, preciounitario, totalarticulo;
-
-                    int j = 1;
-                    DataGridCell cell1 = GetCelda(i, j);
-                    TextBlock tb1 = cell1.Content as TextBlock;
-                    nombre = tb1.Text;
-
-                    int k = 4;
-                    DataGridCell cell2 = GetCelda(i, k);
-                    TextBlock tb12 = cell2.Content as TextBlock;
-                    cantidad = Decimal.Parse(tb12.Text);
-
-                    int l = 6;
-                    DataGridCell cell23 = GetCelda(i, l);
-                    TextBlock tb13 = cell23.Content as TextBlock;
-                    totalarticulo = Decimal.Parse(tb13.Text);
-
-                    int m = 3;
-                    DataGridCell cell4 = GetCelda(i, m);
-                    TextBlock tb14 = cell4.Content as TextBlock;
-                    preciounitario = Decimal.Parse(tb14.Text);
-
-                    //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
-                    printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
-                };
+            //          ByteSplicer.Combine(
+            //            e.CenterAlign(),
+            //            e.PrintLine(""),
+            //            //e.SetBarcodeHeightInDots(360),
+            //            //e.SetBarWidth(BarWidth.Default),
+            //            //e.SetBarLabelPosition(BarLabelPrintPosition.None),
+            //            //e.PrintBarcode(BarcodeType.ITF, "0123456789"),
+            //            e.PrintLine(""),
+            //            e.PrintLine("COMERCIAL DE CARNES FRIAS DEL NORTE"),
+            //            e.PrintLine("Cto. Brasil, Alamitos, 21210 Mexicali, B.C."),
+            //            e.PrintLine("Mexicali, Baja California"),
+            //            e.PrintLine("(686) 554 1535"),
+            //            e.SetStyles(PrintStyle.Underline),
+            //            e.PrintLine("www.ccfn.com"),
+            //            e.SetStyles(PrintStyle.None),
+            //            e.PrintLine(""),
+            //            e.LeftAlign(),
+            //            e.PrintLine("No: " + numTck + "        Fecha: " + DateTime.Now.ToString("dd/MM/yyyy") + " "),
+            //            e.PrintLine(""),
+            //            e.PrintLine(""),
+            //            e.SetStyles(PrintStyle.FontB),
+            //            e.PrintLine("Cant.     " + "Articulo               " + "        Precio           " + "Total")));
 
 
-                printer.Write(
-                    ByteSplicer.Combine(
-                         e.PrintLine("----------------------------------------------------------------"),
-                                e.RightAlign(),
-                                e.PrintLine("Total:                 $" + total),
-                                e.PrintLine("Pagado:                $" + pagado),
-                                e.PrintLine("Cambio:                $" + cambio),
-                                e.PrintLine(""),
-                                e.PrintLine("----------------------------------------------------------------")
-                        //e.LeftAlign(),
-                        //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                        //e.PrintLine("SOLD TO:                        SHIP TO:"),
-                        //e.SetStyles(PrintStyle.FontB),
-                        //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
-                        //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                        //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                        //e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                        //e.PrintLine("  CUST: 87654321"),
-                        //e.PrintLine(""),
-                        //e.PrintLine("")
-                        ));
+            //    for (int i = 0; i < GridDatos.Items.Count; i++)
+            //    {
+            //        string nombre;
+            //        decimal cantidad, preciounitario, totalarticulo;
 
-                // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
-                //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+            //        int j = 1;
+            //        DataGridCell cell1 = GetCelda(i, j);
+            //        TextBlock tb1 = cell1.Content as TextBlock;
+            //        nombre = tb1.Text;
+
+            //        int k = 4;
+            //        DataGridCell cell2 = GetCelda(i, k);
+            //        TextBlock tb12 = cell2.Content as TextBlock;
+            //        cantidad = Decimal.Parse(tb12.Text);
+
+            //        int l = 6;
+            //        DataGridCell cell23 = GetCelda(i, l);
+            //        TextBlock tb13 = cell23.Content as TextBlock;
+            //        totalarticulo = Decimal.Parse(tb13.Text);
+
+            //        int m = 3;
+            //        DataGridCell cell4 = GetCelda(i, m);
+            //        TextBlock tb14 = cell4.Content as TextBlock;
+            //        preciounitario = Decimal.Parse(tb14.Text);
+
+            //        //test.Add(e.PrintLine(cantidad + "" + nombre + "" + preciounitario + "" + totalarticulo));
+            //        printer.Write(e.PrintLine(cantidad + " " + nombre + "            " + preciounitario + "          " + totalarticulo));
+            //    };
 
 
-                System.Windows.MessageBox.Show("Venta realizada con exito!");
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
-            }
-          */
+            //    printer.Write(
+            //        ByteSplicer.Combine(
+            //             e.PrintLine("----------------------------------------------------------------"),
+            //                    e.RightAlign(),
+            //                    e.PrintLine("Total:                 $" + total),
+            //                    e.PrintLine("Pagado:                $" + pagado),
+            //                    e.PrintLine("Cambio:                $" + cambio),
+            //                    e.PrintLine(""),
+            //                    e.PrintLine("----------------------------------------------------------------")
+            //            //e.LeftAlign(),
+            //            //e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
+            //            //e.PrintLine("SOLD TO:                        SHIP TO:"),
+            //            //e.SetStyles(PrintStyle.FontB),
+            //            //e.PrintLine("  FIRSTN LASTNAME                 FIRSTN LASTNAME"),
+            //            //e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
+            //            //e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
+            //            //e.PrintLine("  (123)456-7890                   (123)456-7890"),
+            //            //e.PrintLine("  CUST: 87654321"),
+            //            //e.PrintLine(""),
+            //            //e.PrintLine("")
+            //            ));
+
+            //    // e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
+            //    //e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+
+
+            //    System.Windows.MessageBox.Show("Venta realizada con exito!");
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
+            //}
+          
         }
         #endregion
 
@@ -1166,6 +1211,11 @@ namespace PuntoVentaCCFN.Views
                 MessageBox.Show("Debes seleccionar un producto!!");
                 return;
             }
+        }
+
+        private void tbCodigoProducto_GotFocus(object sender, RoutedEventArgs e)
+        {
+            sCodigoBarra = "";
         }
 
         #endregion
