@@ -31,6 +31,7 @@ namespace PuntoVentaCCFN
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
         public string sMensaje = null;
+        public int nCerrar = 0;
 
         public static class Retiro_Control
         {
@@ -299,25 +300,34 @@ namespace PuntoVentaCCFN
         private void BtnLogOff_Click(object sender, RoutedEventArgs e)
         {
             // Muestra el mensaje de información
-           // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+            // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+           
+            nCerrar = 1;   //cerrar por logoff
 
-
-
-            // Cierra todas las ventanas abiertas excepto la actual
-            foreach (Window window in System.Windows.Application.Current.Windows)
+            if (Nom_Cajera.logoff == 0)
             {
-                if (window != this)
+                // Cierra todas las ventanas abiertas excepto la actual
+                foreach (Window window in System.Windows.Application.Current.Windows)
                 {
-                    window.Close();
+                    if (window != this)
+                    {
+                        window.Close();
+                    }
                 }
-            }
-            
-            // Almacena la nueva ventana que quieres abrir
-            LoginView loginView = new LoginView();
-            // Muestra la nueva ventana
-            loginView.Show();
-            this.Close();
 
+                // Almacena la nueva ventana que quieres abrir
+                LoginView loginView = new LoginView();
+                // Muestra la nueva ventana
+                loginView.Show();
+                this.Close();
+            }
+            else
+            {
+
+                System.Windows.MessageBox.Show("No se puede realizar el LogOff primero debe de cerrar la venta", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+            }
 
         }
 
@@ -363,29 +373,38 @@ namespace PuntoVentaCCFN
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MessageBoxResult r = System.Windows.MessageBox.Show("Desea Cerrar El Aplicativo?", "Terminacion de PDV", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (r == MessageBoxResult.Yes)
+
+            if (nCerrar == 0)
             {
-                foreach (Window window in System.Windows.Application.Current.Windows)
+                MessageBoxResult r = System.Windows.MessageBox.Show("Desea Cerrar El Aplicativo?", "Terminacion de PDV", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (r == MessageBoxResult.Yes)
                 {
-                    var applicationConfiguration = ConfigurationManager
-                    .OpenExeConfiguration(ConfigurationUserLevel.None);
-                    var section = applicationConfiguration.GetSection("App_Preferences");
-
-                    if (section != null)
+                    foreach (Window window in System.Windows.Application.Current.Windows)
                     {
-                        applicationConfiguration.Sections.Remove("App_Preferences");
-                        section.SectionInformation.ForceSave = true;
-                        applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                        var applicationConfiguration = ConfigurationManager
+                        .OpenExeConfiguration(ConfigurationUserLevel.None);
+                        var section = applicationConfiguration.GetSection("App_Preferences");
+
+                        if (section != null)
+                        {
+                            applicationConfiguration.Sections.Remove("App_Preferences");
+                            section.SectionInformation.ForceSave = true;
+                            applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                        }
+
+                        //ConfigurationManager.RefreshSection("App_Preferences");
+
+                        window.Visibility = Visibility.Hidden;
                     }
-
-                    //ConfigurationManager.RefreshSection("App_Preferences");
-
-                    window.Visibility = Visibility.Hidden;
                 }
+                else { e.Cancel = true; }
+
             }
-            else { e.Cancel = true; }
+
+
+
         }
+
     }
 }
 

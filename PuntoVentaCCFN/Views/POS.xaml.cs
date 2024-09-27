@@ -83,7 +83,6 @@ namespace PuntoVentaCCFN.Views
             try
             {
                 printer = new SerialPrinter(portName: "COM8", baudRate: 9600);
-
             }
             catch (Exception ex) { }
 
@@ -95,6 +94,7 @@ namespace PuntoVentaCCFN.Views
             tipoCambio = SettingSection.DefRateCash;
             tbMoneda.Text = SettingSection.DefCurrency;
             nombreCaja = "1";
+
         }
 
         #region verificar venta activa
@@ -316,6 +316,7 @@ namespace PuntoVentaCCFN.Views
         decimal total, cambio, pagado, subTotal, totalUSD, qty;
         private void saldo()
         {
+            Nom_Cajera.logoff = 0;
             total = 0;
             totalUSD = 0;
             subTotal = 0;
@@ -342,7 +343,8 @@ namespace PuntoVentaCCFN.Views
                 DataGridCell celda1 = GetCelda(i, k);
                 TextBlock tb1 = celda1.Content as TextBlock;
                 precioSubtotal = decimal.Parse(tb1.Text);
-                subTotal += precioSubtotal * quan;
+                subTotal += precioSubtotal;
+                Nom_Cajera.logoff = 1;
             }
 
             cambio = pagado - total;
@@ -352,6 +354,8 @@ namespace PuntoVentaCCFN.Views
             tbSubtotal.Text = "$" + subTotal.ToString("0.00");
             tbPagado.Text = "$" + pagado.ToString("###,###.00");
             tbCambio.Text = "$" + cambio.ToString("0.00");
+           
+
 
         }
         #endregion
@@ -914,6 +918,7 @@ namespace PuntoVentaCCFN.Views
 
 
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+            Nom_Cajera.logoff = 0;
 
         
             //var e = new EPSON();

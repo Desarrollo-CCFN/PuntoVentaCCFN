@@ -219,19 +219,26 @@ namespace Capa_Datos.Venta
 
         public void ventaPagos(CE_VentaPagos ventaPago)
         {
-            MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
-            conm.CommandType = CommandType.StoredProcedure;
-            conm.Parameters.Add("Payform", MySqlDbType.VarChar).Value = ventaPago.Payform;
-            conm.Parameters.Add("Currency", MySqlDbType.VarChar).Value = ventaPago.Currency;
-            conm.Parameters.Add("Rate", MySqlDbType.Decimal).Value = ventaPago.Rate;
-            conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
-            conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
-            conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
-            conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
-            conm.ExecuteNonQuery();
-            conm.Parameters.Clear();
-            conn.CerrarConexion();
+            try
+            {
+                MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("Payform", MySqlDbType.VarChar).Value = ventaPago.Payform;
+                conm.Parameters.Add("Currency", MySqlDbType.VarChar).Value = ventaPago.Currency;
+                conm.Parameters.Add("Rate", MySqlDbType.Decimal).Value = ventaPago.Rate;
+                conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
+                conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
+                conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
+                conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex) { }
         }
+            
+            
+        
 
         public bool AnularFPagos(int idHeader)
         {

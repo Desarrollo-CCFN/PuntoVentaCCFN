@@ -29,6 +29,7 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             InitializeComponent();
             CargarProductos();
+            tbSearchbox.Focus();
         }
 
         void CargarProductos()
@@ -73,6 +74,18 @@ namespace Capa_Presentacion.SCS.Boxes
             cbUnidades.DisplayMemberPath = "UomCode";
             cbUnidades.SelectedValuePath = "UomEntry";
             cbUnidades.SelectedIndex = 0;
+        }
+
+        private void tbSearchbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+
+                Button_Click(sender, e); // Mueve el foco a tbPassword_Copiar
+            }
+  
         }
     }
 
