@@ -45,6 +45,8 @@ namespace PuntoVentaCCFN
 
             InitializeComponent();
             LoadJson();
+
+
             if (AppConfig.Sections["App_Preferences"] is null)
             {   
                 AppConfig.Sections.Add("App_Preferences", new App_Preferences());
@@ -66,20 +68,33 @@ namespace PuntoVentaCCFN
         {
             try
             {
-                if (File.Exists("C:\\PuntoVenta\\config.json"))
+                if (File.Exists("C:\\PuntoVenta\\company.json"))
                 {
-                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\config.json"))
+                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\company.json"))
                     {
 
                         string json = r.ReadToEnd();
                         JObject jsons = JObject.Parse(json);
 
-                        AppConfig1.IP = jsons["IP"].ToString();
-                        AppConfig1.Sucursal = jsons["Sucursal"].ToString();
-                        AppConfig1.Puerto = jsons["Puerto"].ToString();
-                        AppConfig1.Caja = jsons["Caja"].ToString();
-                        AppConfig1.Copia = jsons["Copia"].ToString();
+                           AppConfig1.IP = jsons["IP"].ToString();
+                           AppConfig1.Sucursal = jsons["Sucursal"].ToString();
+                           AppConfig1.Puerto = jsons["Puerto"].ToString();
+                           AppConfig1.Caja = jsons["Caja"].ToString();
+                           AppConfig1.Copia = jsons["Copia"].ToString();
+                        
 
+                        AppConfig1.CompanyName = jsons["CompanyName"].ToString();
+                        AppConfig1.Filler = jsons["Filler"].ToString();
+                        AppConfig1.bd = jsons["Bd"].ToString();
+                        AppConfig1.DefCardCode = jsons["DefCardCode"].ToString();
+                        AppConfig1.DefRateCash = jsons["DefRateCash"].ToString();
+
+                        AppConfig1.DefRateCredit = jsons["DefRateCredit"].ToString();
+                        AppConfig1.DefCurrency = jsons["DefCurrency"].ToString();
+                        AppConfig1.DefListNum = jsons["DefListNum"].ToString();
+                        AppConfig1.DefSlpCode = jsons["DefSlpCode"].ToString();
+
+                        AppConfig1.DefSerieInv = jsons["DefSerieInv"].ToString(); 
 
                     }
                 }
@@ -89,12 +104,12 @@ namespace PuntoVentaCCFN
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                    var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
-
+                    // var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
+                    var _data = new { CompanyName = "MAYOREO SLRC", Filler = "S12", Bd = "db_12", DefCardCode = "C00000012", DefRateCash = "19.400000", DefRateCredit = "19.500000", DefCurrency = "MXN", DefListNum = "8", DefSlpCode = "102", DefSerieInv = "102", IP = "192.168.0.0", Sucursal = "MAYOREO SLRC", Puerto = "12000", Caja = "1", Copia = "1" };
 
 
                     string json = JsonConvert.SerializeObject(_data);
-                    File.WriteAllText(@"C:\\PuntoVenta\\config.json", json);
+                    File.WriteAllText(@"C:\\PuntoVenta\\company.json", json);
 
                     // System.Windows.Forms.MessageBox.Show("Se ha creado un archivo de configuracion en el disco local, C:\\PuntoVenta ", "Configuracion");
                     System.Windows.Forms.MessageBox.Show("Se creo la configuracion, salir y volver entrar ", "Configuracion");
@@ -115,10 +130,20 @@ namespace PuntoVentaCCFN
             public static string IP { get; set; }
             public static string Sucursal { get; set; }
             public static string Puerto { get; set; }
-
             public static string Caja { get; set; }
 
-            public static string Copia { get; set; }
+            public static string Copia { get; set; } 
+            public static string CompanyName { get; set; }
+            public static string Filler { get; set; }
+            public static string bd { get; set; }
+            public static string DefCardCode { get; set; }
+            public static string DefRateCash { get; set; }
+            public static string DefRateCredit { get; set; }
+            public static string DefCurrency { get; set; }
+            public static string DefListNum { get; set; }
+            public static string DefSlpCode { get; set; }
+            public static string DefSerieInv { get; set; }
+             
 
         }
 
