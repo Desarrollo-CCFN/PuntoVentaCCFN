@@ -656,11 +656,28 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
         {
+           // string selectedMoneda = cbMoneda.SelectedItem.ToString();
             // Verifica si hay un ítem seleccionado en el DataGrid
-            if (GridDatos.SelectedItem != null)
+            //   if (GridDatos.SelectedItem != null)
+            if (GridDatos.SelectedItem is GridItem selectedItem)
             {
                 // Remueve el ítem seleccionado
-                GridDatos.Items.Remove(GridDatos.SelectedItem);
+                //  GridDatos.Items.Remove(GridDatos.SelectedItem);
+                GridDatos.Items.Remove(selectedItem);
+
+
+                if ("EF" == selectedItem.PayForm)
+                {
+                    Mpesos -= selectedItem.Total; // Restar el total del ítem seleccionado
+                    lbPesos.Content = "Monto Pesos: $ " + Mpesos.ToString("N2");
+                }
+                else 
+                {
+                    MDolares -= selectedItem.Total; // Restar el total del ítem seleccionado
+                    lbDolares.Content = "Monto Dolares: $ " + MDolares.ToString("N2");
+                }
+                 
+
             }
             else
             {

@@ -93,7 +93,7 @@ namespace PuntoVentaCCFN.Views
             whsCode = SettingSection.Filler;
             tipoCambio = SettingSection.DefRateCash;
             tbMoneda.Text = SettingSection.DefCurrency;
-            nombreCaja = "1";
+            nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
 
         }
 
