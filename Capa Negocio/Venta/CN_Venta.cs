@@ -71,5 +71,10 @@ namespace Capa_Negocio.Venta
             return objDatos.VentaActivaPagado(idHeader);
         }
 
+        public bool cerradoCaja(int station, string whsCode)
+        {
+            return objDatos.CerrarCaja(station, whsCode);
+        }
+
     }
 }
