@@ -48,7 +48,7 @@ namespace PuntoVentaCCFN.Views
         public EntradaManual()
         {
             InitializeComponent();
-            //CreateEMTable();
+            CreateEMTable();
         }
 
         public void CreateEMTable()
@@ -344,20 +344,27 @@ namespace PuntoVentaCCFN.Views
             GridSt.ItemsSource = bs;
 
             int iLine = EMTable.Rows.Count + 1;
-            myDataRow = EMTable.NewRow();
-            myDataRow["LineNum"] = iLine;
-            myDataRow["ItemCode"] = tb_CodigoId.Text;
-            myDataRow["Dscription"] = sItemName;
-            myDataRow["Quantity"] = dCantidad;
-            myDataRow["Umi"] = sUmiCode;
-            myDataRow["Price"] = dCosto;
-            myDataRow["LineTotal"] = (dCantidad * dCosto);
-            myDataRow["Currency"] = "MXN";
-            myDataRow["WhsCode"] = tb_Almacen.Text;
-            myDataRow["AcctCode"] = tb_Cuenta.Text;
-            
+            try
+            {
+                myDataRow = EMTable.NewRow();
+                myDataRow["LineNum"] = iLine;
+                myDataRow["ItemCode"] = tb_CodigoId.Text;
+                myDataRow["Dscription"] = sItemName;
+                myDataRow["Quantity"] = dCantidad;
+                myDataRow["Umi"] = sUmiCode;
+                myDataRow["Price"] = dCosto;
+                myDataRow["LineTotal"] = (dCantidad * dCosto);
+                myDataRow["Currency"] = "MXN";
+                myDataRow["WhsCode"] = tb_Almacen.Text;
+                myDataRow["AcctCode"] = tb_Cuenta.Text;
 
-            EMTable.Rows.Add(myDataRow);
+
+                EMTable.Rows.Add(myDataRow);
+            }
+            catch (Exception ex) 
+            {
+              System.Windows.MessageBox.Show(ex.Message);
+            }
 
         }
 
