@@ -13,11 +13,12 @@ using System.IO;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad;
 using Capa_Negocio;
+using Capa_Negocio.Venta;
 
 
 
 
-  
+
 
 namespace PuntoVentaCCFN
 {
@@ -30,6 +31,7 @@ namespace PuntoVentaCCFN
 
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
+        readonly CN_Venta cN_Venta = new CN_Venta();
         public string sMensaje = null;
         public int nCerrar = 0;
 
@@ -389,13 +391,63 @@ namespace PuntoVentaCCFN
         }
         #endregion
 
+        #region cerrado inicial
+
         private void Cierre_Caja_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
- 
+
+            var Acceso = new Acceso(3);
+            Acceso.ShowDialog();
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            string nombreCajaString = MainWindow.AppConfig1.Caja;
+            string SucursalString = SettingSection.Filler;
+            string NombreCompany = SettingSection.CompanyName;
+            int nombreCajaInt = int.Parse(nombreCajaString);
+
+
+            if (Acceso.ReturnValue >= 3)
+            {
+                // Mostrar el cuadro de mensaje con las opciones Sí y No
+                MessageBoxResult result = System.Windows.MessageBox.Show(
+                    "Esta estación se encuentra abierta. ¿Se cerrará? ¿Está usted de acuerdo?",
+                    "¡Alerta!",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
+
+                // Evaluar la respuesta del usuario
+                if (result == MessageBoxResult.Yes)
+
+
+                {
+                    if (!cN_Venta.cerradoCaja(nombreCajaInt, SucursalString))
+                    {
+                        System.Windows.MessageBox.Show("Error al cerrar caja!!");
+                    } else
+                    {
+                        System.Windows.MessageBox.Show("Exito al cerrar caja!!");
+                    }
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    // Si el usuario presiona "No", no hacer nada o cancelar la operación
+                    // Coloca aquí el código para cancelar la operación
+                }
+            }
+
+            // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+
+
+
+
+
+
+
+
 
         }
-
+        #endregion
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
 

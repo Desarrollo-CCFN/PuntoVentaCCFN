@@ -259,6 +259,26 @@ namespace Capa_Datos.Venta
             return true;
         }
 
+        public bool CerrarCaja(int station, string whsCode)
+        {
+            try
+            {
+                MySqlCommand conm = new MySqlCommand("SP_V_CerrarCaja", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_IdStation", MySqlDbType.Int32).Value = station;
+                conm.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = whsCode;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public CE_VentaHeader VentaActiva(string WhsCode, int idStation)
         {
             string sItemCode = "";
