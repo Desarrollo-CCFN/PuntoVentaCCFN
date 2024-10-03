@@ -11,20 +11,28 @@ namespace Capa_Datos
         #region Consultar
         public CE_ListaPrecios Consulta(int listNum)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_LP_Consultar", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("listNum", MySqlDbType.Int32).Value = listNum;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt;
-            dt = ds.Tables[0];
-            DataRow row = dt.Rows[0];
-            ce.ListNum = Convert.ToInt32(row[0]);
-            ce.ListName = Convert.ToString(row[1]);
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_LP_Consultar", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("listNum", MySqlDbType.Int32).Value = listNum;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                ce.ListNum = Convert.ToInt32(row[0]);
+                ce.ListName = Convert.ToString(row[1]);
 
 
-            return ce;
+                return ce;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
         #endregion
 

@@ -12,17 +12,21 @@ namespace Capa_Datos
 
         public CE_TipoCambio Consulta()
         {
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_TC_ConsultaTC", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                ce.Rate = Convert.ToDecimal(row[0]);
+                return ce;
+            } catch (Exception ex) { return null; }
 
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_TC_ConsultaTC", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt;
-            dt = ds.Tables[0];
-            DataRow row = dt.Rows[0];
-            ce.Rate = Convert.ToDecimal(row[0]);
-            return ce;
+
         }
     }
 }

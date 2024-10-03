@@ -624,7 +624,7 @@ namespace PuntoVentaCCFN.Views
                         return;
                     }
 
-                    if(Convert.ToInt32(t) <= 0)
+                    if(Convert.ToDecimal(t) <= 0)
                     {
                         System.Windows.MessageBox.Show("Debes ingresar una cantidad valida");
                         GridDatos.ItemsSource = null;
@@ -817,6 +817,12 @@ namespace PuntoVentaCCFN.Views
                 if (pagado <= 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                    return;
+                }
+
+                if(cambio < 0)
+                {
+                    System.Windows.MessageBox.Show("Ingresa una cantidad de pago mayor o igual a la venta!!.");
                     return;
                 }
                 ventaCambio();

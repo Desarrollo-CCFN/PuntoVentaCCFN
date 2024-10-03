@@ -11,19 +11,26 @@ namespace Capa_Datos.Clientes
 
         public CE_Clientes Consulta(string CardCode)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_C_Consultar", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("cardCode", MySqlDbType.VarChar).Value = CardCode;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt;
-            dt = ds.Tables[0];
-            DataRow row = dt.Rows[0];
-            ce.CardCode = Convert.ToString(row[0]);
-            ce.CardName = Convert.ToString(row[1]);
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_C_Consultar", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("cardCode", MySqlDbType.VarChar).Value = CardCode;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                ce.CardCode = Convert.ToString(row[0]);
+                ce.CardName = Convert.ToString(row[1]);
 
-            return ce;
+                return ce;
+            } catch
+            {
+                return null;
+            }
+
         }
     }
 }
