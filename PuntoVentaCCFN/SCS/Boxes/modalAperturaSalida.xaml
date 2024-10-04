@@ -313,8 +313,12 @@
             <Label Foreground="White" Content="" x:Name="lblCajera" HorizontalAlignment="Left" Margin="77,-9,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="218" RenderTransformOrigin="0.5,-0.105" Grid.ColumnSpan="4" Height="29"/>
             <Label Foreground="White" Content="" x:Name="lblMov" HorizontalAlignment="Left" Margin="149,21,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="174" Grid.ColumnSpan="4" Height="29"/>
 
-            <Label x:Name="lbPesos" Foreground="White" Content="PESOS" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Width="182" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Height="25" Margin="48,10,0,0" Grid.ColumnSpan="4" Grid.Column="3"/>
-            <Label x:Name="lbDolares" Foreground="White" Content="DOLARES" HorizontalAlignment="Left" Margin="47,31,0,0" VerticalAlignment="Top" FontWeight="Bold" Width="189" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" Height="24"/>
+            <Label x:Name="lblP" Foreground="White" Content="PESOS" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Width="182" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Height="25" Margin="48,10,0,0" Grid.ColumnSpan="4" Grid.Column="3"/>
+            <Label x:Name="lblD" Foreground="White" Content="DOLARES" HorizontalAlignment="Left" Margin="47,31,0,0" VerticalAlignment="Top" FontWeight="Bold" Width="189" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" Height="24"/>
+
+
+            <Label x:Name="lbPesos" Foreground="White" Content="PESOS" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" Width="182" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Height="25" Margin="113,10,0,0" Grid.ColumnSpan="4"/>
+            <Label x:Name="lbDolares" Foreground="White" Content="DOLARES" HorizontalAlignment="Left" Margin="113,30,0,0" VerticalAlignment="Top" FontWeight="Bold" Width="189" RenderTransformOrigin="0.5,-0.105" Grid.Row="3" Grid.ColumnSpan="4" Height="24"/>
 
         </Grid>
     </Border>

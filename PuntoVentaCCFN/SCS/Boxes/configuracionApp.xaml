@@ -222,18 +222,6 @@
                      x:Name="tbCaja"
                      Text="{Binding DefRateCash}"
                      Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
-
-            <Button  x:Name="btnAceptar"
-                    Grid.Row="18"
-                    Grid.Column="1"
-                    Content="Aceptar"
-                    Width="100"
-                    Cursor="Hand"
-                    HorizontalAlignment="Left"
-                    IsDefault="True"
-                     Style="{DynamicResource btnOk}"
-                    Click="btnAceptar_Click" Margin="151,12,0,2" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                    />
             <Button  x:Name="btnCancelar"
                 Grid.Row="18"
                 Grid.Column="2"
@@ -243,7 +231,7 @@
                 HorizontalAlignment="Left"
                 IsDefault="True"
                      Style="{DynamicResource btnOk}"
-                Click="btnCancelar_Click" Margin="201,8,0,7" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                Click="btnCancelar_Click" Margin="28,8,0,7" Grid.RowSpan="2"
                     />
             <TextBlock Text="TC Credito" 
                 Grid.Column="1"  

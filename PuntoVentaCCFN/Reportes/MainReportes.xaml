@@ -69,9 +69,9 @@
 
                 <TextBlock 
     Foreground="White" 
-    FontSize="30" 
-    FontWeight="Bold" Margin="235,8,239,21" >
-    <Run Text="Selección de Reportes"/></TextBlock>
+    FontSize="25" 
+    FontWeight="Bold" Margin="40,8,184,21" >
+    <Run Text="Selección de reportes y opciones de reimpresión"/></TextBlock>
 
                 <TextBlock Text="Desarrollado por el Equipo de Sistemas CCFN" 
       Foreground="LightGray" 
@@ -107,7 +107,7 @@
 
 
 
-                <Button x:Name="bitacora" Content="Bitácora de Retiros" 
+                <Button x:Name="TCK" Content="TCK VENTAS" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top" 
                     Width="129" 
@@ -125,7 +125,7 @@
 
 
 
-                <Button x:Name="entrega" Content="Entrega Sucursal" 
+                <Button x:Name="entrega" Content="AC, RF Y RE" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top" 
                     Width="129" 
