@@ -165,7 +165,7 @@
                      FontSize="20"
                      x:Name="tbCodigoC"
                      Text="{Binding CompanyName}"
-                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,173,0"/>
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,173,0" IsEnabled="False"/>
             <TextBlock Text="Codigo de Sucursal" 
                        Grid.Column="1"  
                        Grid.Row="4"
@@ -179,7 +179,7 @@
                      FontSize="20"
                      Text="{Binding Filler}"
                      x:Name="tbListaPrecio"
-                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0" IsEnabled="False"/>
             <TextBlock Text="Base de Datos" 
                         Grid.Column="1"  
                         Grid.Row="6"
@@ -193,7 +193,7 @@
                       FontSize="20"
                       x:Name="tbSucursal"
                       Text="{Binding Bd}"
-                      Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,172,0"/>
+                      Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,172,0" IsEnabled="False"/>
             <TextBlock Text="Codigo Cliente" 
                        Grid.Column="1"  
                        Grid.Row="8"
@@ -207,7 +207,7 @@
                      FontSize="20"
                      x:Name="tbPuerto"
                      Text="{Binding DefCardCode}"
-                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,173,0"/>
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="153,0,173,0" IsEnabled="False"/>
             <TextBlock Text="TC Efectivo" 
                        Grid.Column="1"  
                        Grid.Row="10"
@@ -221,7 +221,7 @@
                      FontSize="20"
                      x:Name="tbCaja"
                      Text="{Binding DefRateCash}"
-                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
+                     Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0" IsEnabled="False"/>
             <Button  x:Name="btnCancelar"
                 Grid.Row="18"
                 Grid.Column="2"
@@ -231,7 +231,7 @@
                 HorizontalAlignment="Left"
                 IsDefault="True"
                      Style="{DynamicResource btnOk}"
-                Click="btnCancelar_Click" Margin="28,8,0,7" Grid.RowSpan="2"
+                Click="btnCancelar_Click" Margin="42,8,0,7" Grid.RowSpan="2"
                     />
             <TextBlock Text="TC Credito" 
                 Grid.Column="1"  
@@ -246,7 +246,7 @@
                 FontSize="20"
 
                 Text="{Binding DefRateCredit}"
-                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0"/>
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0" IsEnabled="False"/>
             <TextBlock Text="Moneda" 
                 Grid.Column="1"  
                 Grid.Row="14"
@@ -260,7 +260,7 @@
                 FontSize="20"
 
                 Text="{Binding DefCurrency}"
-                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0"/>
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="152,0,172,0" IsEnabled="False"/>
             <TextBlock Text="Lista de Precios" 
                 Grid.Column="1"  
                 Grid.Row="16"
@@ -274,7 +274,7 @@
                 FontSize="20"
 
                 Text="{Binding DefListNum}"
-                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0"/>
+                Style="{DynamicResource txtBoxCantidad}" Grid.ColumnSpan="3" Margin="151,0,173,0" IsEnabled="False"/>
         </Grid>
 
 
