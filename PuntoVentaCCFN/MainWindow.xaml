@@ -249,6 +249,9 @@
         <DataTemplate x:Name="EntradaRecibo" DataType="{x:Type viewmodels:EntradaRecibo}">
             <viewmodels:EntradaRecibo DataContext="{Binding}"/>
         </DataTemplate>
+        <DataTemplate x:Name="CierreCaja" DataType="{x:Type viewmodels:CierreCaja}">
+            <viewmodels:CierreCaja DataContext="{Binding}"/>
+        </DataTemplate>
         <!--#endregion-->
     </Window.Resources>
     <Window.Triggers>

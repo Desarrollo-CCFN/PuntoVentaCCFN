@@ -265,7 +265,7 @@ namespace Capa_Datos.Venta
             {
                 MySqlCommand conm = new MySqlCommand("SP_V_CerrarCaja", conn.AbrirConexion());
                 conm.CommandType = CommandType.StoredProcedure;
-                conm.Parameters.Add("_IdStation", MySqlDbType.Int32).Value = station;
+                conm.Parameters.Add("_StationId", MySqlDbType.Int32).Value = station;
                 conm.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = whsCode;
                 conm.ExecuteNonQuery();
                 conm.Parameters.Clear();
