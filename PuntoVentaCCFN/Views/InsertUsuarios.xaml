@@ -6,62 +6,104 @@
       xmlns:local="clr-namespace:Capa_Presentacion.Views"
       mc:Ignorable="d" 
       FontSize="18"
-      d:DesignHeight="900" d:DesignWidth="800"
+      d:DesignHeight="865" d:DesignWidth="1425"
       Title="InsertUsuarios">
 
 
     <Page.Resources>
+        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#FF688CAF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border CornerRadius="0,0,10,10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Command="{x:Static DataGrid.SelectAllCommand}" Focusable="false" Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}}" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                                            <Grid Grid.Column="1" Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="#0276aa"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"></Setter>
+            <Setter Property="TextBlock.TextAlignment" Value="Center"></Setter>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#bbdefb"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#bbdefb"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
                         <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        <Style x:Key="BtnStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="Blue"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="10" x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#35baf6"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#35baf6"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#35baf6"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#35baf6"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -78,6 +120,8 @@
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
             <Setter Property="Template">
@@ -110,6 +154,54 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background1" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border1" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background1" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border1" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background2" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border2" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground2" Color="#FF838383"/>
+        <Style x:Key="btnSide" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="10" x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background1}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border1}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background2}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border2}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground2}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Border CornerRadius="10" Background="#4dabf5">
@@ -126,8 +218,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="42"/>
+                <RowDefinition Height="58"/>
+                <RowDefinition Height="14"/>
                 <RowDefinition Height="58"/>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="40"/>
@@ -144,77 +236,77 @@
             <!--#endregion-->
             <!--#region TITULO-->
             <TextBlock x:Name="Titulo"
-                       Text="Alta Usuarios"
-                       Grid.Column="3"
+                       Text="Alta De Usuario"
+                       Grid.Column="2"
                        Grid.Row="1"
-                       FontSize="30"
+                       FontSize="40"
+                       Foreground="White"
+                       FontWeight="Bold"
                        VerticalAlignment="Center"
-                       HorizontalAlignment="Center" Height="40" Width="190"/>
+                       HorizontalAlignment="Left" Height="46" Width="365" Grid.ColumnSpan="3" Margin="254,0,0,0"/>
             <!--#endregion-->
             <!--#region BOTONES-->
             <!--#region REGRESAR-->
-            <Button Style="{DynamicResource BtnStyle}" x:Name="BtnRegresar"
+            <Button Style="{DynamicResource btnSide}" x:Name="BtnRegresar"
                     Content="Regresar"
-                    Grid.Column="1"
-                    Grid.Row="2"
+                    Grid.Column="3"
+                    Grid.Row="14"
                     Cursor="Hand"
+                    Foreground="White"
                     Background="Blue"
-                    Click="Regresar"/>
+                    Click="Regresar" Grid.ColumnSpan="2" Margin="95,302,141,56"/>
             <!--#endregion-->
             <!--#endregion-->
             <!--#region CONTENIDO-->
-            <TextBlock Grid.Row="4"
-                       Text="Nombre Usuario:"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" Height="24" Width="168" Grid.Column="1"/>
+            <TextBlock Grid.Row="3"
+                       Text="Nombre Usuario"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top" Height="24" Width="168" Grid.Column="2" Grid.ColumnSpan="2" Margin="286,10,0,0"/>
             <TextBox Style="{DynamicResource tbStyle}" Grid.Row="4"
                      Grid.Column="2"
-                     x:Name="tbUsuario" Grid.ColumnSpan="2" Margin="9,0,7,0"/>
-            <TextBlock Grid.Row="6"
-                       Grid.Column="1"
+                     x:Name="tbUsuario" Grid.ColumnSpan="3" Margin="106,0,294,0"/>
+            <TextBlock Grid.Row="5"
+                       Grid.Column="2"
                        Text="Contraseña:"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" Height="24" Width="94"
+                       
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Height="24" Width="94" Grid.ColumnSpan="2" Margin="323,0,0,0"
                    />
             <PasswordBox Grid.Row="5"
                      Grid.Column="2"
-                     x:Name="tbPassword" Margin="7,39,0,1" Grid.RowSpan="2"
-                     KeyDown="tbPassword_KeyDown"    
+                         
+                     x:Name="tbPassword" Margin="106,37,294,3" Grid.RowSpan="2"
+                     KeyDown="tbPassword_KeyDown" Grid.ColumnSpan="3"    
                          />
 
-            <PasswordBox Grid.Row="5"
-     Grid.Column="4"
-     x:Name="tbPassword_Copiar" Margin="0,39,0,1" Grid.RowSpan="2" KeyDown="tbPassword_Copiar_KeyDown" HorizontalAlignment="Center" Width="262"/>
+            <PasswordBox Grid.Row="8"
+     Grid.Column="2"
+     x:Name="tbPassword_Copiar" Margin="106,10,0,40" Grid.RowSpan="2" KeyDown="tbPassword_Copiar_KeyDown" HorizontalAlignment="Left" Width="529" Grid.ColumnSpan="3"/>
 
 
 
-            <TextBlock Grid.Row="8"
-                       Grid.Column="1"
+            <TextBlock Grid.Row="14"
+                       Grid.Column="3"
                        Text="Sucursal:"
-                       VerticalAlignment="Top" Height="24" Margin="77,0,0,0" HorizontalAlignment="Left" Width="70"/>
-            <TextBox Grid.Row="8"
-                     Grid.Column="2"
+                       VerticalAlignment="Top" Height="24" Margin="95,28,0,0" HorizontalAlignment="Left" Width="70"/>
+            <TextBox Grid.Row="14"
+                     Grid.Column="4"
                      x:Name="tbSucursal"
-                     Style="{DynamicResource tbStyle}" Margin="7,0,60,10"/>
+                     Style="{DynamicResource tbStyle}" Margin="10,32,84,338"/>
             <TextBlock Grid.Row="11"
                        Grid.Column="1"
                        VerticalAlignment="Top" Height="24" Margin="60,4,0,0" HorizontalAlignment="Left" Width="90"><Run Language="es-mx" Text="Bloqueado"/><Run Text=":"/></TextBlock>
             <ComboBox Grid.Row="11"
-                      Grid.Column="2"
-                      x:Name="cbPrivilegio" Margin="0,4,65,4" >
+                      Grid.Column="1"
+                      x:Name="cbPrivilegio" Margin="337,4,65,4" Grid.ColumnSpan="2" >
                 <ComboBoxItem></ComboBoxItem>
                 <ComboBoxItem></ComboBoxItem>
 
             </ComboBox>
-            <TextBlock Grid.Row="5"
+            <TextBlock Grid.Row="7"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Margin="60,10,0,0" Height="24" Width="146" Grid.ColumnSpan="2"
-><Run Language="es-mx" Text="Nueva"/><Run Text=" Contraseña"/></TextBlock>
-            <TextBlock Grid.Row="5"
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top" Margin="0,6,0,0" Height="24" Width="166"
+                VerticalAlignment="Center" Margin="288,0,0,0" Height="24" Width="166" Grid.ColumnSpan="2"
 ><Run Language="es-mx" Text="Ingrese Nuevamente"/></TextBlock>
 
             <TextBlock Grid.Row="9"
@@ -223,9 +315,9 @@
 
             <ComboBox  
           Grid.Row="9" 
-          Grid.Column="2" 
+          Grid.Column="1" 
           x:Name="cbCode" 
-          Margin="0,5,65,5">
+          Margin="337,5,65,5" Grid.ColumnSpan="2">
                 <ComboBoxItem></ComboBoxItem>
                 <ComboBoxItem></ComboBoxItem>
                 <ComboBoxItem></ComboBoxItem>
@@ -235,17 +327,18 @@
                     Grid.Column="2"
                     Content="Alta Usuarios"
                     Background="Blue"
+                    Foreground="White"
                     Cursor="Hand"
-                    Style="{DynamicResource BtnStyle}" Margin="10,66,10,303" Click="Alta_Click"/>
+                    Style="{DynamicResource btnSide}" Margin="10,66,10,303" Click="Alta_Click"/>
             <TextBlock Grid.Row="12"
                 Grid.Column="1"
                 VerticalAlignment="Top" Margin="55,6,3,0" Height="24"><Run Language="es-mx" 
                 Text="Tipo Usuario:"/>
-                
+
             </TextBlock>
             <ComboBox Grid.Row="12"
-                Grid.Column="2"
-                x:Name="cbSuper" Margin="0,9,65,51" Grid.RowSpan="2" >
+                Grid.Column="1"
+                x:Name="cbSuper" Margin="337,9,65,51" Grid.RowSpan="2" Grid.ColumnSpan="2" >
                 <ComboBoxItem/>
                 <ComboBoxItem/>
 

@@ -13,11 +13,12 @@ using System.IO;
 using static Capa_Presentacion.Views.LoginView;
 using Capa_Entidad;
 using Capa_Negocio;
+using Capa_Negocio.Venta;
 
 
 
 
-  
+
 
 namespace PuntoVentaCCFN
 {
@@ -30,7 +31,9 @@ namespace PuntoVentaCCFN
 
         readonly CN_Denominacion objeto_CN_Denominacion = new CN_Denominacion();
         readonly CE_Denominacion objeto_CE_Denominacion = new CE_Denominacion();
+        readonly CN_Venta cN_Venta = new CN_Venta();
         public string sMensaje = null;
+        public int nCerrar = 0;
 
         public static class Retiro_Control
         {
@@ -44,6 +47,8 @@ namespace PuntoVentaCCFN
 
             InitializeComponent();
             LoadJson();
+
+
             if (AppConfig.Sections["App_Preferences"] is null)
             {   
                 AppConfig.Sections.Add("App_Preferences", new App_Preferences());
@@ -65,20 +70,33 @@ namespace PuntoVentaCCFN
         {
             try
             {
-                if (File.Exists("C:\\PuntoVenta\\config.json"))
+                if (File.Exists("C:\\PuntoVenta\\company.json"))
                 {
-                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\config.json"))
+                    using (StreamReader r = new StreamReader("C:\\PuntoVenta\\company.json"))
                     {
 
                         string json = r.ReadToEnd();
                         JObject jsons = JObject.Parse(json);
 
-                        AppConfig1.IP = jsons["IP"].ToString();
-                        AppConfig1.Sucursal = jsons["Sucursal"].ToString();
-                        AppConfig1.Puerto = jsons["Puerto"].ToString();
-                        AppConfig1.Caja = jsons["Caja"].ToString();
-                        AppConfig1.Copia = jsons["Copia"].ToString();
+                           AppConfig1.IP = jsons["IP"].ToString();
+                           AppConfig1.Sucursal = jsons["Sucursal"].ToString();
+                           AppConfig1.Puerto = jsons["Puerto"].ToString();
+                           AppConfig1.Caja = jsons["Caja"].ToString();
+                           AppConfig1.Copia = jsons["Copia"].ToString();
+                        
 
+                        AppConfig1.CompanyName = jsons["CompanyName"].ToString();
+                        AppConfig1.Filler = jsons["Filler"].ToString();
+                        AppConfig1.bd = jsons["Bd"].ToString();
+                        AppConfig1.DefCardCode = jsons["DefCardCode"].ToString();
+                        AppConfig1.DefRateCash = jsons["DefRateCash"].ToString();
+
+                        AppConfig1.DefRateCredit = jsons["DefRateCredit"].ToString();
+                        AppConfig1.DefCurrency = jsons["DefCurrency"].ToString();
+                        AppConfig1.DefListNum = jsons["DefListNum"].ToString();
+                        AppConfig1.DefSlpCode = jsons["DefSlpCode"].ToString();
+
+                        AppConfig1.DefSerieInv = jsons["DefSerieInv"].ToString(); 
 
                     }
                 }
@@ -88,12 +106,12 @@ namespace PuntoVentaCCFN
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                    var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
-
+                    // var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
+                    var _data = new { CompanyName = "MAYOREO SLRC", Filler = "S12", Bd = "db_12", DefCardCode = "C00000012", DefRateCash = "19.400000", DefRateCredit = "19.500000", DefCurrency = "MXN", DefListNum = "8", DefSlpCode = "102", DefSerieInv = "102", IP = "192.168.0.0", Sucursal = "MAYOREO SLRC", Puerto = "12000", Caja = "1", Copia = "1" };
 
 
                     string json = JsonConvert.SerializeObject(_data);
-                    File.WriteAllText(@"C:\\PuntoVenta\\config.json", json);
+                    File.WriteAllText(@"C:\\PuntoVenta\\company.json", json);
 
                     // System.Windows.Forms.MessageBox.Show("Se ha creado un archivo de configuracion en el disco local, C:\\PuntoVenta ", "Configuracion");
                     System.Windows.Forms.MessageBox.Show("Se creo la configuracion, salir y volver entrar ", "Configuracion");
@@ -114,10 +132,20 @@ namespace PuntoVentaCCFN
             public static string IP { get; set; }
             public static string Sucursal { get; set; }
             public static string Puerto { get; set; }
-
             public static string Caja { get; set; }
 
-            public static string Copia { get; set; }
+            public static string Copia { get; set; } 
+            public static string CompanyName { get; set; }
+            public static string Filler { get; set; }
+            public static string bd { get; set; }
+            public static string DefCardCode { get; set; }
+            public static string DefRateCash { get; set; }
+            public static string DefRateCredit { get; set; }
+            public static string DefCurrency { get; set; }
+            public static string DefListNum { get; set; }
+            public static string DefSlpCode { get; set; }
+            public static string DefSerieInv { get; set; }
+             
 
         }
 
@@ -299,25 +327,34 @@ namespace PuntoVentaCCFN
         private void BtnLogOff_Click(object sender, RoutedEventArgs e)
         {
             // Muestra el mensaje de información
-           // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+            // System.Windows.MessageBox.Show("LogOff", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+           
+            nCerrar = 1;   //cerrar por logoff
 
-
-
-            // Cierra todas las ventanas abiertas excepto la actual
-            foreach (Window window in System.Windows.Application.Current.Windows)
+            if (Nom_Cajera.logoff == 0)
             {
-                if (window != this)
+                // Cierra todas las ventanas abiertas excepto la actual
+                foreach (Window window in System.Windows.Application.Current.Windows)
                 {
-                    window.Close();
+                    if (window != this)
+                    {
+                        window.Close();
+                    }
                 }
-            }
-            
-            // Almacena la nueva ventana que quieres abrir
-            LoginView loginView = new LoginView();
-            // Muestra la nueva ventana
-            loginView.Show();
-            this.Close();
 
+                // Almacena la nueva ventana que quieres abrir
+                LoginView loginView = new LoginView();
+                // Muestra la nueva ventana
+                loginView.Show();
+                this.Close();
+            }
+            else
+            {
+
+                System.Windows.MessageBox.Show("No se puede realizar el LogOff primero debe de cerrar la venta", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+            }
 
         }
 
@@ -354,38 +391,106 @@ namespace PuntoVentaCCFN
         }
         #endregion
 
+        #region cerrado inicial
+
         private void Cierre_Caja_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
- 
+
+            var Acceso = new Acceso(3);
+            Acceso.ShowDialog();
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+            string nombreCajaString = MainWindow.AppConfig1.Caja;
+            string SucursalString = SettingSection.Filler;
+            string NombreCompany = SettingSection.CompanyName;
+            int nombreCajaInt = int.Parse(nombreCajaString);
+
+
+            if (Acceso.ReturnValue >= 3)
+            {
+
+              //  DataContext = new CierreCaja(Acceso.SupervisorId);
+                CierreCaja DATA1 = new CierreCaja();
+                DATA1.UserSupervisor = Acceso.SupervisorId;
+                DataContext = DATA1;
+                
+                
+              //   DataContext = new CierreCaja();
+                
+                //// Mostrar el cuadro de mensaje con las opciones Sí y No
+                //MessageBoxResult result = System.Windows.MessageBox.Show(
+                //    "Esta estación se encuentra abierta. ¿Se cerrará? ¿Está usted de acuerdo?",
+                //    "¡Alerta!",
+                //    MessageBoxButton.YesNo,
+                //    MessageBoxImage.Warning
+                //);
+
+                //// Evaluar la respuesta del usuario
+                //if (result == MessageBoxResult.Yes)
+
+
+                //{
+                //    if (!cN_Venta.cerradoCaja(nombreCajaInt, SucursalString))
+                //    {
+                //        System.Windows.MessageBox.Show("Error al cerrar caja!!");
+                //    } else
+                //    {
+                //        System.Windows.MessageBox.Show("Exito al cerrar caja!!");
+                //    }
+                //}
+                //else if (result == MessageBoxResult.No)
+                //{
+                //    // Si el usuario presiona "No", no hacer nada o cancelar la operación
+                //    // Coloca aquí el código para cancelar la operación
+                //}
+            }
+
+            // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+
+
+
+
+
+
+
+
 
         }
-
+        #endregion
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MessageBoxResult r = System.Windows.MessageBox.Show("Desea Cerrar El Aplicativo?", "Terminacion de PDV", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (r == MessageBoxResult.Yes)
+
+            if (nCerrar == 0)
             {
-                foreach (Window window in System.Windows.Application.Current.Windows)
+                MessageBoxResult r = System.Windows.MessageBox.Show("Desea Cerrar El Aplicativo?", "Terminacion de PDV", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (r == MessageBoxResult.Yes)
                 {
-                    var applicationConfiguration = ConfigurationManager
-                    .OpenExeConfiguration(ConfigurationUserLevel.None);
-                    var section = applicationConfiguration.GetSection("App_Preferences");
-
-                    if (section != null)
+                    foreach (Window window in System.Windows.Application.Current.Windows)
                     {
-                        applicationConfiguration.Sections.Remove("App_Preferences");
-                        section.SectionInformation.ForceSave = true;
-                        applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                        var applicationConfiguration = ConfigurationManager
+                        .OpenExeConfiguration(ConfigurationUserLevel.None);
+                        var section = applicationConfiguration.GetSection("App_Preferences");
+
+                        if (section != null)
+                        {
+                            applicationConfiguration.Sections.Remove("App_Preferences");
+                            section.SectionInformation.ForceSave = true;
+                            applicationConfiguration.Save(ConfigurationSaveMode.Full);
+                        }
+
+                        //ConfigurationManager.RefreshSection("App_Preferences");
+
+                        window.Visibility = Visibility.Hidden;
                     }
-
-                    //ConfigurationManager.RefreshSection("App_Preferences");
-
-                    window.Visibility = Visibility.Hidden;
                 }
+                else { e.Cancel = true; }
+
             }
-            else { e.Cancel = true; }
+
+
+
         }
+
     }
 }
 

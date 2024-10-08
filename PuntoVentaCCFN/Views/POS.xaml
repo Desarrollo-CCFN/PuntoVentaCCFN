@@ -419,7 +419,7 @@
                     <DataGridTextColumn Header="Descripcion" Width="350" Binding="{Binding ItemName}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
@@ -432,7 +432,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario" Width="*" Binding="{Binding Precio_Base, StringFormat={}{0:#,##0.0000}}">
+                    <DataGridTextColumn Header="Precio Unitario" Width="*" Binding="{Binding Precio_Base, StringFormat={}{0:###0.0000}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -448,7 +448,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario FC" Width="*" Binding="{Binding Precio_Base_FC, StringFormat={}{0:#,##0.0000}}">
+                    <DataGridTextColumn Header="Precio Unitario FC" Width="*" Binding="{Binding Precio_Base_FC, StringFormat={}{0:###0.0000}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>

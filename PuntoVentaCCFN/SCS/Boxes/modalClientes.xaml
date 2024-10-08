@@ -80,7 +80,6 @@
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Template">
@@ -216,7 +215,7 @@
                      TextAlignment="Center"
                      FontSize="20"
                      x:Name="tbSearchbox"
-                     Style="{DynamicResource txtBoxCantidad}" />
+                     Style="{DynamicResource txtBoxCantidad}" KeyDown="tbSearchbox_KeyDown" />
             <Button Margin="345,35,280,46" Style="{DynamicResource btnOk}" Click="buscarCliente">
                 <TextBlock Text="Buscar"
                            />

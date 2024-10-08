@@ -54,6 +54,9 @@ namespace Capa_Presentacion.SCS.Boxes
         public int OpcValue = 0;
         public string sMensaje = null;
         public bool status = true;
+        public decimal Mpesos = 0;
+        public decimal MDolares = 0;
+
 
 
         public modalAperturaSalida(int opcValue)
@@ -85,7 +88,8 @@ namespace Capa_Presentacion.SCS.Boxes
         {
 
             bool _status;
-
+             Mpesos = 0;       //totalizado retiros
+             MDolares = 0;
             _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
 
             if(_status)
@@ -127,8 +131,12 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
-                lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
-                lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
+               // lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
+               // lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
+
+                lbPesos.Content = "Monto Pesos: $ 0.0"; // + infoCaja.BegAmount.ToString();
+                lbDolares.Content = "Monto Dolares: $0.0"; //+ infoCaja.BegAmountFC.ToString();
+
             }
             else
             {
@@ -248,7 +256,7 @@ namespace Capa_Presentacion.SCS.Boxes
                 WhsCode = WhsCode,
                 BegAmount = beginAmount,
                 BegAmountFC = beginAmountFC,
-                Cashier = User, // selectCajera,
+                Cashier = selectCajera, // selectCajera,
                 StationId = StationId,
             };
 
@@ -555,14 +563,13 @@ namespace Capa_Presentacion.SCS.Boxes
             this.Close();
         
         
-        
-        
-        
-        
         }
 
         private void Agregar_Click(object sender, RoutedEventArgs e)
         {
+            string selectedMoneda = cbMoneda.SelectedItem.ToString();
+          
+
             if (cbDenominaciones.SelectedItem is CE_Denominacion selectedDenominacion)
             {
                 if (int.TryParse(tbCantidad.Text, out int cantidad))
@@ -579,8 +586,21 @@ namespace Capa_Presentacion.SCS.Boxes
                         AmountValue = amountValue, // Cambiado a AmountValue
                         Cantidad = cantidad,
                         Total = resultado
+ 
                     };
 
+                    if ("Pesos" == selectedMoneda)
+                    {
+                        Mpesos = resultado + Mpesos;
+                        lbPesos.Content = "Monto Pesos: $ "+ Mpesos.ToString("N2");
+                        
+                    }
+                    else
+                    {
+                        MDolares = resultado + MDolares;
+                        lbDolares.Content = "Monto Dolares: $ "+ MDolares.ToString("N2");
+
+                    }
                     // Agregar el nuevo item al DataGrid
                     GridDatos.Items.Add(newItem);
                 }
@@ -636,11 +656,28 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)
         {
+           // string selectedMoneda = cbMoneda.SelectedItem.ToString();
             // Verifica si hay un ítem seleccionado en el DataGrid
-            if (GridDatos.SelectedItem != null)
+            //   if (GridDatos.SelectedItem != null)
+            if (GridDatos.SelectedItem is GridItem selectedItem)
             {
                 // Remueve el ítem seleccionado
-                GridDatos.Items.Remove(GridDatos.SelectedItem);
+                //  GridDatos.Items.Remove(GridDatos.SelectedItem);
+                GridDatos.Items.Remove(selectedItem);
+
+
+                if ("EF" == selectedItem.PayForm)
+                {
+                    Mpesos -= selectedItem.Total; // Restar el total del ítem seleccionado
+                    lbPesos.Content = "Monto Pesos: $ " + Mpesos.ToString("N2");
+                }
+                else 
+                {
+                    MDolares -= selectedItem.Total; // Restar el total del ítem seleccionado
+                    lbDolares.Content = "Monto Dolares: $ " + MDolares.ToString("N2");
+                }
+                 
+
             }
             else
             {

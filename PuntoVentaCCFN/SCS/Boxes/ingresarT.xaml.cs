@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,14 +22,33 @@ namespace Capa_Presentacion.SCS.Boxes
     {
         public decimal Cantidad;
         public string Voucher;
+        private static readonly Regex _regex = new Regex("[^0-9.-]+");
         public ingresarT()
         {
             InitializeComponent();
             tbVoucher.Focus();
         }
 
+        #region regex para validacion de input numerico
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+        #endregion
+
         private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
+            if(tbCantidad.Text == String.Empty || tbVoucher.Text == String.Empty)
+            {
+                System.Windows.MessageBox.Show("Debes ingresar todos los datos!!");
+                return;
+            }
+
+            if(!IsTextAllowed(tbCantidad.Text)) {
+                System.Windows.MessageBox.Show("Dato incorrecto en cantidad!!");
+                return;
+            }
+
             Cantidad = Convert.ToDecimal(tbCantidad.Text);
             Voucher = tbVoucher.Text;
             this.Close();

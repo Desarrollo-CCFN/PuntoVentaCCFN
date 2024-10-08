@@ -252,7 +252,7 @@
                 FontSize="15"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Margin="10,9,0,0" Grid.RowSpan="2"/>
-            <TextBox Grid.Column="1" 
+            <TextBox x:Name="TCCredito" Grid.Column="1" 
                 Grid.Row="12"
                 TextAlignment="Center"
                 FontSize="20"
@@ -266,7 +266,7 @@
                 FontSize="15"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Margin="10,0,0,0"/>
-            <TextBox Grid.Column="1" 
+            <TextBox x:Name="Moneda" Grid.Column="1" 
                 Grid.Row="14"
                 TextAlignment="Center"
                 FontSize="20"
@@ -280,7 +280,7 @@
                 FontSize="15"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center" Margin="10,0,0,0"/>
-            <TextBox Grid.Column="1" 
+            <TextBox x:Name="ListaPre" Grid.Column="1" 
                 Grid.Row="16"
                 TextAlignment="Center"
                 FontSize="20"

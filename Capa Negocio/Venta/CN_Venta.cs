@@ -41,9 +41,9 @@ namespace Capa_Negocio.Venta
             return objDatos.ventaDetalleLive(detalle, ref sMensaje);
         }
 
-        public void insertarVentaPago(CE_VentaPagos ventaPago)
+        public void insertarVentaPago(CE_VentaPagos ventaPago, ref string sMensaje)
         {
-            objDatos.ventaPagos(ventaPago);
+            objDatos.ventaPagos(ventaPago, ref sMensaje);
         }
 
         public bool anularVenta(int idHeader)
@@ -69,6 +69,11 @@ namespace Capa_Negocio.Venta
         public decimal GetVentaActivaPagado(int idHeader)
         {
             return objDatos.VentaActivaPagado(idHeader);
+        }
+
+        public bool cerradoCaja(int station, string whsCode)
+        {
+            return objDatos.CerrarCaja(station, whsCode);
         }
 
     }

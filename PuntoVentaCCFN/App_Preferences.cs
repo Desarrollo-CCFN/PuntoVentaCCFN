@@ -1,5 +1,6 @@
 ﻿using Capa_Entidad;
 using Capa_Negocio;
+using PuntoVentaCCFN;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,18 +32,34 @@ namespace Capa_Presentacion
 
         public App_Preferences()
         {
-            
-            objCompany = cn_Company.ConsultaDatos();
-            _CompanyName = new ConfigurationProperty("companyName", typeof(string), objCompany.CompanyName);
-            _Filler = new ConfigurationProperty("filler", typeof(string), objCompany.Filler);
-            _Bd = new ConfigurationProperty("bd", typeof(string), objCompany.Bd);
-            _DefCardCode = new ConfigurationProperty("cardcode", typeof(string), objCompany.DefCardCode);
-            _DefRateCash = new ConfigurationProperty("defRateCash", typeof(decimal), objCompany.DefRateCash);
-            _DefRateCredit = new ConfigurationProperty("defRateCredit", typeof(decimal), objCompany.DefRateCredit);
-            _DefCurrency = new ConfigurationProperty("defCurrency", typeof(string), objCompany.DefCurrency);
-            _DefListNum = new ConfigurationProperty("defListNum", typeof(int), objCompany.DefListNum);
-            _DefSlpCode = new ConfigurationProperty("defSlpCode", typeof(int), objCompany.DefSlpCode);
-            _DefSerieInv = new ConfigurationProperty("delSerieInv", typeof(string), objCompany.DefSerieInv);
+
+           /* objCompany = cn_Company.ConsultaDatos();
+              _CompanyName = new ConfigurationProperty("companyName", typeof(string), objCompany.CompanyName);
+              _Filler = new ConfigurationProperty("filler", typeof(string), objCompany.Filler);
+              _Bd = new ConfigurationProperty("bd", typeof(string), objCompany.Bd);
+              _DefCardCode = new ConfigurationProperty("cardcode", typeof(string), objCompany.DefCardCode);
+              _DefRateCash = new ConfigurationProperty("defRateCash", typeof(decimal), objCompany.DefRateCash);
+              _DefRateCredit = new ConfigurationProperty("defRateCredit", typeof(decimal), objCompany.DefRateCredit);
+              _DefCurrency = new ConfigurationProperty("defCurrency", typeof(string), objCompany.DefCurrency);
+              _DefListNum = new ConfigurationProperty("defListNum", typeof(int), objCompany.DefListNum);
+              _DefSlpCode = new ConfigurationProperty("defSlpCode", typeof(int), objCompany.DefSlpCode);
+              _DefSerieInv = new ConfigurationProperty("delSerieInv", typeof(string), objCompany.DefSerieInv);   */
+
+           
+
+            _CompanyName = new ConfigurationProperty("companyName", typeof(string), MainWindow.AppConfig1.CompanyName);
+            _Filler = new ConfigurationProperty("filler", typeof(string), MainWindow.AppConfig1.Filler);
+            _Bd = new ConfigurationProperty("bd", typeof(string), MainWindow.AppConfig1.bd);
+            _DefCardCode = new ConfigurationProperty("cardcode", typeof(string), MainWindow.AppConfig1.DefCardCode);
+            _DefRateCash = new ConfigurationProperty("defRateCash", typeof(decimal), MainWindow.AppConfig1.DefRateCash);
+            _DefRateCredit = new ConfigurationProperty("defRateCredit", typeof(decimal), MainWindow.AppConfig1.DefRateCredit);
+            _DefCurrency = new ConfigurationProperty("defCurrency", typeof(string), MainWindow.AppConfig1.DefCurrency);
+            _DefListNum = new ConfigurationProperty("defListNum", typeof(int), MainWindow.AppConfig1.DefListNum);
+            _DefSlpCode = new ConfigurationProperty("defSlpCode", typeof(int), MainWindow.AppConfig1.DefSlpCode);
+            _DefSerieInv = new ConfigurationProperty("delSerieInv", typeof(string), MainWindow.AppConfig1.DefSerieInv);
+        
+
+
             _Properties = new ConfigurationPropertyCollection();
             _Properties.Add(_CompanyName);
             _Properties.Add(_Filler);

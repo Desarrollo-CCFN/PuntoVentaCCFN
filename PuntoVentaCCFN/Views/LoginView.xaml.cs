@@ -49,6 +49,8 @@ namespace Capa_Presentacion.Views
 
             public static string Cod_Sucursal { get; set; }
 
+            public static int logoff { get; set; }
+
         }
 
 
@@ -98,9 +100,10 @@ namespace Capa_Presentacion.Views
             Nom_Cajera.Cod_Cajera = "";
             Nom_Cajera.Nom_Sucursal = "";
             Nom_Cajera.Cod_Sucursal = "";
+            Nom_Cajera.logoff = 0;
 
-      
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
                 // Asignar los valores de la interfaz a la entidad
                 objeto_CE_Usuarios.U_NAME = this.txtUser.Text;
@@ -120,6 +123,7 @@ namespace Capa_Presentacion.Views
                     Nom_Cajera.Cod_Cajera = dtResultado.Rows[0].ItemArray[2]?.ToString();
                     Nom_Cajera.Nom_Sucursal = dtResultado.Rows[0].ItemArray[7]?.ToString();
                     Nom_Cajera.Cod_Sucursal = dtResultado.Rows[0].ItemArray[3]?.ToString();
+                   
 
                     if (superUserFlag == "Y" || superUserFlag == "N" )
                     {

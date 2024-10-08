@@ -1,7 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using Capa_Entidad.Venta;
+using System.Windows;
 using Mysqlx.Cursor;
+using System.ServiceModel.Channels;
 
 namespace Capa_Datos.Venta
 {
@@ -217,21 +219,49 @@ namespace Capa_Datos.Venta
             return true;
         }
 
-        public void ventaPagos(CE_VentaPagos ventaPago)
+        public void ventaPagos(CE_VentaPagos ventaPago, ref string sMensaje)
         {
-            MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
-            conm.CommandType = CommandType.StoredProcedure;
-            conm.Parameters.Add("Payform", MySqlDbType.VarChar).Value = ventaPago.Payform;
-            conm.Parameters.Add("Currency", MySqlDbType.VarChar).Value = ventaPago.Currency;
-            conm.Parameters.Add("Rate", MySqlDbType.Decimal).Value = ventaPago.Rate;
-            conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
-            conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
-            conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
-            conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
-            conm.ExecuteNonQuery();
-            conm.Parameters.Clear();
-            conn.CerrarConexion();
+            try
+            {
+                MySqlCommand conm = new MySqlCommand("SP_V_VentaPagos", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("Payform", MySqlDbType.VarChar).Value = ventaPago.Payform;
+                conm.Parameters.Add("Currency", MySqlDbType.VarChar).Value = ventaPago.Currency;
+                conm.Parameters.Add("Rate", MySqlDbType.Decimal).Value = ventaPago.Rate;
+                conm.Parameters.Add("AmountPay", MySqlDbType.Decimal).Value = ventaPago.AmountPay;
+                conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
+                conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
+                conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
+                conm.ExecuteNonQuery();
+                
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                }
+
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+
+
+            }
+            catch (Exception ex) 
+            { 
+               sMensaje = ex.Message;
+            }
         }
+            
+            
+        
 
         public bool AnularFPagos(int idHeader)
         {
@@ -240,6 +270,26 @@ namespace Capa_Datos.Venta
                 MySqlCommand conm = new MySqlCommand("SP_V_VentaPagosCancel", conn.AbrirConexion());
                 conm.CommandType = CommandType.StoredProcedure;
                 conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idHeader;
+                conm.ExecuteNonQuery();
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool CerrarCaja(int station, string whsCode)
+        {
+            try
+            {
+                MySqlCommand conm = new MySqlCommand("SP_V_CerrarCaja", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+                conm.Parameters.Add("_StationId", MySqlDbType.Int32).Value = station;
+                conm.Parameters.Add("_WhsCode", MySqlDbType.VarChar).Value = whsCode;
                 conm.ExecuteNonQuery();
                 conm.Parameters.Clear();
                 conn.CerrarConexion();

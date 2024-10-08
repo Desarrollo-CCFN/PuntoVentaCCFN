@@ -31,15 +31,13 @@ namespace PuntoVentaCCFN.Views
 
         void CargarDatos()
         {
-          //  DataTable dt = new objeto_CN_Productos.CargarProductos();
-
-            GridDatos.ItemsSource = objeto_CN_Productos.CargarProductos().DefaultView;
-            
+            GridDatos.ItemsSource = objeto_CN_Productos.CargarProductos().DefaultView;   
         }
 
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-
+            GridDatos.UnselectAll();
+            GridDatos.ItemsSource = objeto_CN_Productos.BusquedaProducto(tbNombre.Text).DefaultView;
         }
     }
 }
