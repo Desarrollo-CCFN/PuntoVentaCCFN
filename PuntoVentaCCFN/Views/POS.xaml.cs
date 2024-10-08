@@ -409,7 +409,16 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Efectivo;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
             }
             else
             {
@@ -457,7 +466,17 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
+
                 pagoUSD = true;
 
             }
@@ -505,7 +524,17 @@ namespace PuntoVentaCCFN.Views
                     ventaPago.BalAmout = 0;
                 }
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Cantidad;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
+
             }
             else
             {
@@ -553,7 +582,17 @@ namespace PuntoVentaCCFN.Views
                     ventaPago.BalAmout = 0;
                 }
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+                
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Cantidad;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
             }
             else
             {

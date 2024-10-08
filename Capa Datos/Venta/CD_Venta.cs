@@ -1,7 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using Capa_Entidad.Venta;
+using System.Windows;
 using Mysqlx.Cursor;
+using System.ServiceModel.Channels;
 
 namespace Capa_Datos.Venta
 {
@@ -217,7 +219,7 @@ namespace Capa_Datos.Venta
             return true;
         }
 
-        public void ventaPagos(CE_VentaPagos ventaPago)
+        public void ventaPagos(CE_VentaPagos ventaPago, ref string sMensaje)
         {
             try
             {
@@ -230,11 +232,32 @@ namespace Capa_Datos.Venta
                 conm.Parameters.Add("BalAmount", MySqlDbType.Decimal).Value = ventaPago.BalAmout;
                 conm.Parameters.Add("IdHeader", MySqlDbType.Int32).Value = ventaPago.IdHeader;
                 conm.Parameters.Add("Voucher", MySqlDbType.VarChar).Value = ventaPago.VoucherNum;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
                 conm.ExecuteNonQuery();
+                
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                }
+
                 conm.Parameters.Clear();
                 conn.CerrarConexion();
+
+
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            { 
+               sMensaje = ex.Message;
+            }
         }
             
             
