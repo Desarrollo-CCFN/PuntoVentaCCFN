@@ -1,0 +1,27 @@
+﻿<Window x:Class="Capa_Presentacion.Reportes.Cerrar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Capa_Presentacion.Reportes"
+        mc:Ignorable="d"
+         WindowStartupLocation="CenterScreen"
+          Background="#08769F"
+          Icon="/SCS/IMG/Cierre_caja.png"
+        Title="Cerrar Caja" Height="150" Width="350">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="61*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Etiqueta Prenume -->
+        <Label Content="Número Ciere de Caja:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,20,0,0" Height="39" FontWeight="Bold" Grid.ColumnSpan="2"/>
+
+        <!-- Cuadro de texto para ingresar el nombre -->
+        <TextBox Name="txtPrenume"    Width="125" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,15,0,0" FontWeight="Bold" Grid.Column="1"/>
+
+        <!-- Botón para añadir -->
+        <Button Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="185,59,0,0" Grid.Column="1"/>
+        <Button Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,59,0,0" Grid.Column="1"/>
+    </Grid>
+</Window>

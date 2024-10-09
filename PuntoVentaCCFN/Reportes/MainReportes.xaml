@@ -90,7 +90,7 @@
 
 
                 <Button x:Name="Apertura" 
-                    Content="Aperturas de Cajas" 
+                    Content="Cierre de Caja" 
        HorizontalAlignment="Left" 
        VerticalAlignment="Top" 
        Width="129" 

@@ -59,9 +59,7 @@ namespace PuntoVentaCCFN
             //var preferences = AppConfig.Sections[11] as App_Preferences;
             string Empresa = Nom_Cajera.Nom_Sucursal;     //preferences.CompanyName;     //Nombre de la empresa
             txtSucursal.Text = "Sucursal: " + Empresa+" Bienvenida/o: "+ Nom_Cajera.Nome_Cajera;
-
-           
-
+ 
         }
 
          
@@ -122,9 +120,7 @@ namespace PuntoVentaCCFN
             public static string Copia { get; set; }
 
         }
-
-
-
+         
         private void TBShow(object sender, RoutedEventArgs e)
         {
             GridContent.Opacity = 0.5;
@@ -167,9 +163,7 @@ namespace PuntoVentaCCFN
 
                     window.Close();
                 }
-
-
-
+                 
 
         }
 
@@ -301,7 +295,7 @@ namespace PuntoVentaCCFN
                 //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                 var MainReportes = new MainReportes();   // Activa el Password de acceso
                 MainReportes.retiros.Visibility = Visibility.Collapsed;
-                MainReportes.Apertura.Visibility = Visibility.Collapsed;
+              //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
                 MainReportes.Show();
 
             }
@@ -407,17 +401,20 @@ namespace PuntoVentaCCFN
 
                 {
                     if (!cN_Venta.cerradoCaja(nombreCajaInt, SucursalString))
-                    {
-                        System.Windows.MessageBox.Show("Error al cerrar caja!!");
-                    } else
-                    {
+                  //  {
+                  //      System.Windows.MessageBox.Show("Error al cerrar caja!!");
+                  //  } else
+                  //  {
                         System.Windows.MessageBox.Show("Exito al cerrar caja!!");
-                    }
+                        System.Windows.MessageBox.Show("En este momento la funcion SP_V_CerrarCaja'' Esta incompleto!!");
+                    // }
                 }
                 else if (result == MessageBoxResult.No)
                 {
                     // Si el usuario presiona "No", no hacer nada o cancelar la operación
                     // Coloca aquí el código para cancelar la operación
+                    System.Windows.MessageBox.Show("Cacelar al cerrar caja!!");
+                    System.Windows.MessageBox.Show("En este momento la funcion SP_V_CerrarCaja'' Esta incompleto!!");
                 }
             }
 
