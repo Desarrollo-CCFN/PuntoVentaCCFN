@@ -26,6 +26,7 @@ using Capa_Negocio.OperacionesCaja;
 using Capa_Entidad;
 using System.Windows.Threading;
 using Org.BouncyCastle.Crypto;
+using System.Text.RegularExpressions;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -58,6 +59,8 @@ namespace PuntoVentaCCFN.Views
 
         public string codigoClienteFactura;
         public string nombreClienteFactura;
+
+        private static readonly Regex _regex = new Regex("[^0-9.-]+");
 
         public int listPrecios;
         public string cardCode;
@@ -146,7 +149,12 @@ namespace PuntoVentaCCFN.Views
         }
         #endregion
 
-
+        #region regex para validacion de input numerico
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+        #endregion
 
         #region consulta del tipo de cambio
         public void ConsultarTC()
@@ -363,7 +371,12 @@ namespace PuntoVentaCCFN.Views
         #region formas de pago de la venta
         private void Efectivo(object sender, RoutedEventArgs e)
         {
-            loadEMXN();
+            if (GridDatos.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Debes ingresar productos!!");
+                return;
+            }
+                loadEMXN();
         }
 
         public void loadEMXN()
@@ -396,7 +409,16 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Efectivo;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
             }
             else
             {
@@ -406,6 +428,11 @@ namespace PuntoVentaCCFN.Views
 
         private void EfectivoUSD(object sender, RoutedEventArgs e)
         {
+            if (GridDatos.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Debes ingresar productos!!");
+                return;
+            }
             loadEUSD();
         }
 
@@ -439,7 +466,17 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
+
                 pagoUSD = true;
 
             }
@@ -450,6 +487,11 @@ namespace PuntoVentaCCFN.Views
         }
         private void Tarjeta(object sender, RoutedEventArgs e)
         {
+            if (GridDatos.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Debes ingresar productos!!");
+                return;
+            }
             loadDebit();
         }
 
@@ -482,7 +524,17 @@ namespace PuntoVentaCCFN.Views
                     ventaPago.BalAmout = 0;
                 }
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Cantidad;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
+
             }
             else
             {
@@ -492,6 +544,12 @@ namespace PuntoVentaCCFN.Views
 
         private void TarjetaC(object sender, RoutedEventArgs e)
         {
+            if (GridDatos.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Debes ingresar productos!!");
+                return;
+            }
+
             loadCredit();
         }
 
@@ -524,7 +582,17 @@ namespace PuntoVentaCCFN.Views
                     ventaPago.BalAmout = 0;
                 }
                 ventaPago.IdHeader = ventaI.Id;
-                venta.insertarVentaPago(ventaPago);
+
+                string sMensaje = "";
+                venta.insertarVentaPago(ventaPago, ref sMensaje);
+                
+                if (sMensaje != "")
+                {
+                    pagado -= ingresar.Cantidad;
+                    saldo();
+                    MessageBox.Show(sMensaje);
+                    return;
+                }
             }
             else
             {
@@ -586,6 +654,22 @@ namespace PuntoVentaCCFN.Views
                 if (obj != null)
                 {
                     var t = (e.EditingElement as System.Windows.Controls.TextBox).Text;
+
+                    if(!IsTextAllowed(t))
+                    {
+                        System.Windows.MessageBox.Show("Debes ingresar solo datos numericos!!");
+                        GridDatos.ItemsSource = null;
+                        GridDatos.ItemsSource = lista;
+                        return;
+                    }
+
+                    if(Convert.ToDecimal(t) <= 0)
+                    {
+                        System.Windows.MessageBox.Show("Debes ingresar una cantidad valida");
+                        GridDatos.ItemsSource = null;
+                        GridDatos.ItemsSource = lista;
+                        return;
+                    }
 
                     if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t)))
                     {
@@ -772,6 +856,12 @@ namespace PuntoVentaCCFN.Views
                 if (pagado <= 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                    return;
+                }
+
+                if(cambio < 0)
+                {
+                    System.Windows.MessageBox.Show("Ingresa una cantidad de pago mayor o igual a la venta!!.");
                     return;
                 }
                 ventaCambio();
@@ -1059,6 +1149,13 @@ namespace PuntoVentaCCFN.Views
 
         public void loadAnularFPago()
         {
+
+            if(pagado == 0)
+            {
+                System.Windows.MessageBox.Show("No hay formas de pago para anular!!");
+                return;
+            }
+
             cN_Venta = new CN_Venta();
 
             if (cN_Venta.AnularFpago(ventaI.Id))
@@ -1077,7 +1174,15 @@ namespace PuntoVentaCCFN.Views
         #region apertura y cerrado inicial
         private void btnAperturaCerrado_Click(object sender, RoutedEventArgs e)
         {
-            loadRetiros();
+            if(ventaI.Id == 0)
+            {
+                loadRetiros();
+            } else
+            {
+                System.Windows.MessageBox.Show("Venta en curso!!");
+                return;
+            }
+
         }
 
         public void loadRetiros()

@@ -22,6 +22,7 @@ namespace Capa_Presentacion.Views
         readonly CN_Usuarios objeto_CN_Usuarios = new CN_Usuarios();
         readonly CE_Usuarios objeto_CE_Usuarios = new CE_Usuarios();
         public int ReturnValue { get; set; } // Propiedad para devolver el valor
+        public int SupervisorId { get; set; } // Propiedad para devolver el valor del supervisor
 
       //  private MySqlConnectionStringBuilder objBuidel = new MySqlConnectionStringBuilder();
         private int valueToSend_;
@@ -69,8 +70,9 @@ namespace Capa_Presentacion.Views
                     string UserCod       = dtResultado.Rows[0].ItemArray[2]?.ToString();
                     string UserId        = dtResultado.Rows[0].ItemArray[0]?.ToString();
 
+                     SupervisorId = Convert.ToInt32(UserId);
 
-                if (superUserFlag == "Y" || superUserFlag == "N" )
+                    if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
 
 
