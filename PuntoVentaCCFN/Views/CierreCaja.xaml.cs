@@ -153,7 +153,8 @@ namespace PuntoVentaCCFN.Views
 
         private void btn_Cerrar_Click(object sender, RoutedEventArgs e)
         {
-           
+            Visibility = Visibility.Collapsed;
+
         }
 
         private void btn_Procesar_Click(object sender, RoutedEventArgs e)
