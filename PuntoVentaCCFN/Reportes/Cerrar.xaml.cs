@@ -23,5 +23,10 @@ namespace Capa_Presentacion.Reportes
         {
             InitializeComponent();
         }
+
+        private void Clieck_cerrar(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

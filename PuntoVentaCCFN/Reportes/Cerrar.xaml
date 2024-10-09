@@ -21,7 +21,7 @@
         <TextBox Name="txtPrenume"    Width="125" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,15,0,0" FontWeight="Bold" Grid.Column="1"/>
 
         <!-- Botón para añadir -->
-        <Button Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="185,59,0,0" Grid.Column="1"/>
-        <Button Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,59,0,0" Grid.Column="1"/>
+        <Button Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="48,59,0,0" Grid.Column="1"/>
+        <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="184,59,0,0" Grid.Column="1" Click="Clieck_cerrar"/>
     </Grid>
 </Window>

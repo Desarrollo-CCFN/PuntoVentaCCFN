@@ -13,6 +13,17 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using PuntoVentaCCFN;
+using Capa_Entidad;
+using Capa_Negocio;
+using PuntoVentaCCFN.Views;
+using Capa_Presentacion;
+
+
+
+
+
+
 
 namespace Capa_Presentacion.Reportes
 {
@@ -49,17 +60,9 @@ namespace Capa_Presentacion.Reportes
 
         private void Apertura_Click(object sender, RoutedEventArgs e)
         {
-
-           // var Acceso = new Acceso(3);
-           // Acceso.ShowDialog();
-
-
-
-
-
-
-
-
+            var Cerrar = new Cerrar();
+                Cerrar.ShowDialog();
+                
 
 
         }
