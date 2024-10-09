@@ -39,9 +39,10 @@ namespace Capa_Presentacion.Views
 
 
             // Crear una conexión a MySQL
-            // string connectionString = "Server=localhost;Database=mi_bd;Uid=usuario;Pwd=contraseña;";
-            string connectionString = "Server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;";
-         //  string connectionString = "Server=192.168.101.34;uid=root; pwd=root.2024;database=db_s12;";
+            //string connectionString = "Server=localhost;Database=mi_bd;Uid=usuario;Pwd=contraseña;";
+            //  string connectionString = "Server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;";
+            //  string connectionString = "Server=192.168.101.34;uid=root; pwd=root.2024;database=db_s12;";
+               string connectionString = "Server=localhost;uid=root; pwd=root.2024;database=db_s12;";
             MySqlConnection conn = new MySqlConnection(connectionString);
 
             try
