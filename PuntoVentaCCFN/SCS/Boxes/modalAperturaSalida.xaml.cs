@@ -131,8 +131,8 @@ namespace Capa_Presentacion.SCS.Boxes
                 cbMoneda.SelectionChanged += CbMoneda_SelectionChanged;
 
                 infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
-               // lblP.Content = "Monto Pesos: " + infoCaja.BegAmount.ToString();
-               // lblD.Content = "Monto Dolares: " + infoCaja.BegAmountFC.ToString();
+                  lblP.Content = "Apertura Pesos: $" + infoCaja.BegAmount.ToString("N2");
+                lblD.Content = "Apertura Dolares: $" + infoCaja.BegAmountFC.ToString("N2");
 
                 lbPesos.Content = "Monto Pesos: $ 0.0"; // + infoCaja.BegAmount.ToString();
                 lbDolares.Content = "Monto Dolares: $0.0"; //+ infoCaja.BegAmountFC.ToString();

@@ -23,6 +23,8 @@ namespace Capa_Datos
 
             return conn;
         }
+ 
+
 
         public MySqlConnection CerrarConexion()
         {
@@ -33,5 +35,8 @@ namespace Capa_Datos
 
             return conn;
         }
+ 
+         
+
     }
 }

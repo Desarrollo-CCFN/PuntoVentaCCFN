@@ -50,6 +50,18 @@ namespace Capa_Presentacion.Reportes
         private void Apertura_Click(object sender, RoutedEventArgs e)
         {
 
+           // var Acceso = new Acceso(3);
+           // Acceso.ShowDialog();
+
+
+
+
+
+
+
+
+
+
         }
 
         private void bitacora_Click(object sender, RoutedEventArgs e)

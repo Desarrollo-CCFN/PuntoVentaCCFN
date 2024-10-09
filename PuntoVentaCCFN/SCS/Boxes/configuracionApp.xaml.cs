@@ -35,7 +35,7 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void btnAceptar_Click(object sender, RoutedEventArgs e)
         {
-
+/*
             string filePath = "C:\\PuntoVenta\\company.json";
             string json = File.ReadAllText(filePath);
             JObject jsons = JObject.Parse(json);
@@ -69,7 +69,7 @@ namespace Capa_Presentacion.SCS.Boxes
             AppConfig1.Sucursal = jsons["CompanyName"].ToString();
 
             this.Close();
-
+*/
              
         }
 
