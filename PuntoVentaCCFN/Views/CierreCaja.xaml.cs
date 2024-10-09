@@ -47,8 +47,8 @@ namespace PuntoVentaCCFN.Views
 
             infoCaja = objCNVentaCaja.infoCaja(Nom_Cajera.Num_Cajera, SucursalString.Trim(), nombreCajaInt);
 
-            GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
-            GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
+            //GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+            //GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
         }
 
     }

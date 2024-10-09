@@ -408,6 +408,7 @@ namespace PuntoVentaCCFN
             if (Acceso.ReturnValue >= 3)
             {
                 DataContext = new CierreCaja();
+               
                 //// Mostrar el cuadro de mensaje con las opciones Sí y No
                 //MessageBoxResult result = System.Windows.MessageBox.Show(
                 //    "Esta estación se encuentra abierta. ¿Se cerrará? ¿Está usted de acuerdo?",
