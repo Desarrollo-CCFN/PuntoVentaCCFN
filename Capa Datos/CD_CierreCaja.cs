@@ -83,5 +83,59 @@ namespace Capa_Datos
             }
         }
         #endregion
+
+        #region venta preview cierre caja
+        public bool Cierre(int idCash, Double TotalDebitCard, Double TotalCreditCard, Double DebitCardVouchers, Double CreditCardVouchers, int Supervisor, string bCerrar, ref string sMensaje)
+        {
+            try
+            {
+                bool respuesta = false;
+
+                MySqlCommand conm = new MySqlCommand("SP_V_CierreCaja", conn.AbrirConexion());
+                conm.CommandType = CommandType.StoredProcedure;
+
+                conm.Parameters.Add("IdCASH_", MySqlDbType.Int32).Value = idCash;
+                conm.Parameters.Add("TotalDebitCard_", MySqlDbType.Decimal).Value = TotalDebitCard;
+                conm.Parameters.Add("TotalCreditCard_", MySqlDbType.Decimal).Value = TotalCreditCard;
+                conm.Parameters.Add("DebitCardVouchers_", MySqlDbType.Int32).Value = DebitCardVouchers;
+                conm.Parameters.Add("CreditCardVouchers_", MySqlDbType.Int32).Value = CreditCardVouchers;
+                conm.Parameters.Add("User_", MySqlDbType.Int32).Value = Supervisor;
+                conm.Parameters.Add("Cerrar_", MySqlDbType.VarChar).Value = bCerrar;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
+                conm.ExecuteNonQuery();
+
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                    respuesta = false;
+                }
+                else
+                {
+                    respuesta = true;
+                }
+
+                conm.Parameters.Clear();
+                conn.CerrarConexion();
+
+
+                return respuesta;
+            }
+            catch (Exception ex)
+            {
+                sMensaje = ex.Message;
+                return false;
+            }
+
+        }
+        #endregion
     }
 }

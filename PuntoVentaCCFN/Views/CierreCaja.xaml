@@ -202,10 +202,11 @@
     <Border Background="#5b7bb2" CornerRadius="10">
         <Grid Margin="0,0,0,-10" Height="865" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="26*"/>
-                <ColumnDefinition Width="259*"/>
+                <ColumnDefinition Width="130*"/>
+                <ColumnDefinition Width="964*"/>
+                <ColumnDefinition Width="331*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Cierre de Caja" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="454,49,579,735"/>
+            <TextBlock Text="Cierre de Caja" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="454,49,248,735"/>
             <DataGrid x:Name="GridHeader"
           Style="{DynamicResource DataGridStyle}"
           AutoGenerateColumns="False"
@@ -222,7 +223,7 @@
           SelectionUnit="Cell"
          GridLinesVisibility="Horizontal"
           
-         HorizontalGridLinesBrush="#35baf6" Margin="25,116,20,695" Grid.ColumnSpan="2">
+         HorizontalGridLinesBrush="#35baf6" Margin="25,116,20,695" Grid.ColumnSpan="3">
                 <DataGrid.CellStyle>
                     <Style/>
                 </DataGrid.CellStyle>
@@ -263,7 +264,7 @@
                  SelectionUnit="Cell"
                 GridLinesVisibility="Horizontal"
  
-HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="2">
+HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
                 <DataGrid.CellStyle>
                     <Style/>
                 </DataGrid.CellStyle>
@@ -356,12 +357,12 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="2">
                     Foreground="White" 
                     FontSize="15" 
                     FontWeight="Bold" 
-                     Grid.Column="1"/>
+                     Grid.Column="1" Click="btn_Preview_Click" Grid.ColumnSpan="2"/>
             <Button x:Name="btn_Procesar" 
                 Content="Procesar Cierre" 
                 HorizontalAlignment="Left" 
                 Height="44" 
-                Margin="1050,791,0,0" 
+                Margin="86,791,0,0" 
                 VerticalAlignment="Top" 
                 Width="209" 
                 Background="Green"
@@ -369,7 +370,19 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="2">
                 Foreground="White" 
                 FontSize="15" 
                 FontWeight="Bold" 
-                Grid.Column="1"/>
+                Grid.Column="2" Click="btn_Procesar_Click"/>
+            <Button x:Name="btn_Cerrar" 
+                Content="Cerrar Ventana" 
+                HorizontalAlignment="Left" 
+                Height="44" 
+                Margin="54,791,0,0" 
+                VerticalAlignment="Top" 
+                Width="209" 
+                Background="#FF0090FF"
+                Style="{DynamicResource btnSide}"
+                Foreground="White" 
+                FontSize="15" 
+                FontWeight="Bold" Grid.ColumnSpan="2" Click="btn_Cerrar_Click"/>
         </Grid>
     </Border>
 
