@@ -270,6 +270,7 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Type" Width="*" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Remkars" Width="*" Binding="{Binding Remarks}" />
                     <DataGridTextColumn Header="Currency" Width="*" Binding="{Binding Currency}" />
                     <DataGridTextColumn Header="Usuario" Width="*" Binding="{Binding Usuario}" />
                     <DataGridTextColumn Header="Sistema" Width="*" Binding="{Binding Sistema}" />

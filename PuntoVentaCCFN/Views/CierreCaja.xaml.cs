@@ -118,6 +118,17 @@ namespace PuntoVentaCCFN.Views
                 if (Preview == true)
                 {
                      CerrarCaja = "N";
+                    string sMensaje = "";
+                    if (!obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito, UserSupervisor, CerrarCaja, ref sMensaje))
+                    {
+                        System.Windows.MessageBox.Show(sMensaje);
+                        return;
+                    }
+
+                    GridHeader.ItemsSource = null;
+                    GriDDetalle.ItemsSource = null;
+                    GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+                    GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
                 }
                 
 
@@ -134,6 +145,10 @@ namespace PuntoVentaCCFN.Views
                         if (CerrarCaja == "Y")
                         {
                             System.Windows.MessageBox.Show("Proceso Exitoso !!!");
+                            GridHeader.ItemsSource = null;
+                            GriDDetalle.ItemsSource = null;
+                            GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+                            GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
                         }
                     }
                 }
