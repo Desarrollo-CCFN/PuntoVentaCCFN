@@ -1,58 +1,113 @@
-﻿using Capa_Entidad;
-using Org.BouncyCastle.Crypto;
+﻿using Capa_Datos;
+using Capa_Entidad;
+using Capa_Negocio;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Capa_Presentacion.Reportes
 {
-    /// <summary>
-    /// Lógica de interacción para Cerrar.xaml
-    /// </summary>
     public partial class Cerrar : Window
     {
         private int valueTo_;
-      //  public CE_BusquedaReporte objCe = new CE_BusquedaReporte();
-     
+
         public Cerrar(int Value)
         {
             valueTo_ = Value;
-
             InitializeComponent();
 
-            if (valueTo_ == 1)
+            // Configurar etiquetas y títulos según valueTo_
+            switch (valueTo_)
             {
-                 Label1.Content = "Numero de TCK Venta:";
-                this.Title = "Tck Venta"; 
+                case 1:
+                    Label1.Content = "Número de TCK Venta:";
+                     this.Title = "Retiro";
+                    break;
+                case 2:
+                    Label1.Content = "Número de Retiro:";
+                    this.Title = "Tck Venta";
+                    break;
+                case 3:
+                    Label1.Content = "Número de Cierre de Caja:";
+                    this.Title = "Cierre de Caja";
+                    break;
             }
-            else if (valueTo_ == 2)
+        }
+
+        private void Click_cerrar(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Click_Buscar(object sender, RoutedEventArgs e)
+        {
+            // Validar que el texto no esté vacío y sea numérico
+            if (string.IsNullOrWhiteSpace(txtPrenume.Text) || !int.TryParse(txtPrenume.Text, out int IdTra))
             {
-                Label1.Content = "Numero de Retiro:";
-                this.Title = "Retiro";
+                System.Windows.Forms.MessageBox.Show("Por favor, ingrese un número válido.");
+                return;
             }
-            else if (valueTo_ == 3)
+
+            int Param = valueTo_;
+            CN_BusquedaReporte objConsulta = new CN_BusquedaReporte();
+            CE_BusquedaReporte objCe;
+
+            try
             {
-                  Label1.Content = "Número Ciere de Caja:";
-                  this.Title = "Cerrar Caja";
+                objCe = objConsulta.ConsultaDatos(IdTra, Param);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Error al consultar la base de datos: {ex.Message}");
+                return;
             }
 
+            if (objCe != null && objCe.IdTr_ == 1)      // realiza la validacion 
+            {
+                EjecutarProcesoExterno(IdTra, Param);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("No existe información que desea buscar. Intente con otro número de folio.");
+            }
 
-            // Label1.Content = "Caja";
-            // this.Title = "TCK";
+            this.Close();
+        }
 
+        private void EjecutarProcesoExterno(int IdTra, int Param)
+        {
+            // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe", // Ruta completa al ejecutable
+                Arguments = $"{IdTra} {Param}" // Argumentos para el ejecutable
+            };
 
+            try
+            {
+                // Ejecutar el programa externo
+                Process.Start(startInfo);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Error al ejecutar el proceso externo: {ex.Message}");
+            }
+        }
 
+     
+        private void txtPrenume_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                Click_Buscar(sender,  e); // Llamar a Click_Buscar al presionar Enter o Tab
+            }
+        }
+
+        private void txtPrenume_(object sender, TextCompositionEventArgs e)
+        {
+            // Solo permitir números
+            e.Handled = !int.TryParse(e.Text, out _);
         }
 
         private void Clieck_cerrar(object sender, RoutedEventArgs e)
@@ -60,91 +115,6 @@ namespace Capa_Presentacion.Reportes
 
             this.Close();
 
-        }
-
-        private void Click_Buscar(object sender, RoutedEventArgs e)
-        {
-
-
-
-            if (valueTo_ == 1)
-            {
-
-             //   System.Windows.MessageBox.Show("Opcion1  Venta TCK");
-
-                int Param = 1;
-                int IdTra = int.Parse(txtPrenume.Text);
-
-
-
-
-
-                // Crear una instancia de ProcessStartInfo
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
-
-                // startInfo.Arguments = $"{IdTra}";
-                startInfo.Arguments = $"{IdTra} {Param}";
-
-                // Ejecutar el programa externo
-                Process.Start(startInfo);
-
-                this.Close();
-                 
-
-            }
-            else if (valueTo_ == 2)
-            {
-
-              //   System.Windows.MessageBox.Show("Opcion2 RETIROS EFECTIVO, FONDO, RETIRO DE FONDO");
-
-
-                int Param = 2;
-                int IdTra = int.Parse(txtPrenume.Text);
-
-                //  objCe.opc_ = 2;
-               // objCe.IdTr_ = IdTra;
-
-                 
-
-                // Crear una instancia de ProcessStartInfo
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
-
-                // startInfo.Arguments = $"{IdTra}";
-                startInfo.Arguments = $"{IdTra} {Param}";
-
-                // Ejecutar el programa externo
-                Process.Start(startInfo);
-                this.Close();
-            
-
-            }
-            else if (valueTo_ == 3)
-            {
-                int Param = 3;
-                int IdTra = int.Parse(txtPrenume.Text);      //51;   //este podria ser el para metro de prueba
-                                                             // Crear una instancia de ProcessStartInfo
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-               //   startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
-
-               //   startInfo.Arguments = $"{IdTra}";
-                startInfo.Arguments = $"{IdTra} {Param}";
-
-            // Ejecutar el programa externo
-            Process.Start(startInfo);
-                this.Close();
-            }
-
-        }
-
-        private void txtPrenume_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter || e.Key == Key.Tab) // Verificar si la tecla presionada es Enter
-            {
-                Click_Buscar(sender, e); // Llamar al método  Click_Buscar con los argumentos correctos
-            }
         }
     }
 }

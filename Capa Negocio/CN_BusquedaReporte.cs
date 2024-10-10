@@ -4,15 +4,15 @@ using Capa_Entidad;
 
 namespace Capa_Negocio
 {
-    internal class CN_BusquedaReporte
+    public class CN_BusquedaReporte
     {
 
         private readonly CD_BusquedaReporte objDatos = new CD_BusquedaReporte();
 
         #region consulta de BusquedaReporte
-        public CE_BusquedaReporte ConsultaDatos()
+        public CE_BusquedaReporte ConsultaDatos(int IdTra, int Param)
         {
-            return objDatos.Consulta();
+            return objDatos.Consulta(IdTra,Param);
         }
         #endregion
 
