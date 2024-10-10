@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿using Capa_Entidad;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,8 @@ namespace Capa_Presentacion.Reportes
     public partial class Cerrar : Window
     {
         private int valueTo_;
+      //  public CE_BusquedaReporte objCe = new CE_BusquedaReporte();
+     
         public Cerrar(int Value)
         {
             valueTo_ = Value;
@@ -67,14 +70,18 @@ namespace Capa_Presentacion.Reportes
             if (valueTo_ == 1)
             {
 
-             //   System.Windows.MessageBox.Show("Opcion1");
+             //   System.Windows.MessageBox.Show("Opcion1  Venta TCK");
 
                 int Param = 1;
                 int IdTra = int.Parse(txtPrenume.Text);
 
+
+
+
+
                 // Crear una instancia de ProcessStartInfo
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
                 // startInfo.Arguments = $"{IdTra}";
                 startInfo.Arguments = $"{IdTra} {Param}";
@@ -89,15 +96,20 @@ namespace Capa_Presentacion.Reportes
             else if (valueTo_ == 2)
             {
 
-              //   System.Windows.MessageBox.Show("Opcion2");
+              //   System.Windows.MessageBox.Show("Opcion2 RETIROS EFECTIVO, FONDO, RETIRO DE FONDO");
 
 
-               int Param = 2;
+                int Param = 2;
                 int IdTra = int.Parse(txtPrenume.Text);
+
+                //  objCe.opc_ = 2;
+               // objCe.IdTr_ = IdTra;
+
+                 
 
                 // Crear una instancia de ProcessStartInfo
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
                 // startInfo.Arguments = $"{IdTra}";
                 startInfo.Arguments = $"{IdTra} {Param}";
@@ -110,14 +122,15 @@ namespace Capa_Presentacion.Reportes
             }
             else if (valueTo_ == 3)
             {
-
+                int Param = 3;
                 int IdTra = int.Parse(txtPrenume.Text);      //51;   //este podria ser el para metro de prueba
                                                              // Crear una instancia de ProcessStartInfo
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
+               //   startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
+                startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
-            startInfo.Arguments = $"{IdTra}";
-            // startInfo.Arguments = $"{IdTra} {Param}";
+               //   startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{IdTra} {Param}";
 
             // Ejecutar el programa externo
             Process.Start(startInfo);
