@@ -8,20 +8,24 @@
          WindowStartupLocation="CenterScreen"
           Background="#08769F"
           Icon="/SCS/IMG/Cierre_caja.png"
-        Title="Cerrar Caja" Height="150" Width="350">
+        Title="Cerrar Caja" Height="150" Width="350"
+        x:Name="Tit1"
+        >
+    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="61*"/>
         </Grid.ColumnDefinitions>
         <!-- Etiqueta Prenume -->
-        <Label Content="Número Ciere de Caja:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,20,0,0" Height="39" FontWeight="Bold" Grid.ColumnSpan="2"/>
+        <Label x:Name="Label1" Content="Número Ciere de Caja:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,20,0,0" Height="39" FontWeight="Bold" Grid.ColumnSpan="3"/>
 
         <!-- Cuadro de texto para ingresar el nombre -->
-        <TextBox Name="txtPrenume"    Width="125" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,15,0,0" FontWeight="Bold" Grid.Column="1"/>
+        <TextBox Name="txtPrenume"  TextAlignment="Center"  VerticalContentAlignment="Center"   Width="125" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,15,0,0" FontWeight="Bold" Grid.Column="2" KeyDown="txtPrenume_KeyDown"/>
 
         <!-- Botón para añadir -->
-        <Button Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="185,59,0,0" Grid.Column="1"/>
-        <Button Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,59,0,0" Grid.Column="1"/>
+        <Button x:Name="Buscar" Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="48,59,0,0" Grid.Column="2" Click="Click_Buscar"/>
+        <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="184,59,0,0" Grid.Column="2" Click="Clieck_cerrar"/>
     </Grid>
 </Window>

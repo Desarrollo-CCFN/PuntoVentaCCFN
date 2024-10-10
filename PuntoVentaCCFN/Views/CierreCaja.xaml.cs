@@ -1,9 +1,11 @@
 ﻿using Capa_Entidad.OperacionesCaja;
 using Capa_Negocio;
 using Capa_Negocio.OperacionesCaja;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,6 +83,28 @@ namespace PuntoVentaCCFN.Views
         private void btn_Preview_Click(object sender, RoutedEventArgs e)
         {
             CerrarCaja(true);
+ 
+
+            // ====================>>>>>>>>> REaliza despues de funcion la impresion
+
+            int Param = 3;
+            int IdTra = infoCaja.IdCash;      //51;   //este podria ser el para metro de prueba
+                                              // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            //   startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
+            startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+            //   startInfo.Arguments = $"{IdTra}";
+            startInfo.Arguments = $"{IdTra} {Param}";
+
+            // Ejecutar el programa externo
+            Process.Start(startInfo);
+            
+
+            // =======================>>>>>>>>>>>>>>>>>>>impresion  
+
+             
+
         }
 
         public void CerrarCaja(bool Preview)
