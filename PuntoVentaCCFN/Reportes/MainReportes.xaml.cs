@@ -18,6 +18,7 @@ using Capa_Entidad;
 using Capa_Negocio;
 using PuntoVentaCCFN.Views;
 using Capa_Presentacion;
+using Org.BouncyCastle.Crypto;
 
 
 
@@ -60,7 +61,7 @@ namespace Capa_Presentacion.Reportes
 
         private void Apertura_Click(object sender, RoutedEventArgs e)
         {
-            var Cerrar = new Cerrar();
+            var Cerrar = new Cerrar(3);
                 Cerrar.ShowDialog();
                 
 
@@ -69,24 +70,13 @@ namespace Capa_Presentacion.Reportes
 
         private void bitacora_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // Crear una instancia de ProcessStartInfo
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = @"C:\Users\DESARROLLO\source\repos\RetirosCaja\RetirosCaja\bin\Debug\RetirosCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-                startInfo.Arguments = "1"; // Parámetro que deseas enviar, en este caso "1"
-
-                // Ejecutar el programa externo
-                Process.Start(startInfo);
-            }
-            catch (Exception ex)
-            {
-                // Manejo de errores
-                System.Windows.Forms.MessageBox.Show("Error al ejecutar el programa externo: " + ex.Message);
-               
-            }
 
 
+          
+
+
+            var Cerrar = new Cerrar(2);
+            Cerrar.ShowDialog();
 
 
         }
@@ -98,6 +88,9 @@ namespace Capa_Presentacion.Reportes
 
         private void entrega_Click(object sender, RoutedEventArgs e)
         {
+
+            var Cerrar = new Cerrar(1);
+            Cerrar.ShowDialog();
 
         }
     }

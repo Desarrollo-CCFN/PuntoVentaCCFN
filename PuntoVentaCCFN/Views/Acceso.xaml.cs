@@ -78,9 +78,11 @@ namespace Capa_Presentacion.Views
 
                         if (superUserFlag == "Y" && valueToSend_ == 1)
                         {
+                            
                             var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
-                               this.Close();
-                              configuracionWindow.Show();
+                            this.Close();
+                            configuracionWindow.Show();
+                        
 
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 2)     // cuando pide autorizacion para anular caja

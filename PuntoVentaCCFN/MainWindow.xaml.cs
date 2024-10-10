@@ -426,14 +426,7 @@ namespace PuntoVentaCCFN
 
             // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-
-
-
-
-
-
-
-
+             
 
         }
         #endregion
