@@ -35,10 +35,11 @@ namespace Capa_Datos
               ce.DefCardCode = Convert.ToString(row[3]);
               ce.DefRateCash = Convert.ToDecimal(row[4]);
               ce.DefRateCredit = Convert.ToDecimal(row[5]);
-              ce.DefCurrency = Convert.ToString(row[6]);
-              ce.DefListNum = Convert.ToInt32(row[7]);
-              ce.DefSlpCode = Convert.ToInt32(row[8]);
-              ce.DefSerieInv = Convert.ToString(row[9]);
+            ce.DefRateRetail = Convert.ToDecimal(row[6]);
+            ce.DefCurrency = Convert.ToString(row[7]);
+              ce.DefListNum = Convert.ToInt32(row[8]);
+              ce.DefSlpCode = Convert.ToInt32(row[9]);
+              ce.DefSerieInv = Convert.ToString(row[10]);
             
           /*  ce.CompanyName = Convert.ToString(row[0]);
             ce.Filler = Convert.ToString(row[1]);

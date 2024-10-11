@@ -85,23 +85,6 @@ namespace PuntoVentaCCFN.Views
             CerrarCaja(true);
  
 
-            // ====================>>>>>>>>> REaliza despues de funcion la impresion
-
-            int Param = 3;
-            int IdTra = infoCaja.IdCash;      //51;   //este podria ser el para metro de prueba
-                                              // Crear una instancia de ProcessStartInfo
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            //   startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
-            startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
-
-            //   startInfo.Arguments = $"{IdTra}";
-            startInfo.Arguments = $"{IdTra} {Param}";
-
-            // Ejecutar el programa externo
-            Process.Start(startInfo);
-            
-
-            // =======================>>>>>>>>>>>>>>>>>>>impresion  
 
              
 
@@ -142,8 +125,38 @@ namespace PuntoVentaCCFN.Views
                 if (Preview == true)
                 {
                      CerrarCaja = "N";
+                    string sMensaje = "";
+                    if (!obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito, UserSupervisor, CerrarCaja, ref sMensaje))
+                    {
+                        System.Windows.MessageBox.Show(sMensaje);
+                        return;
+                    }
+
+                    GridHeader.ItemsSource = null;
+                    GriDDetalle.ItemsSource = null;
+                    GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+                    GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
+
+
+                    // ====================>>>>>>>>> REaliza despues de funcion la impresion
+
+                    int Param = 3;
+                    int IdTra = infoCaja.IdCash;      //51;   //este podria ser el para metro de prueba
+                                                      // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    //   startInfo.FileName = @"C:\PuntoVenta\cierre\CierreCaja.exe"; // Ruta completa al ejecutable de RetirosCaja
+                    startInfo.FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+                    //   startInfo.Arguments = $"{IdTra}";
+                    startInfo.Arguments = $"{IdTra} {Param}";
+
+                    // Ejecutar el programa externo
+                    Process.Start(startInfo);
+
+
+                    // =======================>>>>>>>>>>>>>>>>>>>impresion  
                 }
-                
+
 
                 if (infoCaja != null)
                 {
@@ -158,6 +171,10 @@ namespace PuntoVentaCCFN.Views
                         if (CerrarCaja == "Y")
                         {
                             System.Windows.MessageBox.Show("Proceso Exitoso !!!");
+                            GridHeader.ItemsSource = null;
+                            GriDDetalle.ItemsSource = null;
+                            GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+                            GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
                         }
                     }
                 }
