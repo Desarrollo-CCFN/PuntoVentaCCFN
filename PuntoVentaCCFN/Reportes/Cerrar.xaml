@@ -10,6 +10,8 @@
           Icon="/SCS/IMG/Cierre_caja.png"
         Title="Cerrar Caja" Height="150" Width="350"
         x:Name="Tit1"
+            ResizeMode="NoResize"  
+            WindowStyle="SingleBorderWindow" 
         >
     
     <Grid>
