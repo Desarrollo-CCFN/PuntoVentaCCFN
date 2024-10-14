@@ -94,7 +94,7 @@ namespace PuntoVentaCCFN.Views
             nombreCajaString = MainWindow.AppConfig1.Caja;
             nombreCajaInt = int.Parse(nombreCajaString);
             whsCode = SettingSection.Filler;
-            tipoCambio = SettingSection.DefRateCash;
+            tipoCambio = SettingSection.DefRateRetail;
             tbMoneda.Text = SettingSection.DefCurrency;
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
 
@@ -1010,8 +1010,13 @@ namespace PuntoVentaCCFN.Views
 
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
             Nom_Cajera.logoff = 0;
+          
+            //  =====================  se pone el nuevo tipo de cambio =================
+     // var   SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+       //     tipoCambio = SettingSection.DefRateCash;
+         //   tbTipoCambio.Text = tipoCambio.ToString();
+            // ===============================================================================
 
-        
             //var e = new EPSON();
 
             //try
@@ -1104,7 +1109,7 @@ namespace PuntoVentaCCFN.Views
             //{
             //    System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
             //}
-          
+
         }
         #endregion
 

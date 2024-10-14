@@ -23,6 +23,7 @@ namespace Capa_Presentacion
         private static ConfigurationProperty _Bd;
         private static ConfigurationProperty _DefCardCode;
         private static ConfigurationProperty _DefRateCash;
+        private static ConfigurationProperty _DefRateRetail;
         private static ConfigurationProperty _DefRateCredit;
         private static ConfigurationProperty _DefCurrency;
         private static ConfigurationProperty _DefListNum;
@@ -40,7 +41,8 @@ namespace Capa_Presentacion
               _DefCardCode = new ConfigurationProperty("cardcode", typeof(string), objCompany.DefCardCode);
               _DefRateCash = new ConfigurationProperty("defRateCash", typeof(decimal), objCompany.DefRateCash);
               _DefRateCredit = new ConfigurationProperty("defRateCredit", typeof(decimal), objCompany.DefRateCredit);
-              _DefCurrency = new ConfigurationProperty("defCurrency", typeof(string), objCompany.DefCurrency);
+            _DefRateRetail = new ConfigurationProperty("defRateRetail", typeof(decimal), objCompany.DefRateRetail);
+            _DefCurrency = new ConfigurationProperty("defCurrency", typeof(string), objCompany.DefCurrency);
               _DefListNum = new ConfigurationProperty("defListNum", typeof(int), objCompany.DefListNum);
               _DefSlpCode = new ConfigurationProperty("defSlpCode", typeof(int), objCompany.DefSlpCode);
               _DefSerieInv = new ConfigurationProperty("delSerieInv", typeof(string), objCompany.DefSerieInv);   
@@ -67,6 +69,7 @@ namespace Capa_Presentacion
             _Properties.Add(_DefCardCode);
             _Properties.Add(_DefRateCash);
             _Properties.Add(_DefRateCredit);
+            _Properties.Add(_DefRateRetail);
             _Properties.Add(_DefCurrency);
             _Properties.Add(_DefListNum);
             _Properties.Add(_DefSlpCode);
@@ -109,6 +112,12 @@ namespace Capa_Presentacion
         {
             get { return (decimal)this["defRateCash"]; }
             set { this["defRateCash"] = value; }
+        }
+
+        public decimal DefRateRetail
+        {
+            get { return (decimal)this["defRateRetail"]; }
+            set { this["defRateRetail"] = value; }
         }
 
         public decimal DefRateCredit

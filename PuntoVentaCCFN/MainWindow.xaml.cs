@@ -47,6 +47,8 @@ namespace PuntoVentaCCFN
 
             InitializeComponent();
             LoadJson();
+            //posButton.IsEnabled = true;
+            //prodbutton.IsEnabled = true;
 
 
             if (AppConfig.Sections["App_Preferences"] is null)
@@ -199,8 +201,8 @@ namespace PuntoVentaCCFN
                 {
                     InitializeComponent();
                     DataContext = new POS();
-                    posButton.IsEnabled = false;
-                    prodbutton.IsEnabled = false;
+                    //posButton.IsEnabled = false;
+                    //prodbutton.IsEnabled = false;
                 }
                 else
                 {
@@ -426,14 +428,7 @@ namespace PuntoVentaCCFN
 
             // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-
-
-
-
-
-
-
-
+             
 
         }
         #endregion
