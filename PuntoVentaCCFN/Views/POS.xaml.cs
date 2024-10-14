@@ -671,9 +671,10 @@ namespace PuntoVentaCCFN.Views
                         return;
                     }
 
-                    if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t)))
+                    string sMensaje = "";
+                    if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t), ref sMensaje))
                     {
-                        MessageBox.Show("Ocurrio un error al actualizar cantidad de producto!!");
+                        MessageBox.Show("Ocurrio un error al actualizar cantidad de producto!!" + "\n" + sMensaje);
                         return;
                     }
                     else

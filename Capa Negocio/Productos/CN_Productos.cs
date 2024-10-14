@@ -31,9 +31,9 @@ namespace Capa_Negocio.Productos
         #endregion
 
         #region actualizar de producto
-        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
+        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad, ref string sMensaje)
         {
-            return objDatos.AnulacionProducto(idHeader, LineNum, Cantidad);
+            return objDatos.AnulacionProducto(idHeader, LineNum, Cantidad, ref sMensaje);
         }
         #endregion
         #region anulacion de producto
