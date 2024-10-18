@@ -97,7 +97,7 @@ namespace PuntoVentaCCFN.Views
             tipoCambio = SettingSection.DefRateRetail;
             tbMoneda.Text = SettingSection.DefCurrency;
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
-
+           
         }
 
         #region verificar venta activa
@@ -1012,11 +1012,14 @@ namespace PuntoVentaCCFN.Views
 
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
             Nom_Cajera.logoff = 0;
-          
+
             //  =====================  se pone el nuevo tipo de cambio =================
-     // var   SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-       //     tipoCambio = SettingSection.DefRateCash;
-         //   tbTipoCambio.Text = tipoCambio.ToString();
+           /*     var   SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+                    tbTipoCambio.IsEnabled = true;
+                    tipoCambio = SettingSection.DefRateRetail;   //SettingSection.DefRateCash;
+                    tbTipoCambio.Text = tipoCambio.ToString();
+                    tbTipoCambio.IsEnabled = false; 
+                  */  
             // ===============================================================================
 
             //var e = new EPSON();

@@ -12,6 +12,7 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
+         WindowState="Maximized"
         Background="Transparent" Closing="Window_Closing">
     <Window.Resources>
 
