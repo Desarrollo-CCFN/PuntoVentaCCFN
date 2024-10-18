@@ -311,7 +311,7 @@ namespace PuntoVentaCCFN
 
                 //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                 var MainReportes = new MainReportes();   // Activa el Password de acceso
-                MainReportes.retiros.Visibility = Visibility.Collapsed;
+               // MainReportes.retiros.Visibility = Visibility.Collapsed;
               //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
                 MainReportes.Show();
 

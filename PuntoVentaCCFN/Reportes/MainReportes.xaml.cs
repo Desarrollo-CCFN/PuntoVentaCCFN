@@ -71,10 +71,6 @@ namespace Capa_Presentacion.Reportes
         private void bitacora_Click(object sender, RoutedEventArgs e)
         {
 
-
-          
-
-
             var Cerrar = new Cerrar(2);
             Cerrar.ShowDialog();
 
@@ -83,7 +79,8 @@ namespace Capa_Presentacion.Reportes
 
         private void retiros_Click(object sender, RoutedEventArgs e)
         {
-
+            var Cerrar = new Cerrar(4);
+            Cerrar.ShowDialog();
         }
 
         private void entrega_Click(object sender, RoutedEventArgs e)

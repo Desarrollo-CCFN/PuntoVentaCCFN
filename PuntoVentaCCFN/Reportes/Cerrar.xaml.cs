@@ -32,6 +32,13 @@ namespace Capa_Presentacion.Reportes
                     Label1.Content = "Número de Cierre de Caja:";
                     this.Title = "Cierre de Caja";
                     break;
+
+                case 4:
+                    Label1.Content = "Número de Factura:";
+                    this.Title = "Reimpresión Factura TCK";
+                    break;
+
+
             }
         }
 

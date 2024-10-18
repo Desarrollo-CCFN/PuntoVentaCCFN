@@ -140,17 +140,26 @@
 
 
 
-                <Button x:Name="retiros" Content="Retiros de Caja" 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Top" 
-                    Width="129" 
-                    Height="56" 
-                    Margin="27,251,0,0"
-                    Background="#FF136F6D"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    Cursor="Hand" Click="retiros_Click" Grid.Row="1"/>
+                <Button x:Name="retiros" 
+                          HorizontalAlignment="Left" 
+                          VerticalAlignment="Top" 
+                            Width="129" 
+                            Height="56" 
+                            Margin="27,251,0,0"
+                            Background="#FF136F6D"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Cursor="Hand" 
+                            Click="retiros_Click" 
+                      Grid.Row="1">
+
+                    <TextBlock Text="Reimp. Factura Tipo TCK" 
+                               TextWrapping="Wrap" 
+                                TextAlignment="Center"
+                                VerticalAlignment="Center" 
+                                 HorizontalAlignment="Center"/>
+                      </Button>
 
 
 
@@ -160,7 +169,7 @@
                     VerticalAlignment="Top" 
                     Width="93" 
                     Height="47" 
-                    Margin="203,358,0,0"
+                    Margin="377,353,0,0"
                     Background="#FFE0310A"
                     Foreground="White"
                     FontWeight="Bold"
