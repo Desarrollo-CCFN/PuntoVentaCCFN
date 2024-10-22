@@ -611,6 +611,12 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
+                            <MenuItem  Click="MenuItem_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image x:Name="menuItemDevoluciones" Source="/SCS/IMG/factura.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+
                             <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>

@@ -481,6 +481,10 @@ namespace PuntoVentaCCFN
 
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new Devoluciones();
+        }
     }
 }
 
