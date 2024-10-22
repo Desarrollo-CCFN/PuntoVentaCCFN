@@ -9,7 +9,9 @@
         WindowStartupLocation="CenterScreen"
         Icon="/Images/logo.png"
         Background="#08769F"
-        >
+        ResizeMode="NoResize"  
+    WindowStyle="SingleBorderWindow" >
+    <!-- Conserva el borde de la ventana sin botones de minimizar o maximizar -->
 
     <Grid Margin="10,10,10,-16">
         <Grid.RowDefinitions>

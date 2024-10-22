@@ -167,6 +167,7 @@ namespace Capa_Datos.Venta
                 conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = detalle.IdHeader;
                 conm.Parameters.Add("_UomEntry", MySqlDbType.Int32).Value = detalle.UomEntry;
                 conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = detalle.LineNum;
+                conm.Parameters.Add("_ReemplazaPartida", MySqlDbType.VarChar).Value = "N";
 
                 MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;

@@ -94,10 +94,10 @@ namespace PuntoVentaCCFN.Views
             nombreCajaString = MainWindow.AppConfig1.Caja;
             nombreCajaInt = int.Parse(nombreCajaString);
             whsCode = SettingSection.Filler;
-            tipoCambio = SettingSection.DefRateCash;
+            tipoCambio = SettingSection.DefRateRetail;
             tbMoneda.Text = SettingSection.DefCurrency;
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
-
+           
         }
 
         #region verificar venta activa
@@ -671,9 +671,12 @@ namespace PuntoVentaCCFN.Views
                         return;
                     }
 
-                    if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t)))
+                    string sMensaje = "";
+                    if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t), ref sMensaje))
                     {
-                        MessageBox.Show("Ocurrio un error al actualizar cantidad de producto!!");
+                        MessageBox.Show("Ocurrio un error al actualizar cantidad de producto!!" + "\n" + sMensaje);
+                        GridDatos.ItemsSource = null;
+                        GridDatos.ItemsSource = lista;
                         return;
                     }
                     else
@@ -741,33 +744,33 @@ namespace PuntoVentaCCFN.Views
                 loadAnularFPago();
             }
 
-            if (e.Key == Key.P)
+            if (e.Key == Key.F6)
             {
                 loadModal();
 
             }
 
-            if (e.Key == Key.E)
+            if (e.Key == Key.F7)
             {
                 loadEMXN();
             }
 
-            if (e.Key == Key.U)
+            if (e.Key == Key.F8)
             {
                 loadEUSD();
             }
 
-            if (e.Key == Key.D)
+            if (e.Key == Key.F9)
             {
                 loadDebit();
             }
 
-            if (e.Key == Key.C)
+            if (e.Key == Key.F10)
             {
                 loadCredit();
             }
 
-            if (e.Key == Key.R)
+            if (e.Key == Key.F11)
             {
                 loadRetiros();
             }
@@ -1010,7 +1013,15 @@ namespace PuntoVentaCCFN.Views
             System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
             Nom_Cajera.logoff = 0;
 
-        
+            //  =====================  se pone el nuevo tipo de cambio =================
+           /*     var   SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+                    tbTipoCambio.IsEnabled = true;
+                    tipoCambio = SettingSection.DefRateRetail;   //SettingSection.DefRateCash;
+                    tbTipoCambio.Text = tipoCambio.ToString();
+                    tbTipoCambio.IsEnabled = false; 
+                  */  
+            // ===============================================================================
+
             //var e = new EPSON();
 
             //try
@@ -1103,7 +1114,7 @@ namespace PuntoVentaCCFN.Views
             //{
             //    System.Windows.MessageBox.Show("Error al imprimir ticket \n" + ex.Message);
             //}
-          
+
         }
         #endregion
 

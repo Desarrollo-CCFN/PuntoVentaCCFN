@@ -10,9 +10,9 @@ namespace Capa_Datos
 {
     public class CD_Conexion
     {
-        //private readonly MySqlConnection conn = new MySqlConnection("server=192.168.115.92;uid=root; pwd=root.2024;database=db_s12;");
-        //private readonly MySqlConnection conn = new MySqlConnection("server=localhost;uid=root; pwd=root.2024;database=db_s12;");
-        public readonly MySqlConnection conn = new MySqlConnection("server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;");
+         private readonly MySqlConnection conn = new MySqlConnection("server=10.101.1.130;uid=root; pwd=root.2024;database=db_s12;");
+        // private readonly MySqlConnection conn = new MySqlConnection("server=localhost;uid=root; pwd=root.2024;database=db_s12;");
+       //public readonly MySqlConnection conn = new MySqlConnection("server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;");
 
         public MySqlConnection AbrirConexion()
         {
@@ -23,6 +23,8 @@ namespace Capa_Datos
 
             return conn;
         }
+ 
+
 
         public MySqlConnection CerrarConexion()
         {
@@ -33,5 +35,8 @@ namespace Capa_Datos
 
             return conn;
         }
+ 
+         
+
     }
 }

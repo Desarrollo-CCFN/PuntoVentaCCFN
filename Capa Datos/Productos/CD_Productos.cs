@@ -59,7 +59,7 @@ namespace Capa_Datos.Productos
         #endregion
 
         #region actualizar cantidad
-        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad)
+        public bool AnulacionProducto(int idHeader, int LineNum, decimal Cantidad, ref string sMensaje)
         {
             string pName = "";
             try
@@ -70,7 +70,23 @@ namespace Capa_Datos.Productos
                 conm.Parameters.Add("_Idheader", MySqlDbType.Int32).Value = idHeader;
                 conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
                 conm.Parameters.Add("_Quantity", MySqlDbType.Decimal).Value = Cantidad;
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                conm.Parameters.Add(outErrorMessage);
+
                 conm.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                    return false;
+                }
+
                 conm.Parameters.Clear();
                 conn.CerrarConexion();
             }
@@ -78,6 +94,7 @@ namespace Capa_Datos.Productos
             {
                 //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                 //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                sMensaje = ex1.Message;
                 return false;
             }
             return true;

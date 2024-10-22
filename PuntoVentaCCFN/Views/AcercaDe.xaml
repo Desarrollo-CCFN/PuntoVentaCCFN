@@ -74,7 +74,21 @@
 
                     <!-- Pie de Página -->
                     <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,30,0,0">
-                    <!--    <TextBlock Text="Derechos reservados a CCFN" 
+                        <!--    <TextBlock Text="Derechos reservados a CCFN" 
+                           Foreground="White" 
+                           FontSize="14" 
+                           HorizontalAlignment="Center"/>
+                          -->
+                        <!--    <TextBlock Text="Derechos reservados a CCFN" 
+                           Foreground="White" 
+                           FontSize="14" 
+                           HorizontalAlignment="Center"/>
+                          -->
+                        <TextBlock x:Name="IP" Text="Desarrollado por el Equipo de Sistemas CCFN" 
+                            Foreground="LightGray" 
+                            FontSize="14" Height="33" 
+                           />
+                        <!--    <TextBlock Text="Derechos reservados a CCFN" 
                            Foreground="White" 
                            FontSize="14" 
                            HorizontalAlignment="Center"/>

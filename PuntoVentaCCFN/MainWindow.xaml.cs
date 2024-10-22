@@ -46,7 +46,24 @@ namespace PuntoVentaCCFN
             
 
             InitializeComponent();
+           
+            // Obtener la resolución de la pantalla principal
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+
+            // Ajustar el tamaño de la ventana a la resolución de la pantalla, dejando un margen
+            this.Width = screenWidth - 100; // Margen de 100 píxeles en ancho
+            this.Height = screenHeight - 100; // Margen de 100 píxeles en alto
+
+            // Centrar la ventana manualmente
+            this.Left = (screenWidth - this.Width) / 2;
+            this.Top = (screenHeight - this.Height) / 2;
+  
+
+
             LoadJson();
+            //posButton.IsEnabled = true;
+            //prodbutton.IsEnabled = true;
 
 
             if (AppConfig.Sections["App_Preferences"] is null)
@@ -59,9 +76,7 @@ namespace PuntoVentaCCFN
             //var preferences = AppConfig.Sections[11] as App_Preferences;
             string Empresa = Nom_Cajera.Nom_Sucursal;     //preferences.CompanyName;     //Nombre de la empresa
             txtSucursal.Text = "Sucursal: " + Empresa+" Bienvenida/o: "+ Nom_Cajera.Nome_Cajera;
-
-           
-
+ 
         }
 
          
@@ -83,20 +98,7 @@ namespace PuntoVentaCCFN
                            AppConfig1.Puerto = jsons["Puerto"].ToString();
                            AppConfig1.Caja = jsons["Caja"].ToString();
                            AppConfig1.Copia = jsons["Copia"].ToString();
-                        
-
-                        AppConfig1.CompanyName = jsons["CompanyName"].ToString();
-                        AppConfig1.Filler = jsons["Filler"].ToString();
-                        AppConfig1.bd = jsons["Bd"].ToString();
-                        AppConfig1.DefCardCode = jsons["DefCardCode"].ToString();
-                        AppConfig1.DefRateCash = jsons["DefRateCash"].ToString();
-
-                        AppConfig1.DefRateCredit = jsons["DefRateCredit"].ToString();
-                        AppConfig1.DefCurrency = jsons["DefCurrency"].ToString();
-                        AppConfig1.DefListNum = jsons["DefListNum"].ToString();
-                        AppConfig1.DefSlpCode = jsons["DefSlpCode"].ToString();
-
-                        AppConfig1.DefSerieInv = jsons["DefSerieInv"].ToString(); 
+                         
 
                     }
                 }
@@ -133,24 +135,10 @@ namespace PuntoVentaCCFN
             public static string Sucursal { get; set; }
             public static string Puerto { get; set; }
             public static string Caja { get; set; }
-
-            public static string Copia { get; set; } 
-            public static string CompanyName { get; set; }
-            public static string Filler { get; set; }
-            public static string bd { get; set; }
-            public static string DefCardCode { get; set; }
-            public static string DefRateCash { get; set; }
-            public static string DefRateCredit { get; set; }
-            public static string DefCurrency { get; set; }
-            public static string DefListNum { get; set; }
-            public static string DefSlpCode { get; set; }
-            public static string DefSerieInv { get; set; }
-             
+            public static string Copia { get; set; }
 
         }
-
-
-
+         
         private void TBShow(object sender, RoutedEventArgs e)
         {
             GridContent.Opacity = 0.5;
@@ -193,9 +181,7 @@ namespace PuntoVentaCCFN
 
                     window.Close();
                 }
-
-
-
+                 
 
         }
 
@@ -231,8 +217,8 @@ namespace PuntoVentaCCFN
                 {
                     InitializeComponent();
                     DataContext = new POS();
-                    posButton.IsEnabled = false;
-                    prodbutton.IsEnabled = false;
+                    //posButton.IsEnabled = false;
+                    //prodbutton.IsEnabled = false;
                 }
                 else
                 {
@@ -318,9 +304,21 @@ namespace PuntoVentaCCFN
         private void Reportes_Click(object sender, RoutedEventArgs e)
         {
 
-            //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-            var MainReportes = new MainReportes();   // Activa el Password de acceso
-            MainReportes.Show();
+            var Acceso = new Acceso(3);
+            Acceso.ShowDialog();
+            if (Acceso.ReturnValue >= 3)
+            {
+
+
+                //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                var MainReportes = new MainReportes();   // Activa el Password de acceso
+                MainReportes.retiros.Visibility = Visibility.Collapsed;
+              //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
+                MainReportes.Show();
+
+            }
+
+
 
         }
 
@@ -446,14 +444,7 @@ namespace PuntoVentaCCFN
 
             // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-
-
-
-
-
-
-
-
+             
 
         }
         #endregion

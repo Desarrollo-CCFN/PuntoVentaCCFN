@@ -10,6 +10,7 @@ namespace Capa_Entidad
         private string defCardCode;
         private decimal defRateCash;
         private decimal defRateCredit;
+        private decimal defRateRetail;
         private string defCurrency;
         private int defListNum;
         private int defSlpCode;
@@ -21,6 +22,7 @@ namespace Capa_Entidad
         public string DefCardCode { get => defCardCode; set => defCardCode = value; }
         public decimal DefRateCash { get => defRateCash; set => defRateCash = value; }
         public decimal DefRateCredit { get => defRateCredit; set => defRateCredit = value; }
+        public decimal DefRateRetail { get => defRateRetail; set => defRateRetail = value; }
         public string DefCurrency { get => defCurrency; set => defCurrency = value; }
         public int DefListNum { get => defListNum; set => defListNum = value; }
         public int DefSlpCode { get => defSlpCode; set => defSlpCode = value; }
