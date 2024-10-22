@@ -409,36 +409,7 @@ namespace PuntoVentaCCFN
                 CierreCaja DATA1 = new CierreCaja();
                 DATA1.UserSupervisor = Acceso.SupervisorId;
                 DataContext = DATA1;
-                
-                
-              //   DataContext = new CierreCaja();
-                
-                //// Mostrar el cuadro de mensaje con las opciones Sí y No
-                //MessageBoxResult result = System.Windows.MessageBox.Show(
-                //    "Esta estación se encuentra abierta. ¿Se cerrará? ¿Está usted de acuerdo?",
-                //    "¡Alerta!",
-                //    MessageBoxButton.YesNo,
-                //    MessageBoxImage.Warning
-                //);
-
-                //// Evaluar la respuesta del usuario
-                //if (result == MessageBoxResult.Yes)
-
-
-                //{
-                //    if (!cN_Venta.cerradoCaja(nombreCajaInt, SucursalString))
-                //    {
-                //        System.Windows.MessageBox.Show("Error al cerrar caja!!");
-                //    } else
-                //    {
-                //        System.Windows.MessageBox.Show("Exito al cerrar caja!!");
-                //    }
-                //}
-                //else if (result == MessageBoxResult.No)
-                //{
-                //    // Si el usuario presiona "No", no hacer nada o cancelar la operación
-                //    // Coloca aquí el código para cancelar la operación
-                //}
+                 
             }
 
             // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
