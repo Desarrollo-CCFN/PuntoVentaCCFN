@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
              mc:Ignorable="d"
-             d:DesignHeight="865" d:DesignWidth="1425">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.Resources>
         <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
@@ -200,12 +200,12 @@
         </Style>
     </UserControl.Resources>
     <Border Background="#5b7bb2" CornerRadius="10">
-        <Grid Margin="0,0,0,-10" Height="865" VerticalAlignment="Bottom">
+        <Grid Margin="0,85,0,0" Height="835" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="26*"/>
                 <ColumnDefinition Width="259*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Entrada de Mercancia" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="385,6,505,778"/>
+            <TextBlock Text="Entrada de Mercancia" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="404,0,0,759" Height="81" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="405"/>
             <DataGrid x:Name="GridSt"
                       Style="{DynamicResource DataGridStyle}"
                       AutoGenerateColumns="False"
@@ -286,7 +286,7 @@
                     Content="Procesar Entrada" 
                     HorizontalAlignment="Left" 
                     Height="44" 
-                    Margin="1066,670,0,0" 
+                    Margin="986,656,0,0" 
                     VerticalAlignment="Top" 
                     Width="209" 
                     Background="Green"

@@ -17,7 +17,9 @@
         <SolidColorBrush x:Key="Button.Disabled.Border2" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground2" Color="#FF838383"/>
         <Style x:Key="btnSide" TargetType="{x:Type Button}">
+            <!--#endregion
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+           -->
             <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -303,7 +305,13 @@
                       >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Codigo de Producto" Width="*" Binding="{Binding ItemCode}"/>
-                    <DataGridTextColumn Header="Nombre de Producto" Width="*" Binding="{Binding ItemName}"/>
+                    <DataGridTextColumn Header="Nombre de Producto" Width="*" Binding="{Binding ItemName}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="En Stock" Width="*" Binding="{Binding OnHand}"/>
                 </DataGrid.Columns>
             </DataGrid>

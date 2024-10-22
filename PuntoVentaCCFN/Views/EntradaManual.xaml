@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PuntoVentaCCFN.Views"
              mc:Ignorable="d"
-             d:DesignHeight="865" d:DesignWidth="1425">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.Resources>
         <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
@@ -200,13 +200,13 @@
         </Style>
     </UserControl.Resources>
     <Border Background="#5b7bb2" CornerRadius="10">
-        <Grid Margin="14,0,-14,-21" Height="865" VerticalAlignment="Bottom">
+        <Grid Margin="14,0,-14,-21" Height="806" VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="125*"/>
                 <ColumnDefinition Width="846*"/>
                 <ColumnDefinition Width="454*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Entrada de Mercancia Manual" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="230,6,434,803" Grid.ColumnSpan="2"/>
+            <TextBlock Text="Entrada de Mercancia Manual" FontSize="40" Foreground="White" FontWeight="Bold" Grid.Column="1" Margin="0,0,394,744" Height="52" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="636" Grid.ColumnSpan="2"/>
             <DataGrid x:Name="GridSt"
                       Style="{DynamicResource DataGridStyle}"
                       AutoGenerateColumns="False"
@@ -275,7 +275,7 @@
                     Content="Procesar Entrada" 
                     HorizontalAlignment="Left" 
                     Height="44" 
-                    Margin="220,670,0,0" 
+                    Margin="158,622,0,0" 
                     VerticalAlignment="Top" 
                     Width="209" 
                     Background="Green"
@@ -312,13 +312,13 @@
             <TextBlock x:Name="lb_tsr_Copy1" 
                 Text="Comentarios:" 
                 HorizontalAlignment="Left" 
-                Margin="31,669,0,0"
+                Margin="31,633,0,0"
                 FontSize="15"
                 Foreground="White"
                 VerticalAlignment="Top" Height="20" Width="146" Grid.ColumnSpan="2"/>
             <TextBox x:Name="tb_Comentarios" 
                 HorizontalAlignment="Left" 
-                Height="26" Margin="23,666,0,0" 
+                Height="26" Margin="23,630,0,0" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Top" 
                 HorizontalContentAlignment="Left"
