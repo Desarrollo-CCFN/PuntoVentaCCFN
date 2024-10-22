@@ -266,8 +266,24 @@
                     HeadersVisibility="Column"
                     GridLinesVisibility="Horizontal">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Cod Cliente" Width="100" Binding="{Binding CardCode}" />
-                    <DataGridTextColumn Header="Nombre" Width="*" Binding="{Binding CardFName}"/>
+                    <DataGridTextColumn Header="Cod Cliente" Width="100" Binding="{Binding CardCode}" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Left"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+
+                    <DataGridTextColumn Header="Nombre" Width="*" Binding="{Binding CardFName}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextAlignment" Value="Left"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+
                     <DataGridTextColumn Header="Lista de Precio" Width="*" Binding="{Binding ListName}"/>
                     <DataGridTextColumn Header="Numero Lista De Precio" Width="*" Binding="{Binding ListNum}"/>
                 </DataGrid.Columns>

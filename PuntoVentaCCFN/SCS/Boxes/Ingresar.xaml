@@ -129,7 +129,7 @@
                 Grid.Row="2"
                 x:Name="tbCantidad"
                 HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"/>
+                VerticalContentAlignment="Center" PreviewTextInput="tbCantidad_TextInput"/>
             <Button Style="{DynamicResource btnOk}" x:Name="BtnOk"
                     Grid.Row="4"
                     Content="Aceptar"

@@ -941,6 +941,17 @@ namespace PuntoVentaCCFN.Views
 
                     if (mFacturacion.isFacturado)
                     {
+                        int Param = 3;
+                        // Crear una instancia de ProcessStartInfo
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable para imprimira Facutura por TCK
+
+                        // startInfo.Arguments = $"{IdTra}";
+                        startInfo.Arguments = $"{ventaI.Id} {Param}";
+
+                        // Ejecutar el programa externo
+                        Process.Start(startInfo);
+
                         MessageBox.Show("Facturado con exito!!");
                     }
                     else

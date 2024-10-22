@@ -16,6 +16,15 @@
         Background="Transparent" Closing="Window_Closing">
     <Window.Resources>
 
+        <!--#region Leyendas de iconos-->
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Yellow"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
 
         <!--#region FOCUSVISUAL-->
         <Style x:Key="FocusVisual">
@@ -593,25 +602,25 @@
                                 </ItemsPanelTemplate>
                             </Menu.ItemsPanel>
 
-                            <MenuItem Template="{StaticResource Menu_Template}">
+                            <MenuItem Template="{StaticResource Menu_Template}" ToolTip="Estadisticas">
                                 <MenuItem.Icon>
-                                    <Image x:Name="menuItemdashboard" Source="/SCS/IMG/dashboard.png"></Image>
+                                    <Image x:Name="menuItemdashboard"  Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}" x:Name="posButton">
+                            <MenuItem Click="Pos_Click" Template="{StaticResource Menu_Template}" x:Name="posButton" ToolTip="Punto de Venta">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/ventaccfn.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                            <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Busqueda Cliente">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemFacturacion" Source="/SCS/IMG/factura.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton">
+                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton" ToolTip="Almacen">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>
                                 </MenuItem.Icon>
@@ -638,167 +647,33 @@
 
                             <MenuItem x:Name="menuItemUsuarios" Click="Usuarios_Click" 
                                       Template="{StaticResource Menu_Template}" Height="50" 
-                                      VerticalAlignment="Center">
+                                      VerticalAlignment="Center" ToolTip="Alta, Baja, Modificación de Usuarios">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/usuarios.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Reimpresión Reportes" >
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/reportes.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem x:Name="menuItemCaja" Click="Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                            <MenuItem x:Name="menuItemCaja" Click="Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Apertura de Caja">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/venta.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
 
-                            <MenuItem x:Name="menuItemCierreCaja" Click="Cierre_Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                            <MenuItem x:Name="menuItemCierreCaja" Click="Cierre_Caja_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Cierre de Caja">
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/Cierre_caja.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
                         </Menu>
-                        <!--<ListView Background="Transparent"
-                              BorderBrush="Transparent"
-                              Margin="0,30,0,0"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-
-                        -->
-                        <!--#region INICIO-->
-                        <!--
-                        <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
-                            <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnInicio"
-                                    Height="70"
-                                    Width="200"
-                                    HorizontalAlignment="Left"
-                                    Cursor="Hand"
-                                    Background="Transparent"
-                                    BorderBrush="Transparent">
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="50" 
-                                           Grid.Column="0"
-                                           HorizontalAlignment="Center"
-                                           Source="/SCS/IMG/dashboard.png"/>
-                                    <TextBlock Grid.Column="1" 
-                                               Text="Inicio"
-                                               FontWeight="SemiBold"
-                                               Foreground="White"
-                                               FontSize="15"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>
-                                </Grid>
-                            </Button>
-                        </ListViewItem>
-                        -->
-                        <!--#endregion-->
-                        <!--#region POS-->
-                        <!--
-                        <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
-                            <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnPOS"
-                                    Height="70"
-                                    Width="200"
-                                    HorizontalAlignment="Left"
-                                    Cursor="Hand"
-                                    Background="Transparent"
-                                    BorderBrush="Transparent" Click="Pos_Click">
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="50" 
-                                           Grid.Column="0"
-                                           HorizontalAlignment="Center"
-                                           Source="/SCS/IMG/ventaccfn.png"/>
-                                    <TextBlock Grid.Column="1" 
-                                               Text="Venta"
-                                               FontWeight="SemiBold"
-                                               Foreground="White"
-                                               FontSize="15"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>
-                                </Grid>
-                            </Button>
-                        </ListViewItem>
-                        -->
-                        <!--#endregion-->
-                        <!--#region PRODUCTOS-->
-                        <!--
-                        <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
-                            <Button Style="{DynamicResource BtnListaStyle}" 
-                                    x:Name="BtnProductos"
-                                            Height="70"
-                                            Width="200"
-                                            HorizontalAlignment="Left"
-                                            Cursor="Hand"
-                                            Background="Transparent"
-                                            BorderBrush="Transparent"
-                                            Click="Productos_Click">      
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="50" 
-                                           Grid.Column="0"
-                                           HorizontalAlignment="Center"
-                                            Source="/SCS/IMG/almacen.png"/>
-                                    <TextBlock Grid.Column="1" 
-                                               Text="Inventario"
-                                               Foreground="White"
-                                               FontWeight="SemiBold"
-                                               FontSize="15"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>   
-                                </Grid>
-                            </Button>
-                        </ListViewItem>
-                        -->
-                        <!--#endregion-->
-                        <!--#region USUARIOS-->
-                        <!--
-                        <ListViewItem Style="{DynamicResource ListViewStyle}" Height="70">
-                            <Button Style="{DynamicResource BtnListaStyle}" x:Name="BtnUsuarios"
-                                            Height="70"
-                                            Width="200"
-                                            HorizontalAlignment="Left"
-                                            Cursor="Hand"
-                                            Background="Transparent"
-                                            BorderBrush="Transparent" Click="Usuarios_Click">
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="50" 
-                                           Grid.Column="0"
-                                           HorizontalAlignment="Center"
-                                            Source="/SCS/IMG/usuarios.png"/>
-                                    <TextBlock Grid.Column="1" 
-                                               Text="Usuarios"
-                                               FontWeight="SemiBold"
-                                               FontSize="15"
-                                               Foreground="White"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>
-                                </Grid>
-                            </Button>
-                        </ListViewItem>
-                        -->
-                        <!--#endregion-->
-                        <!--
-                    </ListView>-->
-                        <!--#endregion-->
+                       
                     </StackPanel>
                     <!--#endregion -->
                 </Grid>
