@@ -12,10 +12,11 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-         WindowState="Maximized"
-        Background="Transparent" Closing="Window_Closing">
+           
+        Background="Transparent" 
+        Closing="Window_Closing">
     <Window.Resources>
-
+        <!--  WindowState="Maximized"-->
         <!--#region Leyendas de iconos-->
         <Style TargetType="ToolTip">
             <Setter Property="Background" Value="Yellow"/>
