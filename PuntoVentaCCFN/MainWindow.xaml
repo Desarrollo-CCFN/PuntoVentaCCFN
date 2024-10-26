@@ -12,11 +12,11 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-         WindowState="Maximized"
+        
         Background="Transparent" Closing="Window_Closing">
     <Window.Resources>
 
-
+        <!-- WindowState="Maximized"-->
         <!--#region FOCUSVISUAL-->
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
