@@ -12,11 +12,11 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-         WindowState="Maximized"
+        
         Background="Transparent" Closing="Window_Closing">
     <Window.Resources>
 
-
+        <!-- WindowState="Maximized"-->
         <!--#region FOCUSVISUAL-->
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -608,6 +608,12 @@
                             <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemFacturacion" Source="/SCS/IMG/factura.png"></Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                            <MenuItem  Click="MenuItem_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center">
+                                <MenuItem.Icon>
+                                    <Image x:Name="menuItemDevoluciones" Source="/SCS/IMG/factura.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 

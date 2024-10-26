@@ -46,7 +46,7 @@ namespace PuntoVentaCCFN
             
 
             InitializeComponent();
-           
+          /* 
             // Obtener la resolución de la pantalla principal
             var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -58,7 +58,7 @@ namespace PuntoVentaCCFN
             // Centrar la ventana manualmente
             this.Left = (screenWidth - this.Width) / 2;
             this.Top = (screenHeight - this.Height) / 2;
-  
+  */
 
 
             LoadJson();
@@ -108,8 +108,9 @@ namespace PuntoVentaCCFN
                     {
                         Directory.CreateDirectory("C:\\PuntoVenta");
                     }
-                      var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
-                    
+                    // var _data = new { IP = "192.168.0.0", Sucursal = "Ensenada Mayoreo", Puerto = "12000", Caja = "1", Copia = "1" };
+                    var _data = new { CompanyName = "MAYOREO SLRC", Filler = "S24", Bd = "ccfn_desarrollo", DefCardCode = "C00000024", DefRateCash = "19.400000", DefRateCredit = "19.500000", DefCurrency = "USD", DefListNum = "13", DefSlpCode = "102", DefSerieInv = "S24", IP = "192.168.0.0", Sucursal = "MAYOREO SLRC", Puerto = "12000", Caja = "1", Copia = "1" };
+
 
                     string json = JsonConvert.SerializeObject(_data);
                     File.WriteAllText(@"C:\\PuntoVenta\\company.json", json);
@@ -481,6 +482,10 @@ namespace PuntoVentaCCFN
 
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new Devoluciones();
+        }
     }
 }
 
