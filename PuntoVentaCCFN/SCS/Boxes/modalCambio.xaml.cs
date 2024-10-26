@@ -1,4 +1,5 @@
-﻿using PuntoVentaCCFN.Views;
+﻿using PuntoVentaCCFN;
+using PuntoVentaCCFN.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             InitializeComponent();
             this.tc = tipoCambio;
+
+            this.BtnOk_Regresar.Visibility = Visibility.Collapsed;
+            
+
+
         }
 
         private void calculateMXN(object sender, TextChangedEventArgs e)
@@ -86,6 +92,11 @@ namespace Capa_Presentacion.SCS.Boxes
 
             //var posObject = new POS();
             //posObject.ventaFinal();
+            this.Close();
+        }
+
+        private void Click_Regresar(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }
