@@ -299,8 +299,18 @@
                 Grid.Column="1"
                 x:Name="tbListaPrecio"
                 Style="{DynamicResource tbStyle}"
-                IsEnabled="False"
                 Grid.Row="4" Grid.ColumnSpan="4" Margin="10,0,175,0"/>
+            <Button Style="{DynamicResource btnSide}" 
+                Background="Blue"
+                Grid.Column="4"
+                Grid.Row="4" Margin="106,2,30,0" 
+                >
+                <TextBlock Text="Buscar"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           />
+            </Button>
             <DataGrid  Style="{DynamicResource DataGridStyle}"
             Grid.Row="6"
           Grid.Column="1"
