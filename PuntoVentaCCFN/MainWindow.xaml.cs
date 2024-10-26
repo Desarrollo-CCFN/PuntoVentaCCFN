@@ -46,7 +46,7 @@ namespace PuntoVentaCCFN
             
 
             InitializeComponent();
-           
+          /* 
             // Obtener la resolución de la pantalla principal
             var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
@@ -58,7 +58,7 @@ namespace PuntoVentaCCFN
             // Centrar la ventana manualmente
             this.Left = (screenWidth - this.Width) / 2;
             this.Top = (screenHeight - this.Height) / 2;
-  
+  */
 
 
             LoadJson();

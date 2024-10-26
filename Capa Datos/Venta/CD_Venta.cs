@@ -370,7 +370,8 @@ namespace Capa_Datos.Venta
                         VatSum = Convert.ToDecimal(row[8]),
                         PriceList = Convert.ToDecimal(row[9]),
                         LineNum = Convert.ToInt32(row[10]),
-                        Cantidad = Convert.ToDecimal(row[11])
+                        Cantidad = Convert.ToDecimal(row[11]),
+                        TotalFrgn = Convert.ToDecimal(row[12])
                     };
 
                     ceLista.Add(ce);
@@ -398,7 +399,7 @@ namespace Capa_Datos.Venta
                 DataTable dt;
                 dt = ds.Tables[0];
                 DataRow row = dt.Rows[0];
-                value = Convert.ToInt32(row[0]);
+                value = Convert.ToDecimal(row[0]);
                 da.SelectCommand.Parameters.Clear();
 
                 return value;

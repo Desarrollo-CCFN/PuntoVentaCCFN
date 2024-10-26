@@ -124,7 +124,16 @@ namespace PuntoVentaCCFN.Views
                     l.Precio_Base = item.Price2;
                     l.Unidad = item.Unidad;
                     l.UomEntry = item.UomEntry;
-                    l.Total = item.LineTotal;
+
+                    if (tbMoneda.Text == "USD")
+                    {
+                        l.Total = item.TotalFrgn;
+                     }
+                    else 
+                    {
+
+                        l.Total = item.LineTotal;
+                    }
                     l.Impuesto_FC = item.VatSumFrgn;
                     l.Impuesto = item.VatSum;
                     l.Precio_Base_FC = item.PriceList;
@@ -277,7 +286,18 @@ namespace PuntoVentaCCFN.Views
             ce_Detalle.ItemCode = Convert.ToString(row[0]);
             ce_Detalle.Cantidad = Convert.ToDecimal(row[12]);
             ce_Detalle.Currency = tbMoneda.Text;
-            ce_Detalle.Monto = Convert.ToDecimal(row[6]);
+
+            if (ce_Detalle.Currency == "USD")
+            {
+                ce_Detalle.Monto = Convert.ToDecimal(row[13]);
+            }
+            else 
+            {
+                ce_Detalle.Monto = Convert.ToDecimal(row[6]);
+            }
+
+            
+            
             ce_Detalle.WhsCode = whsCode;
             ce_Detalle.CodeBars = tbCodigoProducto.Text;
             ce_Detalle.PriceList = listPrecios;
@@ -296,7 +316,17 @@ namespace PuntoVentaCCFN.Views
             l.Precio_Base = Convert.ToDecimal(row[3]);
             l.Unidad = Convert.ToString(row[4]);
             l.UomEntry = Convert.ToInt32(row[5]);
-            l.Total = Convert.ToDecimal(row[6]);
+
+            if (tbMoneda.Text == "USD")
+            {
+                l.Total = Convert.ToDecimal(row[13]);
+            }
+            else
+            {
+                l.Total = Convert.ToDecimal(row[6]);
+            }
+
+            
             l.Impuesto_FC = Convert.ToDecimal(row[10]);
             l.Impuesto = Convert.ToDecimal(row[7]);
             l.Precio_Base_FC = Convert.ToDecimal(row[9]);
@@ -312,7 +342,7 @@ namespace PuntoVentaCCFN.Views
             {
                 GridDatos.Columns[i].IsReadOnly = true;
             }
-            GridDatos.Columns[7].IsReadOnly = false;
+            GridDatos.Columns[7].IsReadOnly = false;  // cantidad
 
 
             saldo();
@@ -329,6 +359,7 @@ namespace PuntoVentaCCFN.Views
             totalUSD = 0;
             subTotal = 0;
             qty = 0;
+            int iCount = 0;
             for (int i = 0; i < GridDatos.Items.Count; i++)
             {
                 decimal precioTotal;
@@ -337,9 +368,19 @@ namespace PuntoVentaCCFN.Views
                 int j = 8;
                 DataGridCell celda = GetCelda(i, j);
                 TextBlock tb = celda.Content as TextBlock;
+                
                 precioTotal = decimal.Parse(tb.Text);
+                
                 total += precioTotal;
-                totalUSD += precioTotal / Convert.ToDecimal(tbTipoCambio.Text);
+
+                if (tbMoneda.Text == "MXN")
+                {
+                    totalUSD += precioTotal / Convert.ToDecimal(tbTipoCambio.Text);
+                }
+                else
+                {
+                    totalUSD += precioTotal;
+                }
 
                 int m = 7;
                 DataGridCell celda2 = GetCelda(i, m);
@@ -347,23 +388,60 @@ namespace PuntoVentaCCFN.Views
                 quan = decimal.Parse(tb2.Text);
                 qty = quan;
 
-                int k = 3;
+                int k = 3;   // mxn
+                if (tbMoneda.Text == "USD")
+                {
+                    k = 5;
+                }
+                
                 DataGridCell celda1 = GetCelda(i, k);
                 TextBlock tb1 = celda1.Content as TextBlock;
-                precioSubtotal = decimal.Parse(tb1.Text);
+                precioSubtotal = decimal.Parse(tb1.Text) * qty;
                 subTotal += precioSubtotal;
                 Nom_Cajera.logoff = 1;
+                iCount++;
             }
 
             cambio = pagado - total;
 
-            tbImporte.Text = "$" + total.ToString("0.00");
-            tbImporteUSD.Text = "$" + totalUSD.ToString("0.00");
-            tbSubtotal.Text = "$" + subTotal.ToString("0.00");
-            tbPagado.Text = "$" + pagado.ToString("###,###.00");
-            tbCambio.Text = "$" + cambio.ToString("0.00");
-           
+            tbImporte.Text = tbMoneda.Text + " $" + total.ToString("0.00");
 
+            if (tbMoneda.Text == "MXN")
+            {
+                lblTotal.Text = "Total USD";
+                tbImporteUSD.Text = "$" + totalUSD.ToString("0.00");
+                lblSaldo.Text = "Saldo USD";
+                decimal dSaldo = totalUSD - (pagado / Convert.ToDecimal(tbTipoCambio.Text));
+                if (dSaldo < 0) 
+                {
+                    dSaldo = 0;
+                }
+                tbSaldoUSD.Text = "$" + dSaldo.ToString("0.00");
+            }
+            else
+            {
+                lblTotal.Text = "Total MXN";
+                decimal  dImpNacional = totalUSD * Convert.ToDecimal(tbTipoCambio.Text);
+                tbImporteUSD.Text = "$" + dImpNacional.ToString("0.00");
+                lblSaldo.Text = "Saldo MXN";
+                decimal dSaldo = totalUSD - pagado;
+                
+                if (dSaldo < 0)
+                {
+                    dSaldo = 0; 
+                }
+
+                dSaldo = dSaldo * Convert.ToDecimal(tbTipoCambio.Text);
+
+                tbSaldoUSD.Text = "$" + dSaldo.ToString("0.00");
+            }
+            
+
+            tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
+            tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
+            tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+
+            lblTotalPartidas.Text = iCount + " partidas registradas !!!";
 
         }
         #endregion
@@ -391,12 +469,26 @@ namespace PuntoVentaCCFN.Views
 
             if (ingresar.Efectivo > 0)
             {
-                pagado += ingresar.Efectivo;
+                Decimal TipoCambo = Convert.ToDecimal(tbTipoCambio.Text);
+                decimal dImporte = 0;
+                if (tbMoneda.Text == "USD")
+               {
+                    dImporte = (ingresar.Efectivo / TipoCambo);
+                }
+               else
+               {
+                     dImporte = ingresar.Efectivo;
+                }
+
+                pagado += Math.Round(dImporte,2);
+
                 saldo();
+
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "EF";
                 ventaPago.Currency = "MXN";
-                ventaPago.Rate = 1;
+                // ventaPago.Rate = 1;
+                ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Efectivo;
                 ventaPago.VoucherNum = "";
                 if (cambio < 0)
@@ -414,7 +506,8 @@ namespace PuntoVentaCCFN.Views
 
                 if (sMensaje != "")
                 {
-                    pagado -= ingresar.Efectivo;
+                    // pagado -= ingresar.Efectivo;
+                    pagado -=  Math.Round(dImporte, 2);
                     saldo();
                     MessageBox.Show(sMensaje);
                     return;
@@ -448,7 +541,19 @@ namespace PuntoVentaCCFN.Views
 
             if (ingresar.Efectivo > 0)
             {
-                pagado += ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                decimal dImporte = 0;
+                if (tbMoneda.Text == "USD")
+                {
+                    dImporte = ingresar.Efectivo;
+                    
+                }
+                else
+                {
+                    dImporte = ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                }
+
+                pagado += Math.Round(dImporte,2);
+
                 saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "EFU";
@@ -471,7 +576,9 @@ namespace PuntoVentaCCFN.Views
 
                 if (sMensaje != "")
                 {
-                    pagado -= ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                    //    pagado -= ingresar.Efectivo * Convert.ToDecimal(tbTipoCambio.Text);
+                    pagado -= Math.Round(dImporte, 2);
+
                     saldo();
                     MessageBox.Show(sMensaje);
                     return;
@@ -507,12 +614,26 @@ namespace PuntoVentaCCFN.Views
 
             if (ingresar.Cantidad > 0)
             {
-                pagado += ingresar.Cantidad;
+
+                Decimal TipoCambo = Convert.ToDecimal(tbTipoCambio.Text);
+                decimal dImporte = 0;  
+                if (tbMoneda.Text == "USD")
+                {
+                    dImporte = (ingresar.Cantidad / TipoCambo);
+                }
+                else
+                {
+                    dImporte = ingresar.Cantidad;
+                }
+
+                pagado += Math.Round(dImporte, 2);
+
                 saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TD";
                 ventaPago.Currency = "MXN";
-                ventaPago.Rate = 1;
+                // ventaPago.Rate = 1;
+                ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Cantidad;
                 ventaPago.VoucherNum = ingresar.Voucher;
                 if (cambio < 0)
@@ -529,7 +650,9 @@ namespace PuntoVentaCCFN.Views
 
                 if (sMensaje != "")
                 {
-                    pagado -= ingresar.Cantidad;
+                    // pagado -= ingresar.Cantidad;
+                    pagado -= Math.Round(dImporte, 2);
+
                     saldo();
                     MessageBox.Show(sMensaje);
                     return;
@@ -565,12 +688,25 @@ namespace PuntoVentaCCFN.Views
 
             if (ingresar.Cantidad > 0)
             {
-                pagado += ingresar.Cantidad;
+                Decimal TipoCambo = Convert.ToDecimal(tbTipoCambio.Text);
+                decimal dImporte = 0;
+                if (tbMoneda.Text == "USD")
+                {
+                    dImporte = (ingresar.Cantidad / TipoCambo);
+                }
+                else
+                {
+                    dImporte = ingresar.Cantidad;
+                }
+
+                pagado += Math.Round(dImporte,2);
+
                 saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TC";
                 ventaPago.Currency = "MXN";
-                ventaPago.Rate = 1;
+                //   ventaPago.Rate = 1;
+                ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Cantidad;
                 ventaPago.VoucherNum = ingresar.Voucher;
                 if (cambio < 0)
@@ -588,7 +724,9 @@ namespace PuntoVentaCCFN.Views
                 
                 if (sMensaje != "")
                 {
-                    pagado -= ingresar.Cantidad;
+                    //    pagado -= ingresar.Cantidad;
+                    pagado -= Math.Round(dImporte, 2);
+
                     saldo();
                     MessageBox.Show(sMensaje);
                     return;
@@ -1005,12 +1143,17 @@ namespace PuntoVentaCCFN.Views
             startInfo.Arguments = $"{numTck} {Param}";
 
             // Ejecutar el programa externo
-            Process.Start(startInfo);
-
-
-
-
-            System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+            try
+            {
+                Process.Start(startInfo);
+                System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error al imprimir ticket de venta " + numTck + "\n" + ex.Message);
+            }
+            
+            
             Nom_Cajera.logoff = 0;
 
             //  =====================  se pone el nuevo tipo de cambio =================
