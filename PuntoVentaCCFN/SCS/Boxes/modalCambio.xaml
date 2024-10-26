@@ -280,7 +280,16 @@
                    Width="100"
                    Cursor="Hand"
                    HorizontalAlignment="Left"
-                   IsDefault="True" Margin="152,35,0,-15" Grid.ColumnSpan="2" Grid.Column="2" Click="aceptarCambio" 
+                   IsDefault="True" Margin="179,35,0,-15" Grid.Column="2" Click="aceptarCambio" Grid.ColumnSpan="2" 
+                   />
+            <Button  x:Name="BtnOk_Regresar"
+                Grid.Row="4"
+                Content="Regresar"
+                Style="{DynamicResource btnOk}"
+                Width="100"
+                Cursor="Hand"
+                HorizontalAlignment="Left"
+                IsDefault="True" Margin="135,35,0,-15" Grid.Column="3" Click="Click_Regresar" 
                    />
             <!--<Button  x:Name="BtnCancelar"
                    Grid.Row="4" Style="{DynamicResource btnOk}"
