@@ -291,6 +291,21 @@ namespace Capa_Datos.Venta
             }
             catch (Exception ex)
             {
+
+                string mensaje = ex.Message;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 3;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                 
+
                 return false;
             }
 

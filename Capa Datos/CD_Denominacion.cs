@@ -89,8 +89,8 @@ namespace Capa_Datos
          
 
         #region InsertarRetiro
-
-        public string InsertarRetiro(CE_Denominacion retiro)
+ 
+         public string InsertarRetiro(CE_Denominacion retiro)
         {
                
 
@@ -204,6 +204,7 @@ namespace Capa_Datos
                     conn.CerrarConexion();
                 }
             }
+        
         #endregion
 
 

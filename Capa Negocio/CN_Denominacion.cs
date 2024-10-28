@@ -46,7 +46,7 @@ namespace Capa_Negocio
         {
             return objDatos.InsertarRetiro(Retiros);
         }
-
+      
         #endregion
 
 
