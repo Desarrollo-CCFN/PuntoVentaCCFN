@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
 using Capa_Entidad.Productos;
+using System.Diagnostics;
 namespace Capa_Datos.Productos
 {
     public class CD_Productos
@@ -120,6 +121,19 @@ namespace Capa_Datos.Productos
             {
                 //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                 //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                string mensaje = ex1.Message;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 1;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+                                                                                
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+              
                 return false;
             }
             return true;
