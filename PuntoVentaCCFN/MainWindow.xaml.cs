@@ -48,7 +48,7 @@ namespace PuntoVentaCCFN
             InitializeComponent();
           /* 
             // Obtener la resolución de la pantalla principal
-            var screenWidth = SystemParameters.PrimaryScreenWidth;
+        /*    var screenWidth = SystemParameters.PrimaryScreenWidth;
             var screenHeight = SystemParameters.PrimaryScreenHeight;
 
             // Ajustar el tamaño de la ventana a la resolución de la pantalla, dejando un margen
@@ -312,7 +312,7 @@ namespace PuntoVentaCCFN
 
                 //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                 var MainReportes = new MainReportes();   // Activa el Password de acceso
-                MainReportes.retiros.Visibility = Visibility.Collapsed;
+               // MainReportes.retiros.Visibility = Visibility.Collapsed;
               //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
                 MainReportes.Show();
 
@@ -410,36 +410,7 @@ namespace PuntoVentaCCFN
                 CierreCaja DATA1 = new CierreCaja();
                 DATA1.UserSupervisor = Acceso.SupervisorId;
                 DataContext = DATA1;
-                
-                
-              //   DataContext = new CierreCaja();
-                
-                //// Mostrar el cuadro de mensaje con las opciones Sí y No
-                //MessageBoxResult result = System.Windows.MessageBox.Show(
-                //    "Esta estación se encuentra abierta. ¿Se cerrará? ¿Está usted de acuerdo?",
-                //    "¡Alerta!",
-                //    MessageBoxButton.YesNo,
-                //    MessageBoxImage.Warning
-                //);
-
-                //// Evaluar la respuesta del usuario
-                //if (result == MessageBoxResult.Yes)
-
-
-                //{
-                //    if (!cN_Venta.cerradoCaja(nombreCajaInt, SucursalString))
-                //    {
-                //        System.Windows.MessageBox.Show("Error al cerrar caja!!");
-                //    } else
-                //    {
-                //        System.Windows.MessageBox.Show("Exito al cerrar caja!!");
-                //    }
-                //}
-                //else if (result == MessageBoxResult.No)
-                //{
-                //    // Si el usuario presiona "No", no hacer nada o cancelar la operación
-                //    // Coloca aquí el código para cancelar la operación
-                //}
+                 
             }
 
             // System.Windows.MessageBox.Show("Se encuentra en Construcción", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 
 
+
 namespace Capa_Presentacion.SCS.Boxes
 {
     /// <summary>
@@ -105,5 +106,29 @@ namespace Capa_Presentacion.SCS.Boxes
             tbCantidad.Focus();
             Keyboard.Focus(tbCantidad);
         }
+
+        private void tbCantidad_TextInput(object sender, TextCompositionEventArgs e)
+        {
+
+
+            e.Handled = !IsValidDecimalInput(e.Text, ((System.Windows.Controls.TextBox)sender).Text);
+
+        }
+
+        private bool IsValidDecimalInput(string newText, string existingText)
+        {
+            // Combina el nuevo texto con el existente para validar
+            string combinedText = existingText + newText;
+
+            // Expresión regular para números decimales y enteros
+            string decimalPattern = @"^(\d+)?(\.\d*)?$";
+
+            // Verifica si el texto combinado cumple con la expresión regular
+            return System.Text.RegularExpressions.Regex.IsMatch(combinedText, decimalPattern);
+        }
+
+
+
+
     }
 }

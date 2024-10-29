@@ -4,6 +4,7 @@ using Capa_Entidad.Venta;
 using System.Windows;
 using Mysqlx.Cursor;
 using System.ServiceModel.Channels;
+using System.Diagnostics;
 
 namespace Capa_Datos.Venta
 {
@@ -202,10 +203,10 @@ namespace Capa_Datos.Venta
 
         public bool AnularVenta(int idHeader)
         {
-            string pName = "";
+           // string pName = "";
             try
             {
-                pName = "SP_V_Anular";
+             //   pName = "SP_V_Anular";
                 MySqlCommand conm = new MySqlCommand("SP_V_Anular", conn.AbrirConexion());
                 conm.CommandType = CommandType.StoredProcedure;
                 conm.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = idHeader;
@@ -215,6 +216,19 @@ namespace Capa_Datos.Venta
             }
             catch(Exception ex)
             {
+                string mensaje = ex.Message;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 2;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                  
                 return false;
             }
             return true;
@@ -277,6 +291,21 @@ namespace Capa_Datos.Venta
             }
             catch (Exception ex)
             {
+
+                string mensaje = ex.Message;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 3;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                 
+
                 return false;
             }
 
