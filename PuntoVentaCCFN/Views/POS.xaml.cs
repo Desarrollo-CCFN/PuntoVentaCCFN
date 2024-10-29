@@ -1534,14 +1534,16 @@ namespace PuntoVentaCCFN.Views
                 btnC.IsEnabled = false;
                 btnD.IsEnabled = false;
                 btnE.IsEnabled = false;
+                btnEU.IsEnabled = true;
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
                 return;
             }
-
-            if(tbMoneda.Text == "USD")
+             
+            if (tbMoneda.Text == "USD")
             {
+                btnEU.IsEnabled = false;
                 tbMoneda.Text = "MXN";
                 btnC.IsEnabled = true;
                 btnD.IsEnabled = true;
