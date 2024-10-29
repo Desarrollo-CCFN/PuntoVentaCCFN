@@ -325,6 +325,7 @@ namespace Capa_Datos.Venta
                 DataRow row = dt.Rows[0];
                 ce.Id = Convert.ToInt32(row[0]);
                 ce.IdCash = Convert.ToInt32(row[1]);
+                ce.DocCur = Convert.ToString(row[2]);
 
                 da.SelectCommand.Parameters.Clear();
 

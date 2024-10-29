@@ -353,6 +353,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
+                    x:Name="btnD"
                 Grid.Row="4" Margin="151,29,400,5" Click="Tarjeta" Grid.RowSpan="2"
                 >
                 <TextBlock Text="Tarjeta D."
@@ -509,6 +510,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
+                    x:Name="btnEU"
                 Grid.Row="4" Margin="10,29,540,5" Click="EfectivoUSD" Grid.RowSpan="2"
                 >
                 <TextBlock Text="Efectivo USD"
@@ -615,6 +617,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="9"
+                    x:Name="btnC"
                 Grid.Row="4" Margin="290,29,261,5" Click="TarjetaC" Grid.RowSpan="2"
                 >
                 <TextBlock Text="Tarjeta C."
@@ -640,6 +643,7 @@
             <Button Style="{DynamicResource btnSide}" 
                 Background="Orange"
                 Grid.Column="6"
+                    x:Name="btnE"
                 Grid.Row="4" Margin="100,29,5,5" Click="Efectivo" Grid.RowSpan="2" Grid.ColumnSpan="2"
                 >
                 <TextBlock Text="Efectivo MXN"
@@ -764,13 +768,13 @@
                 Foreground="White"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Height="28" Width="46" Margin="39,68,0,0" RenderTransformOrigin="5.071,6.274"/>
-            <TextBlock x:Name="lblTotalPartidas" Grid.Row="14"
-                Grid.Column="2"
-                Text="Total Partidas"
+            <TextBlock x:Name="lblTotalPartidas" Grid.Row="13"
+                Grid.Column="4"
+                Text="Cant. Productos"
                 FontSize="22"
-                Foreground="#FF0DF305"
+                Foreground="White"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top" Height="28" Width="343" Margin="22,30,0,0" RenderTransformOrigin="0.452,1.131" Grid.ColumnSpan="3" FontWeight="Bold"/>
+                VerticalAlignment="Center" Height="28" Width="343" Margin="132,0,0,0" RenderTransformOrigin="0.452,1.131" Grid.ColumnSpan="4" FontWeight="Bold"/>
             <TextBox
                 Grid.Column="9"
                 x:Name="tbSaldoUSD"
@@ -794,6 +798,17 @@
                 Foreground="White"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top" Height="28" Width="110" Margin="0,128,0,0" RenderTransformOrigin="0.452,1.131"/>
+            <Button Style="{DynamicResource btnSide}" 
+                Background="Blue"
+                Grid.Column="9"
+                Grid.Row="2" Margin="240,2,310,2" Click="Button_Click_1"
+                >
+                <TextBlock Text="Cambiar"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                           />
+            </Button>
         </Grid>
 
     </Border>

@@ -96,6 +96,14 @@ namespace PuntoVentaCCFN.Views
             whsCode = SettingSection.Filler;
             tipoCambio = SettingSection.DefRateRetail;
             tbMoneda.Text = SettingSection.DefCurrency;
+
+            if(tbMoneda.Text == "USD")
+            {
+                btnE.IsEnabled = false;
+                btnD.IsEnabled = false;
+                btnC.IsEnabled = false;
+            }
+
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
            
         }
@@ -151,6 +159,7 @@ namespace PuntoVentaCCFN.Views
                 }
                 GridDatos.Columns[7].IsReadOnly = false;
                 pagado = venta.GetVentaActivaPagado(ventaActiva.Id);
+                tbMoneda.Text = ventaActiva.DocCur;
                 Dispatcher.InvokeAsync(() => { saldo(); },
                 DispatcherPriority.ApplicationIdle);
 
@@ -441,7 +450,7 @@ namespace PuntoVentaCCFN.Views
             tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
             tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
 
-            lblTotalPartidas.Text = iCount + " partidas registradas !!!";
+            lblTotalPartidas.Text = "Cant. Productos: " + iCount ;
 
         }
         #endregion
@@ -890,6 +899,11 @@ namespace PuntoVentaCCFN.Views
 
             if (e.Key == Key.F7)
             {
+                if(tbMoneda.Text == "USD")
+                {
+                    System.Windows.MessageBox.Show("Forma de pago no valido para venta en USD!!");
+                    return;
+                }
                 loadEMXN();
             }
 
@@ -900,11 +914,21 @@ namespace PuntoVentaCCFN.Views
 
             if (e.Key == Key.F9)
             {
+                if (tbMoneda.Text == "USD")
+                {
+                    System.Windows.MessageBox.Show("Forma de pago no valido para venta en USD!!");
+                    return;
+                }
                 loadDebit();
             }
 
             if (e.Key == Key.F10)
             {
+                if (tbMoneda.Text == "USD")
+                {
+                    System.Windows.MessageBox.Show("Forma de pago no valido para venta en USD!!");
+                    return;
+                }
                 loadCredit();
             }
 
@@ -1481,6 +1505,39 @@ namespace PuntoVentaCCFN.Views
             else
             {
                 MessageBox.Show("Debes seleccionar un producto!!");
+                return;
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if(GridDatos.Items.Count > 0)
+            {
+                System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso!!");
+                return;
+            }
+
+            if(tbMoneda.Text == "MXN")
+            {
+                tbMoneda.Text = "USD";
+                btnC.IsEnabled = false;
+                btnD.IsEnabled = false;
+                btnE.IsEnabled = false;
+                tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
+                tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
+                tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+                return;
+            }
+
+            if(tbMoneda.Text == "USD")
+            {
+                tbMoneda.Text = "MXN";
+                btnC.IsEnabled = true;
+                btnD.IsEnabled = true;
+                btnE.IsEnabled = true;
+                tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
+                tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
+                tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
                 return;
             }
         }
