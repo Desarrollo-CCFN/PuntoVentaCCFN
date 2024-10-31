@@ -136,12 +136,13 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                             mainWindow.menuItemReportes.Visibility = Visibility.Visible;
                         //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
-                        mainWindow.menuItemReportes.ToolTip = "Reimpresión Reportes";
+
+
                         mainWindow.menuItemalmacen.ToolTip = "Almacen";
-                        mainWindow.menuItemdashboard.ToolTip = "Estadisticas";
-                        
+                        mainWindow.prodbutton.ToolTip = "Almacen";
+
                     }
-                        else
+                    else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
@@ -151,11 +152,11 @@ namespace Capa_Presentacion.Views
                         mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
                         mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
                         mainWindow.SubMenuProductos.Visibility = Visibility.Collapsed;
-
+                       
                         mainWindow.menuItemalmacen.ToolTip = null;
+                        mainWindow.prodbutton.ToolTip = null;
                         mainWindow.menuItemReportes.ToolTip = null;
                         mainWindow.menuItemdashboard.ToolTip = null;
-
 
                     }
 

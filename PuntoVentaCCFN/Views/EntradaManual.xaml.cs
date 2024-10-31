@@ -399,38 +399,34 @@ namespace PuntoVentaCCFN.Views
 
         private void tb_Costo_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-          /*  // Evitar que el usuario pegue texto
+             // Evitar que el usuario pegue texto
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 e.Handled = true;
-            }*/
+            }
         }
 
         private void tb_Costo_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-          /*  // Verificar si el texto ingresado es válido (número decimal positivo)
-            e.Handled = !IsTextAllowed_Costo(tb_Cantidad.Text, e.Text);*/
+            // Verificar si el texto ingresado es válido (número decimal positivo)
+            e.Handled = !IsTextAllowed_Costo(tb_Costo.Text, e.Text);
         }
 
         private static bool IsTextAllowed_Costo(string currentText, string newText)
         {
-          /*  // Concatenar el texto actual con el nuevo carácter ingresado
+            // Verificar si el texto es un número positivo entero
+            //return int.TryParse(text, out int _);
+            // Concatenar el texto actual con el nuevo carácter ingresado
             string fullText = currentText + newText;
 
             // Verificar que sea un número decimal positivo con solo un punto decimal
-            if (decimal.TryParse(fullText, out decimal result) && result >= 0)
-            {
-                // Permitir solo un punto decimal
-                int decimalPointCount = fullText.Count(c => c == '.');
-                return decimalPointCount <= 1;
-            }*/
-            return false;
+            return decimal.TryParse(fullText, out decimal result) && result >= 0;
         }
 
         private void tb_Costo_LostFocus(object sender, RoutedEventArgs e)
         {
             // Formatea el número a dos decimales cuando pierde el foco
-         /*   if (decimal.TryParse(tb_Costo.Text, out decimal value))
+           /*  if (decimal.TryParse(tb_Costo.Text, out decimal value))
             {
                 tb_Costo.Text = value.ToString("F4");  // Ajusta aquí el número de decimales, por ejemplo "F4" para cuatro decimales
             }
