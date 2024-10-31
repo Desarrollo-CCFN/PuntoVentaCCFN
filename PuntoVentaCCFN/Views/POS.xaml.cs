@@ -1134,6 +1134,10 @@ namespace PuntoVentaCCFN.Views
             saldo();
             pagoUSD = false;
             this.tbCodigoProducto.Focus();
+            
+
+
+
 
         }
 
