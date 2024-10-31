@@ -269,7 +269,7 @@
                      Grid.Column="1"
                      Grid.Row="3"
                      x:Name="tbNombre"
-                     FontSize="20" Margin="2,2,3,0"
+                     FontSize="20" Margin="2,2,3,0" PreviewKeyDown="tbNombre_KeyDown"
                      />
             <Button Style="{DynamicResource btnSide}" Grid.Column="2"
                     Grid.Row="2"

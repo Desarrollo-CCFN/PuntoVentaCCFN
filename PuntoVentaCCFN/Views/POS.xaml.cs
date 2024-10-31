@@ -1115,6 +1115,7 @@ namespace PuntoVentaCCFN.Views
                         Process.Start(startInfo);
 
                         MessageBox.Show("Facturado con exito!!");
+
                     }
                     else
                     {
@@ -1131,6 +1132,8 @@ namespace PuntoVentaCCFN.Views
             pagado = 0;
             saldo();
             pagoUSD = false;
+            this.tbCodigoProducto.Focus();
+
         }
 
         public void ventaFinal()

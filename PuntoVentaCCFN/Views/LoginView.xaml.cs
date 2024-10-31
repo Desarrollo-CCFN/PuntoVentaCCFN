@@ -135,16 +135,29 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                             mainWindow.menuItemReportes.Visibility = Visibility.Visible;
-                          //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
-                        }
+                        //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
+                        mainWindow.menuItemReportes.ToolTip = "Reimpresión Reportes";
+                        mainWindow.menuItemalmacen.ToolTip = "Almacen";
+                        mainWindow.menuItemdashboard.ToolTip = "Estadisticas";
+                        
+                    }
                         else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
-                           // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
-                        }
+                        // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
+                        mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
+                        mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
+                        mainWindow.SubMenuProductos.Visibility = Visibility.Collapsed;
+
+                        mainWindow.menuItemalmacen.ToolTip = null;
+                        mainWindow.menuItemReportes.ToolTip = null;
+                        mainWindow.menuItemdashboard.ToolTip = null;
+
+
+                    }
 
                         //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
  

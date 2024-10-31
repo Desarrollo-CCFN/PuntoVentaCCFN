@@ -18,6 +18,7 @@
     <Window.Resources>
         <!--  WindowState="Maximized"-->
         <!--#region Leyendas de iconos-->
+        
         <Style TargetType="ToolTip">
             <Setter Property="Background" Value="Yellow"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -604,7 +605,7 @@
                                 </ItemsPanelTemplate>
                             </Menu.ItemsPanel>
 
-                            <MenuItem Template="{StaticResource Menu_Template}" ToolTip="Estadisticas">
+                            <MenuItem Template="{StaticResource Menu_Template}" >
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemdashboard"  Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>
@@ -616,30 +617,30 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Busqueda Cliente">
+                            <MenuItem  Click="Factturacion" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Busqueda Cliente / Modulo Facturación">
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemFacturacion" Source="/SCS/IMG/factura.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton">
+                            <MenuItem Template="{StaticResource Menu_SubMenu_Template}" x:Name="prodbutton" >
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemalmacen" Source="/SCS/IMG/almacen.png"></Image>
                                 </MenuItem.Icon>
 
-                                <MenuItem Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
+                                <MenuItem x:Name="SubMenuProductos" Click="Productos_Click" Header="Productos" Template="{StaticResource Item_Template}">
                                     <MenuItem.Icon>
                                         <Image Source="/SCS/IMG/product.png"></Image>
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <MenuItem Click="EntradaClick" Header="EntradasTSR" Template="{StaticResource Item_Template}">
+                                <MenuItem x:Name="SubMenuEntradasTSR" Click="EntradaClick" Header="EntradasTSR" Template="{StaticResource Item_Template}">
                                     <MenuItem.Icon>
                                         <Image Source="/SCS/IMG/entrada.png"></Image>
                                     </MenuItem.Icon>
                                 </MenuItem>
 
-                                <MenuItem Click="EntradaManualClick" Header="EntradaManual" Template="{StaticResource Item_Template}">
+                                <MenuItem x:Name="SubMenuEntradaManual" Click="EntradaManualClick" Header="EntradaManual" Template="{StaticResource Item_Template}" >
                                     <MenuItem.Icon>
                                         <Image Source="/SCS/IMG/entrada.png"></Image>
                                     </MenuItem.Icon>
@@ -655,7 +656,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
 
-                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center" ToolTip="Reimpresión Reportes" >
+                            <MenuItem x:Name="menuItemReportes" Click="Reportes_Click" Template="{StaticResource Menu_Template}" Height="50" VerticalAlignment="Center"  >
                                 <MenuItem.Icon>
                                     <Image Source="/SCS/IMG/reportes.png"></Image>
                                 </MenuItem.Icon>

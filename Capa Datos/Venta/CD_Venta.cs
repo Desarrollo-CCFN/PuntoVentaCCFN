@@ -99,6 +99,20 @@ namespace Capa_Datos.Venta
                 ce.Comments = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                                " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
 
+                string mensaje = ce.Comments;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 4;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                 
+
                 return ce;
             }
            
@@ -183,6 +197,20 @@ namespace Capa_Datos.Venta
                 if (outErrorCode.Value.ToString() != "0")
                 {
                     sMensaje = outErrorMessage.Value.ToString();
+                    
+                    string mensaje = "Verificar el Producto "+ sMensaje;
+                    string Mensaje = mensaje.Replace(" ", "_");
+                    int Param = 5;
+
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                    // startInfo.Arguments = $"{IdTra}";
+                    startInfo.Arguments = $"{Mensaje} {Param}";
+                    Process.Start(startInfo);
+
                     return false;
                 }
 
@@ -193,6 +221,24 @@ namespace Capa_Datos.Venta
             {
                 sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                                " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+
+
+                string mensaje = sMensaje;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 5;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+
+
+
+
                 return false;
             }
 

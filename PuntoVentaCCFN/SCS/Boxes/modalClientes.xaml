@@ -233,21 +233,21 @@
 
             <Button  x:Name="BtnOk"
                     Grid.Row="4"
-                    Content="Aceptar"
+                    Content="Modulo Facutración Cliente"
                      Style="{DynamicResource btnOk}"
-                    Width="100"
+                    Width="150"
                     Cursor="Hand"
                     HorizontalAlignment="Left"
-                    IsDefault="True" Click="seleccionarCliente"
+                    IsDefault="True" Click="seleccionarCliente" Margin="0,0,0,5"
                     />
             <Button  x:Name="BtnCancelar"
                     Grid.Row="4" Style="{DynamicResource btnOk}"
-                    Content="Cancelar"
-                    Width="100"
+                    Content="Salir"
+                    Width="150"
                     Cursor="Hand"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Left"
                     IsDefault="True"
-                    Click="BtnCancelar_Click"
+                    Click="BtnCancelar_Click" Margin="600,0,0,5"
                     />
 
             <DataGrid Style="{DynamicResource DataGridStyle}"

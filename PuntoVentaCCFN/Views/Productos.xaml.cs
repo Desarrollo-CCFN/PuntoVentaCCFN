@@ -39,5 +39,14 @@ namespace PuntoVentaCCFN.Views
             GridDatos.UnselectAll();
             GridDatos.ItemsSource = objeto_CN_Productos.BusquedaProducto(tbNombre.Text).DefaultView;
         }
+
+        private void tbNombre_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                BtnBuscar_Click(sender, e);
+            }
+
+        }
     }
 }
