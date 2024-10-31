@@ -284,7 +284,7 @@
                     </DataGridTextColumn>
 
 
-                    <DataGridTextColumn Header="Lista de Precio" Width="*" Binding="{Binding ListName}"/>
+                    <DataGridTextColumn Header="Lista de Precio" Width="140" Binding="{Binding ListName}"/>
                     <DataGridTextColumn Header="Numero Lista De Precio" Width="*" Binding="{Binding ListNum}"/>
                 </DataGrid.Columns>
             </DataGrid>

@@ -605,7 +605,7 @@
                                 </ItemsPanelTemplate>
                             </Menu.ItemsPanel>
 
-                            <MenuItem Template="{StaticResource Menu_Template}"  >
+                            <MenuItem x:Name="MenuEstadistica" Template="{StaticResource Menu_Template}" ToolTip="Estadisticas" >
                                 <MenuItem.Icon>
                                     <Image x:Name="menuItemdashboard"  ToolTip="Estadisticas" Source="/SCS/IMG/dashboard.png"></Image>
                                 </MenuItem.Icon>

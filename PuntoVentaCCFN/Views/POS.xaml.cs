@@ -76,6 +76,7 @@ namespace PuntoVentaCCFN.Views
         public POS()
         {
             InitializeComponent();
+           this.tbCodigoProducto.Focus();
             IniciarConfiguracion();
             VerificarVenta();
         }

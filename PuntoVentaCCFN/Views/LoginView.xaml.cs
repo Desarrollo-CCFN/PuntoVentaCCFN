@@ -141,13 +141,21 @@ namespace Capa_Presentacion.Views
                         mainWindow.menuItemalmacen.ToolTip = "Almacen";
                         mainWindow.prodbutton.ToolTip = "Almacen";
 
+                        mainWindow.menuItemCierreCaja.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemCierreCaja.ToolTip = null;
+
+                        mainWindow.menuItemCaja.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemCaja.ToolTip = null;
+
                     }
                     else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
-                            mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
-                            mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
+                        mainWindow.prodbutton.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
+                        mainWindow.MenuEstadistica.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
                         // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
                         mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
                         mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
@@ -157,6 +165,9 @@ namespace Capa_Presentacion.Views
                         mainWindow.prodbutton.ToolTip = null;
                         mainWindow.menuItemReportes.ToolTip = null;
                         mainWindow.menuItemdashboard.ToolTip = null;
+                        mainWindow.MenuEstadistica.ToolTip = null;
+
+
 
                     }
 
