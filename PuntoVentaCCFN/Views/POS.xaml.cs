@@ -769,6 +769,7 @@ namespace PuntoVentaCCFN.Views
         private void buscarProd_Click(object sender, RoutedEventArgs e)
         {
             loadModal();
+            tbCodigoProducto.Focus();
         }
 
         public void loadModal()
@@ -1135,7 +1136,33 @@ namespace PuntoVentaCCFN.Views
             pagoUSD = false;
             this.tbCodigoProducto.Focus();
             
+            // VERIFICA SI EXISTE TIPO DE CAMBIO NUEVO AL FNALIZAR LA VENTA EN CURSO
 
+            CN_BusquedaReporte objConsulta = new CN_BusquedaReporte();
+            CE_BusquedaReporte objCe;
+            decimal tipoCambio = 0;
+            decimal.TryParse(tbTipoCambio.Text, out tipoCambio);
+
+            try
+            {
+                objCe = objConsulta.ConsultaTipoCambio(tipoCambio);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Error al consultar la base de datos: {ex.Message}");
+                return;
+            }
+
+            if (objCe.Tp_ > 0)
+            {
+                                
+                tbTipoCambio.Text = objCe.Tp_.ToString(); ;  
+                tbTipoCambio.UpdateLayout();
+
+            }
+
+          
+            
 
 
 

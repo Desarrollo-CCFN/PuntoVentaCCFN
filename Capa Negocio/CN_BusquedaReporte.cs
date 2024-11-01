@@ -16,6 +16,14 @@ namespace Capa_Negocio
         }
         #endregion
 
+        #region Busqueda Tipo Cambio
+
+        public CE_BusquedaReporte ConsultaTipoCambio(decimal Tp)
+        {
+            return objDatos.ConsultaTipoCambio(Tp);
+        }
+
+        #endregion
 
     }
 }

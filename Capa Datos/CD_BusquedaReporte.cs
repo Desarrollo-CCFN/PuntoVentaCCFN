@@ -39,7 +39,35 @@ namespace Capa_Datos
             return ce;
 
         }
- 
 
-     }
+
+        
+                public CE_BusquedaReporte ConsultaTipoCambio(decimal Tp)
+                {
+                    MySqlDataAdapter da = new MySqlDataAdapter("SP_C_TipoCambio", conn.AbrirConexion());
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+                    // Pasar parámetros al procedimiento almacenado
+                    da.SelectCommand.Parameters.AddWithValue("_Tp", Tp);
+                     
+
+
+                    DataSet ds = new DataSet();
+                    ds.Clear();
+                    da.Fill(ds);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        DataRow row = ds.Tables[0].Rows[0];
+                        ce.Tp_ = Convert.ToDecimal(row[0]);
+                        
+                    }
+
+                    return ce;
+
+                }
+
+        
+
+    }
 }

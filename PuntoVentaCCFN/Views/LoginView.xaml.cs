@@ -147,25 +147,29 @@ namespace Capa_Presentacion.Views
                         mainWindow.menuItemCaja.Visibility = Visibility.Collapsed;
                         mainWindow.menuItemCaja.ToolTip = null;
 
+
+                        mainWindow.posButton.Visibility = Visibility.Collapsed;
+                        mainWindow.posButton.ToolTip = null;
+
                     }
                     else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
-                        mainWindow.prodbutton.Visibility = Visibility.Collapsed;
-                        mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
-                        mainWindow.MenuEstadistica.Visibility = Visibility.Collapsed;
-                        mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
+                            mainWindow.prodbutton.Visibility = Visibility.Collapsed;
+                            mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
+                            mainWindow.MenuEstadistica.Visibility = Visibility.Collapsed;
+                            mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
                         // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
-                        mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
-                        mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
-                        mainWindow.SubMenuProductos.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuProductos.Visibility = Visibility.Collapsed;
                        
-                        mainWindow.menuItemalmacen.ToolTip = null;
-                        mainWindow.prodbutton.ToolTip = null;
-                        mainWindow.menuItemReportes.ToolTip = null;
-                        mainWindow.menuItemdashboard.ToolTip = null;
-                        mainWindow.MenuEstadistica.ToolTip = null;
+                            mainWindow.menuItemalmacen.ToolTip = null;
+                            mainWindow.prodbutton.ToolTip = null;
+                            mainWindow.menuItemReportes.ToolTip = null;
+                            mainWindow.menuItemdashboard.ToolTip = null;
+                            mainWindow.MenuEstadistica.ToolTip = null;
 
 
 
