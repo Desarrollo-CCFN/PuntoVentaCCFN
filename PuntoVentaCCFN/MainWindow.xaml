@@ -390,7 +390,7 @@
 
 
                                     <TextBlock
-                                           Text="Soprte MSN"
+                                           Text="Soporte MSN"
                                            VerticalAlignment="Center" HorizontalAlignment="Center" 
                                            Width="92" Grid.Column="1" Height="19" />
 

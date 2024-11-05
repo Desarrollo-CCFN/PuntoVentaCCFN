@@ -762,6 +762,7 @@ namespace PuntoVentaCCFN.Views
                 tbListaPrecio.Text = busquedaCliente.listaPrecio.ToString();
                 listPrecios = int.Parse(busquedaCliente.numLista);
             }
+            this.tbCodigoProducto.Focus();
         }
         #endregion
 
@@ -830,9 +831,22 @@ namespace PuntoVentaCCFN.Views
                     }
                     else
                     {
+                        if (tbMoneda.Text == "USD")
+                        {
+                            obj.Cantidad = Convert.ToDecimal(t);
 
-                        obj.Cantidad = Convert.ToDecimal(t);
-                        obj.Total = Convert.ToDecimal(t) * obj.Precio_Base;
+                            // Impuesto
+                            // Impuesto_FC
+
+
+                            obj.Total = Convert.ToDecimal(t) * (obj.Precio_Base_FC+ obj.Impuesto_FC);
+                        }
+                        else
+                        {
+                            obj.Cantidad = Convert.ToDecimal(t);
+                            obj.Total = Convert.ToDecimal(t) * (obj.Precio_Base + obj.Impuesto);
+
+                        }
                     }
 
                 }
@@ -1023,20 +1037,24 @@ namespace PuntoVentaCCFN.Views
                 if (pagado <= 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                         this.tbCodigoProducto.Focus(); 
                     return;
                 }
 
                 if(cambio < 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una cantidad de pago mayor o igual a la venta!!.");
+                    this.tbCodigoProducto.Focus();
                     return;
                 }
                 ventaCambio();
+                this.tbCodigoProducto.Focus();
 
             }
             else
             {
                 System.Windows.MessageBox.Show("No se han agregado productos!");
+                this.tbCodigoProducto.Focus();
             }
 
         }
@@ -1160,11 +1178,6 @@ namespace PuntoVentaCCFN.Views
                 tbTipoCambio.UpdateLayout();
 
             }
-
-          
-            
-
-
 
         }
 
@@ -1335,6 +1348,7 @@ namespace PuntoVentaCCFN.Views
         private void AnularVenta(object sender, RoutedEventArgs e)
         {
             loadAnularVenta();
+            this.tbCodigoProducto.Focus();
         }
 
         public void loadAnularVenta()
@@ -1369,6 +1383,7 @@ namespace PuntoVentaCCFN.Views
         private void AnularFPago(object sender, RoutedEventArgs e)
         {
             loadAnularFPago();
+            this.tbCodigoProducto.Focus();
         }
 
         public void loadAnularFPago()
@@ -1510,6 +1525,7 @@ namespace PuntoVentaCCFN.Views
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
             loadAnularProducto();
+            this.tbCodigoProducto.Focus();
         }
 
 
@@ -1573,6 +1589,7 @@ namespace PuntoVentaCCFN.Views
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+                this.tbCodigoProducto.Focus();
                 return;
             }
              
@@ -1586,8 +1603,10 @@ namespace PuntoVentaCCFN.Views
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+                this.tbCodigoProducto.Focus();
                 return;
             }
+            this.tbCodigoProducto.Focus();
         }
 
         private void tbCodigoProducto_GotFocus(object sender, RoutedEventArgs e)

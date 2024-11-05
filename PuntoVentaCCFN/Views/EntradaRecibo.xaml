@@ -239,9 +239,11 @@
                     <DataGridTextColumn Header="Moneda" Width="100" Binding="{Binding Currency}" />
                     <DataGridTextColumn Header="Saldo" Width="100" Binding="{Binding OpenQty}" />
                     <DataGridTextColumn Header="Cant. Recibo" Width="100" Binding="{Binding Path=InQty}" IsReadOnly="False" Foreground="#FF002EFF" FontWeight="Bold">
-                        <DataGridTextColumn.CellStyle>
-                            <Style/>
-                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.EditingElementStyle>
+                            <Style TargetType="TextBox">
+                                <EventSetter Event="PreviewTextInput" Handler="CantidadRecibo_PreviewTextInput"/>
+                            </Style>
+                        </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn Header="Base" Width="100" Binding="{Binding BaseQty}" />
                     <DataGridTextColumn Header="UMI" Width="70" Binding="{Binding Umi}" />
