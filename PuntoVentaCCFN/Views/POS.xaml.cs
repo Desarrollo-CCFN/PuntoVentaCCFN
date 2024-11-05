@@ -103,6 +103,7 @@ namespace PuntoVentaCCFN.Views
                 btnE.IsEnabled = false;
                 btnD.IsEnabled = false;
                 btnC.IsEnabled = false;
+               // btnEU.IsEnabled = false;
             }
 
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
@@ -134,19 +135,30 @@ namespace PuntoVentaCCFN.Views
                     l.Unidad = item.Unidad;
                     l.UomEntry = item.UomEntry;
 
-                    if (tbMoneda.Text == "USD")
+                    if (ventaActiva.DocCur == "USD")        //if (tbMoneda.Text == "USD")
                     {
                         l.Total = item.TotalFrgn;
-                     }
+                        l.Precio_Base_FC = item.PriceList;
+                    }
                     else 
                     {
-
                         l.Total = item.LineTotal;
+                        
                     }
                     l.Impuesto_FC = item.VatSumFrgn;
                     l.Impuesto = item.VatSum;
-                    l.Precio_Base_FC = item.PriceList;
-                    l.LineNum = item.LineNum;
+
+                    if (item.Currency == "USD")
+                    {
+                        l.Precio_Base_FC = item.PriceList;
+                    }else
+                    {
+
+                        decimal dBase0 = 0;
+                        l.Precio_Base_FC = dBase0;
+                    }
+                     
+                        l.LineNum = item.LineNum;
                     l.Cantidad = item.Cantidad;
                     lista.Add(l);
 
@@ -163,6 +175,24 @@ namespace PuntoVentaCCFN.Views
                 tbMoneda.Text = ventaActiva.DocCur;
                 Dispatcher.InvokeAsync(() => { saldo(); },
                 DispatcherPriority.ApplicationIdle);
+
+
+                if (tbMoneda.Text == "USD")
+                {
+                    btnE.IsEnabled = false;
+                    btnD.IsEnabled = false;
+                    btnC.IsEnabled = false;
+                     btnEU.IsEnabled = true;
+                }else
+                {
+                    btnE.IsEnabled = true;
+                    btnD.IsEnabled = true;
+                    btnC.IsEnabled = true;
+                    btnEU.IsEnabled = false;
+
+                }
+
+
 
             }
         }
@@ -269,7 +299,7 @@ namespace PuntoVentaCCFN.Views
             {
                 string numCajera = Nom_Cajera.Num_Cajera;
                 CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt, tbMoneda.Text); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -925,6 +955,12 @@ namespace PuntoVentaCCFN.Views
 
             if (e.Key == Key.F8)
             {
+                if (tbMoneda.Text == "MXN")
+                {
+                    System.Windows.MessageBox.Show("Forma de pago no valido para venta en Pesos!!");
+                    return;
+                }
+
                 loadEUSD();
             }
 

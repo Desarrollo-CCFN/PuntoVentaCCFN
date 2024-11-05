@@ -45,7 +45,7 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int idStation)
+        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int idStation,string DocCur)
         {
             string sItemCode = "";
 
@@ -60,6 +60,7 @@ namespace Capa_Datos.Venta
                 da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
                 da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
                 da.SelectCommand.Parameters.Add("stationId_", MySqlDbType.Int32).Value = idStation;
+                da.SelectCommand.Parameters.Add("DocCur_", MySqlDbType.VarChar).Value = DocCur;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
@@ -447,7 +448,8 @@ namespace Capa_Datos.Venta
                         PriceList = Convert.ToDecimal(row[9]),
                         LineNum = Convert.ToInt32(row[10]),
                         Cantidad = Convert.ToDecimal(row[11]),
-                        TotalFrgn = Convert.ToDecimal(row[12])
+                        TotalFrgn = Convert.ToDecimal(row[12]),
+                        Currency = Convert.ToString(row[13])
                     };
 
                     ceLista.Add(ce);
