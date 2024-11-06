@@ -1,26 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
- 
 
 namespace Capa_Presentacion.Views
 {
-    /// <summary>
-    /// Lógica de interacción para AcercaDe.xaml
-    /// </summary>
     public partial class AcercaDe : Window
     {
         public AcercaDe()
@@ -37,12 +23,8 @@ namespace Capa_Presentacion.Views
             // Aplicar la animación al cargar la ventana
             this.BeginAnimation(Window.OpacityProperty, fadeInAnimation);
 
-
-            // Crear una conexión a MySQL
-            //string connectionString = "Server=localhost;Database=mi_bd;Uid=usuario;Pwd=contraseña;";
-              string connectionString = "Server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;";
-            //  string connectionString = "Server=192.168.101.34;uid=root; pwd=root.2024;database=db_s12;";
-         //      string connectionString = "Server=localhost;uid=root; pwd=root.2024;database=db_s12;";
+            // Cadena de conexión
+            string connectionString = "Server=10.101.1.130;uid=root; pwd=root.2024;database=db_s12;";
             MySqlConnection conn = new MySqlConnection(connectionString);
 
             try
@@ -50,11 +32,11 @@ namespace Capa_Presentacion.Views
                 // Abrir la conexión
                 conn.Open();
 
-                // Obtener la IP asociada a "localhost"
-                string ipAddress = GetLocalhostIP();
+                // Obtener la IP del servidor de la conexión MySQL
+                string serverIP = GetServerIP(conn);
 
                 // Mostrar la IP en un Label
-                IP.Text = "Conectado al servidor con IP: " + ipAddress;
+                IP.Text = "Conectado al servidor con IP: " + serverIP;
             }
             catch (Exception ex)
             {
@@ -68,27 +50,29 @@ namespace Capa_Presentacion.Views
                     conn.Close();
                 }
             }
-             
-
         }
-        private string GetLocalhostIP()
+
+        private string GetServerIP(MySqlConnection connection)
         {
-            // Resolver el nombre "localhost" para obtener su IP
-            IPAddress[] addresses = Dns.GetHostAddresses("localhost");
-            foreach (IPAddress address in addresses)
+            try
             {
-                // Devolver la primera dirección IPv4 que encuentre
-                if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                // Usar la propiedad de Host para obtener la IP del servidor MySQL
+                IPAddress[] addresses = Dns.GetHostAddresses(connection.DataSource);
+                foreach (IPAddress address in addresses)
                 {
-                    return address.ToString();
+                    // Devolver la primera dirección IPv4 que encuentre
+                    if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        return address.ToString();
+                    }
                 }
+                return "No se encontró una IP válida";
             }
-
-            return "No se encontró una IP";
+            catch (Exception ex)
+            {
+                return "Error al obtener IP: " + ex.Message;
+            }
         }
-
-
-
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -96,10 +80,10 @@ namespace Capa_Presentacion.Views
                 this.DragMove(); // Permite mover la ventana al hacer clic y arrastrar
         }
 
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
     }
 }
+
