@@ -41,6 +41,9 @@ namespace Capa_Presentacion.Views
 
                 // Mostrar la IP en un Label
                 IP.Text = "Conectado al servidor con IP: " + serverIP;
+
+                Version.Text = Version.Text + " - " + Configuracion.Ver;
+
             }
             catch (Exception ex)
             {

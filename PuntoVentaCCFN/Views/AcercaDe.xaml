@@ -65,7 +65,7 @@
                        HorizontalAlignment="Center"/>
 
                     <!-- Subtítulo -->
-                    <TextBlock Text="Ver. Pre-Alfa" 
+                    <TextBlock x:Name="Version" Text="Ver. Alfa" 
                        Foreground="LightGray" 
                        FontSize="20" 
                        FontWeight="Medium" 
