@@ -666,9 +666,6 @@ namespace PuntoVentaCCFN.Views
                     dImporte = ingresar.Cantidad;
                 }
 
-                pagado += Math.Round(dImporte, 2);
-
-                saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TD";
                 ventaPago.Currency = "MXN";
@@ -678,7 +675,7 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.VoucherNum = ingresar.Voucher;
                 if (cambio < 0)
                 {
-                    ventaPago.BalAmout = cambio;
+                    ventaPago.BalAmout = Math.Abs(cambio);
                 }
                 else
                 {
@@ -691,11 +688,21 @@ namespace PuntoVentaCCFN.Views
                 if (sMensaje != "")
                 {
                     // pagado -= ingresar.Cantidad;
-                    pagado -= Math.Round(dImporte, 2);
+                    //pagado -= Math.Round(dImporte, 2);
 
-                    saldo();
+                    //saldo();
                     MessageBox.Show(sMensaje);
                     return;
+                }
+                else
+                {
+
+
+
+                    pagado += Math.Round(dImporte, 2);
+                    /// pagado = dImporte;
+
+                    saldo();
                 }
 
             }
@@ -739,9 +746,9 @@ namespace PuntoVentaCCFN.Views
                     dImporte = ingresar.Cantidad;
                 }
 
-                pagado += Math.Round(dImporte,2);
+              //  pagado += Math.Round(dImporte,2);
 
-                saldo();
+             //   saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TC";
                 ventaPago.Currency = "MXN";
@@ -749,9 +756,10 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Cantidad;
                 ventaPago.VoucherNum = ingresar.Voucher;
+               
                 if (cambio < 0)
                 {
-                    ventaPago.BalAmout = cambio;
+                    ventaPago.BalAmout = Math.Abs(cambio);
                 }
                 else
                 {
@@ -765,11 +773,20 @@ namespace PuntoVentaCCFN.Views
                 if (sMensaje != "")
                 {
                     //    pagado -= ingresar.Cantidad;
-                    pagado -= Math.Round(dImporte, 2);
+                   // pagado -= Math.Round(dImporte, 2);
 
-                    saldo();
+                  //  saldo();
                     MessageBox.Show(sMensaje);
                     return;
+                }
+                else
+                {
+                    // pagado -= Math.Round(dImporte, 2);
+                    pagado += Math.Round(dImporte, 2);
+                    saldo();
+
+
+
                 }
             }
             else
@@ -899,6 +916,8 @@ namespace PuntoVentaCCFN.Views
         #region teclas rapidas
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            // MessageBox.Show($"Key pressed: {e.Key}");
+
             if (e.Key == Key.F1)
             {
                 System.Windows.MessageBox.Show("Tecla Recalculo");
@@ -974,7 +993,7 @@ namespace PuntoVentaCCFN.Views
                 loadDebit();
             }
 
-            if (e.Key == Key.F10)
+            if (e.Key == Key.F10 || e.SystemKey == Key.F10)
             {
                 if (tbMoneda.Text == "USD")
                 {

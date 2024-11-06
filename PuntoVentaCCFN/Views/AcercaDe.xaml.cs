@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using MySql.Data.MySqlClient;
+using Capa_Datos;
 
 namespace Capa_Presentacion.Views
 {
@@ -24,8 +25,11 @@ namespace Capa_Presentacion.Views
             this.BeginAnimation(Window.OpacityProperty, fadeInAnimation);
 
             // Cadena de conexión
-            string connectionString = "Server=10.101.1.130;uid=root; pwd=root.2024;database=db_s12;";
-            MySqlConnection conn = new MySqlConnection(connectionString);
+           // string connectionString = "Server=10.101.1.130;uid=root; pwd=root.2024;database=db_s12;";
+          //  string connectionString = "server=192.168.101.7;uid=desarrollo2; pwd=Chivas.2024;database=ccfn_desarrollo;";
+            MySqlConnection conn = new MySqlConnection(Configuracion.CadenaConexion);
+
+        //    MySqlConnection conn = new MySqlConnection(connectionString);
 
             try
             {
