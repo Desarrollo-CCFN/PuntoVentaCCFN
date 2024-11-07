@@ -269,7 +269,7 @@
                      Grid.Column="1"
                      Grid.Row="3"
                      x:Name="tbNombre"
-                     FontSize="20" Margin="2,2,3,0"
+                     FontSize="20" Margin="2,2,3,0" PreviewKeyDown="tbNombre_KeyDown"
                      />
             <Button Style="{DynamicResource btnSide}" Grid.Column="2"
                     Grid.Row="2"
@@ -304,7 +304,7 @@
                       HorizontalGridLinesBrush="#35baf6" Margin="0,30,0,110"
                       >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Codigo de Producto" Width="*" Binding="{Binding ItemCode}"/>
+                    <DataGridTextColumn Header="Codigo de Producto" Width="250" Binding="{Binding ItemCode}"/>
                     <DataGridTextColumn Header="Nombre de Producto" Width="*" Binding="{Binding ItemName}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -312,7 +312,8 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="En Stock" Width="*" Binding="{Binding OnHand}"/>
+                    <DataGridTextColumn Header="En Stock" Width="130" Binding="{Binding OnHand ,StringFormat={}{0:F4}}"/>
+                    <DataGridTextColumn Header="UM" Width="120" Binding="{Binding InvntryUom}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

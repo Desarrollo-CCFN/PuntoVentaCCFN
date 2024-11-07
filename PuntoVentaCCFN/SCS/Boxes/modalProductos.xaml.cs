@@ -1,5 +1,6 @@
 ﻿using Capa_Entidad.Productos;
 using Capa_Negocio.Productos;
+using PuntoVentaCCFN.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PuntoVentaCCFN;
 
 namespace Capa_Presentacion.SCS.Boxes
 {
@@ -54,6 +56,10 @@ namespace Capa_Presentacion.SCS.Boxes
 
             cadenaBusqueda = "*" + itemCode + "*" + cbUnidades.Text;
             this.Close();
+           
+
+
+
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)

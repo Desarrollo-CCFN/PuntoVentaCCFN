@@ -135,16 +135,45 @@ namespace Capa_Presentacion.Views
                             mainWindow.menuItemalmacen.Visibility = Visibility.Visible;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Visible;
                             mainWindow.menuItemReportes.Visibility = Visibility.Visible;
-                          //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
-                        }
-                        else
+                        //  mainWindow.menuItemFacturacion.Visibility = Visibility.Visible;
+
+
+                        mainWindow.menuItemalmacen.ToolTip = "Almacen";
+                        mainWindow.prodbutton.ToolTip = "Almacen";
+
+                        mainWindow.menuItemCierreCaja.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemCierreCaja.ToolTip = null;
+
+                        mainWindow.menuItemCaja.Visibility = Visibility.Collapsed;
+                        mainWindow.menuItemCaja.ToolTip = null;
+
+
+                        mainWindow.posButton.Visibility = Visibility.Collapsed;
+                        mainWindow.posButton.ToolTip = null;
+
+                    }
+                    else
                         {
                             mainWindow.menuItemUsuarios.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemalmacen.Visibility = Visibility.Collapsed;
+                            mainWindow.prodbutton.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemdashboard.Visibility = Visibility.Collapsed;
+                            mainWindow.MenuEstadistica.Visibility = Visibility.Collapsed;
                             mainWindow.menuItemReportes.Visibility = Visibility.Collapsed;
-                           // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
-                        }
+                        // mainWindow.menuItemFacturacion.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuEntradaManual.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuEntradasTSR.Visibility = Visibility.Collapsed;
+                            mainWindow.SubMenuProductos.Visibility = Visibility.Collapsed;
+                       
+                            mainWindow.menuItemalmacen.ToolTip = null;
+                            mainWindow.prodbutton.ToolTip = null;
+                            mainWindow.menuItemReportes.ToolTip = null;
+                            mainWindow.menuItemdashboard.ToolTip = null;
+                            mainWindow.MenuEstadistica.ToolTip = null;
+
+
+
+                    }
 
                         //  System.Windows.MessageBox.Show("Super usuario autenticado.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
  

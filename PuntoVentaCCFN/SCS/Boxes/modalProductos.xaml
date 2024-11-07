@@ -237,9 +237,9 @@
                    IsDefault="True"
                    Click="BtnCancelar_Click"
                    />
-
-            <DataGrid Style="{DynamicResource DataGridStyle}"
-                Margin="0,80,190,0"
+                
+             <DataGrid Style="{DynamicResource DataGridStyle}"
+                       Margin="0,80,190,0"
                       SelectionUnit="FullRow"
                       x:Name="GridProductos"
                       Grid.RowSpan="3" 
@@ -256,9 +256,34 @@
                     GridLinesVisibility="Horizontal" SelectionChanged="searchProductUoms">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Cod Producto" Width="100" Binding="{Binding ItemCode}" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Descripcion" Width="*" Binding="{Binding ItemName}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Disponible" Width="*" Binding="{Binding OnHand}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="UOM" Width="*" Binding="{Binding InvntryUom}" IsReadOnly="True"/>
+                    
+                    <DataGridTextColumn Header="Descripcion" Width="*" Binding="{Binding ItemName}" IsReadOnly="True">
+                                  <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                             <Setter Property="TextAlignment" Value="Left"/>
+                                         </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Disponible" Width="110" Binding="{Binding OnHand, StringFormat={}{0:F4}}" IsReadOnly="True">
+                             <DataGridTextColumn.ElementStyle>
+                               <Style TargetType="TextBlock">
+                                   <Setter Property="TextAlignment" Value="Right"/>
+                              </Style>
+                             </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+
+
+
+                    <DataGridTextColumn Header="UOM" Width="80" Binding="{Binding InvntryUom}" IsReadOnly="True">
+                          <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                   <Setter Property="TextAlignment" Value="Center"/>
+                                </Style>
+                           </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+ 
                 </DataGrid.Columns>
             </DataGrid>
 

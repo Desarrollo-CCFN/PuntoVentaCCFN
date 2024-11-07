@@ -76,6 +76,7 @@ namespace PuntoVentaCCFN.Views
         public POS()
         {
             InitializeComponent();
+           this.tbCodigoProducto.Focus();
             IniciarConfiguracion();
             VerificarVenta();
         }
@@ -102,6 +103,7 @@ namespace PuntoVentaCCFN.Views
                 btnE.IsEnabled = false;
                 btnD.IsEnabled = false;
                 btnC.IsEnabled = false;
+               // btnEU.IsEnabled = false;
             }
 
             nombreCaja = MainWindow.AppConfig1.Caja;  //"1";
@@ -133,19 +135,30 @@ namespace PuntoVentaCCFN.Views
                     l.Unidad = item.Unidad;
                     l.UomEntry = item.UomEntry;
 
-                    if (tbMoneda.Text == "USD")
+                    if (ventaActiva.DocCur == "USD")        //if (tbMoneda.Text == "USD")
                     {
                         l.Total = item.TotalFrgn;
-                     }
+                        l.Precio_Base_FC = item.PriceList;
+                    }
                     else 
                     {
-
                         l.Total = item.LineTotal;
+                        
                     }
                     l.Impuesto_FC = item.VatSumFrgn;
                     l.Impuesto = item.VatSum;
-                    l.Precio_Base_FC = item.PriceList;
-                    l.LineNum = item.LineNum;
+
+                    if (item.Currency == "USD")
+                    {
+                        l.Precio_Base_FC = item.PriceList;
+                    }else
+                    {
+
+                        decimal dBase0 = 0;
+                        l.Precio_Base_FC = dBase0;
+                    }
+                     
+                        l.LineNum = item.LineNum;
                     l.Cantidad = item.Cantidad;
                     lista.Add(l);
 
@@ -162,6 +175,24 @@ namespace PuntoVentaCCFN.Views
                 tbMoneda.Text = ventaActiva.DocCur;
                 Dispatcher.InvokeAsync(() => { saldo(); },
                 DispatcherPriority.ApplicationIdle);
+
+
+                if (tbMoneda.Text == "USD")
+                {
+                    btnE.IsEnabled = false;
+                    btnD.IsEnabled = false;
+                    btnC.IsEnabled = false;
+                     btnEU.IsEnabled = true;
+                }else
+                {
+                    btnE.IsEnabled = true;
+                    btnD.IsEnabled = true;
+                    btnC.IsEnabled = true;
+                    btnEU.IsEnabled = false;
+
+                }
+
+
 
             }
         }
@@ -268,7 +299,7 @@ namespace PuntoVentaCCFN.Views
             {
                 string numCajera = Nom_Cajera.Num_Cajera;
                 CE_Denominacion c = objeto_CN_Denominacion.GetIdCash(nombreCajaInt, whsCode, numCajera, ref sMensaje);
-                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
+                ventaI = venta.insertarVenta(whsCode, nombreCaja, tbCodigoCliente.Text.ToString(), c.IdCash, nombreCajaInt, tbMoneda.Text); //TODO obtener id cash actual y tomar el vendedor(default vendedor estandar)
             }
 
             if (ventaI.Id.Equals(-1))
@@ -635,9 +666,6 @@ namespace PuntoVentaCCFN.Views
                     dImporte = ingresar.Cantidad;
                 }
 
-                pagado += Math.Round(dImporte, 2);
-
-                saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TD";
                 ventaPago.Currency = "MXN";
@@ -647,7 +675,7 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.VoucherNum = ingresar.Voucher;
                 if (cambio < 0)
                 {
-                    ventaPago.BalAmout = cambio;
+                    ventaPago.BalAmout = Math.Abs(cambio);
                 }
                 else
                 {
@@ -660,11 +688,21 @@ namespace PuntoVentaCCFN.Views
                 if (sMensaje != "")
                 {
                     // pagado -= ingresar.Cantidad;
-                    pagado -= Math.Round(dImporte, 2);
+                    //pagado -= Math.Round(dImporte, 2);
 
-                    saldo();
+                    //saldo();
                     MessageBox.Show(sMensaje);
                     return;
+                }
+                else
+                {
+
+
+
+                    pagado += Math.Round(dImporte, 2);
+                    /// pagado = dImporte;
+
+                    saldo();
                 }
 
             }
@@ -708,9 +746,9 @@ namespace PuntoVentaCCFN.Views
                     dImporte = ingresar.Cantidad;
                 }
 
-                pagado += Math.Round(dImporte,2);
+              //  pagado += Math.Round(dImporte,2);
 
-                saldo();
+             //   saldo();
                 CE_VentaPagos ventaPago = new CE_VentaPagos();
                 ventaPago.Payform = "TC";
                 ventaPago.Currency = "MXN";
@@ -718,9 +756,10 @@ namespace PuntoVentaCCFN.Views
                 ventaPago.Rate = Convert.ToDecimal(tbTipoCambio.Text);
                 ventaPago.AmountPay = ingresar.Cantidad;
                 ventaPago.VoucherNum = ingresar.Voucher;
+               
                 if (cambio < 0)
                 {
-                    ventaPago.BalAmout = cambio;
+                    ventaPago.BalAmout = Math.Abs(cambio);
                 }
                 else
                 {
@@ -734,11 +773,20 @@ namespace PuntoVentaCCFN.Views
                 if (sMensaje != "")
                 {
                     //    pagado -= ingresar.Cantidad;
-                    pagado -= Math.Round(dImporte, 2);
+                   // pagado -= Math.Round(dImporte, 2);
 
-                    saldo();
+                  //  saldo();
                     MessageBox.Show(sMensaje);
                     return;
+                }
+                else
+                {
+                    // pagado -= Math.Round(dImporte, 2);
+                    pagado += Math.Round(dImporte, 2);
+                    saldo();
+
+
+
                 }
             }
             else
@@ -761,6 +809,7 @@ namespace PuntoVentaCCFN.Views
                 tbListaPrecio.Text = busquedaCliente.listaPrecio.ToString();
                 listPrecios = int.Parse(busquedaCliente.numLista);
             }
+            this.tbCodigoProducto.Focus();
         }
         #endregion
 
@@ -768,6 +817,7 @@ namespace PuntoVentaCCFN.Views
         private void buscarProd_Click(object sender, RoutedEventArgs e)
         {
             loadModal();
+            tbCodigoProducto.Focus();
         }
 
         public void loadModal()
@@ -828,9 +878,22 @@ namespace PuntoVentaCCFN.Views
                     }
                     else
                     {
+                        if (tbMoneda.Text == "USD")
+                        {
+                            obj.Cantidad = Convert.ToDecimal(t);
 
-                        obj.Cantidad = Convert.ToDecimal(t);
-                        obj.Total = Convert.ToDecimal(t) * obj.Precio_Base;
+                            // Impuesto
+                            // Impuesto_FC
+
+
+                            obj.Total = Convert.ToDecimal(t) * (obj.Precio_Base_FC+ obj.Impuesto_FC);
+                        }
+                        else
+                        {
+                            obj.Cantidad = Convert.ToDecimal(t);
+                            obj.Total = Convert.ToDecimal(t) * (obj.Precio_Base + obj.Impuesto);
+
+                        }
                     }
 
                 }
@@ -853,6 +916,8 @@ namespace PuntoVentaCCFN.Views
         #region teclas rapidas
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            // MessageBox.Show($"Key pressed: {e.Key}");
+
             if (e.Key == Key.F1)
             {
                 System.Windows.MessageBox.Show("Tecla Recalculo");
@@ -909,6 +974,12 @@ namespace PuntoVentaCCFN.Views
 
             if (e.Key == Key.F8)
             {
+                if (tbMoneda.Text == "MXN")
+                {
+                    System.Windows.MessageBox.Show("Forma de pago no valido para venta en Pesos!!");
+                    return;
+                }
+
                 loadEUSD();
             }
 
@@ -922,7 +993,7 @@ namespace PuntoVentaCCFN.Views
                 loadDebit();
             }
 
-            if (e.Key == Key.F10)
+            if (e.Key == Key.F10 || e.SystemKey == Key.F10)
             {
                 if (tbMoneda.Text == "USD")
                 {
@@ -1021,20 +1092,24 @@ namespace PuntoVentaCCFN.Views
                 if (pagado <= 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una forma de pago!!.");
+                         this.tbCodigoProducto.Focus(); 
                     return;
                 }
 
                 if(cambio < 0)
                 {
                     System.Windows.MessageBox.Show("Ingresa una cantidad de pago mayor o igual a la venta!!.");
+                    this.tbCodigoProducto.Focus();
                     return;
                 }
                 ventaCambio();
+                this.tbCodigoProducto.Focus();
 
             }
             else
             {
                 System.Windows.MessageBox.Show("No se han agregado productos!");
+                this.tbCodigoProducto.Focus();
             }
 
         }
@@ -1115,6 +1190,7 @@ namespace PuntoVentaCCFN.Views
                         Process.Start(startInfo);
 
                         MessageBox.Show("Facturado con exito!!");
+
                     }
                     else
                     {
@@ -1131,6 +1207,33 @@ namespace PuntoVentaCCFN.Views
             pagado = 0;
             saldo();
             pagoUSD = false;
+            this.tbCodigoProducto.Focus();
+            
+            // VERIFICA SI EXISTE TIPO DE CAMBIO NUEVO AL FNALIZAR LA VENTA EN CURSO
+
+            CN_BusquedaReporte objConsulta = new CN_BusquedaReporte();
+            CE_BusquedaReporte objCe;
+            decimal tipoCambio = 0;
+            decimal.TryParse(tbTipoCambio.Text, out tipoCambio);
+
+            try
+            {
+                objCe = objConsulta.ConsultaTipoCambio(tipoCambio);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Error al consultar la base de datos: {ex.Message}");
+                return;
+            }
+
+            if (objCe.Tp_ > 0)
+            {
+                                
+                tbTipoCambio.Text = objCe.Tp_.ToString(); ;  
+                tbTipoCambio.UpdateLayout();
+
+            }
+
         }
 
         public void ventaFinal()
@@ -1300,6 +1403,7 @@ namespace PuntoVentaCCFN.Views
         private void AnularVenta(object sender, RoutedEventArgs e)
         {
             loadAnularVenta();
+            this.tbCodigoProducto.Focus();
         }
 
         public void loadAnularVenta()
@@ -1334,6 +1438,7 @@ namespace PuntoVentaCCFN.Views
         private void AnularFPago(object sender, RoutedEventArgs e)
         {
             loadAnularFPago();
+            this.tbCodigoProducto.Focus();
         }
 
         public void loadAnularFPago()
@@ -1475,6 +1580,7 @@ namespace PuntoVentaCCFN.Views
         private void ElminarProducto(object sender, RoutedEventArgs e)
         {
             loadAnularProducto();
+            this.tbCodigoProducto.Focus();
         }
 
 
@@ -1543,15 +1649,17 @@ namespace PuntoVentaCCFN.Views
                 btnC.IsEnabled = false;
                 btnD.IsEnabled = false;
                 btnE.IsEnabled = false;
+                btnEU.IsEnabled = true;
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
-                tbCodigoProducto.Focus();
+                this.tbCodigoProducto.Focus();
                 return;
             }
-
-            if(tbMoneda.Text == "USD")
+             
+            if (tbMoneda.Text == "USD")
             {
+                btnEU.IsEnabled = false;
                 tbMoneda.Text = "MXN";
                 btnC.IsEnabled = true;
                 btnD.IsEnabled = true;
@@ -1559,11 +1667,8 @@ namespace PuntoVentaCCFN.Views
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
-                tbCodigoProducto.Focus();
                 return;
             }
-
-            
         }
 
         private void tbCodigoProducto_GotFocus(object sender, RoutedEventArgs e)

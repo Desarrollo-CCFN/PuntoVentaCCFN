@@ -46,20 +46,20 @@ namespace PuntoVentaCCFN
             
 
             InitializeComponent();
-          /* 
-            // Obtener la resolución de la pantalla principal
-        /*    var screenWidth = SystemParameters.PrimaryScreenWidth;
-            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            /* 
+              // Obtener la resolución de la pantalla principal
+          /*    var screenWidth = SystemParameters.PrimaryScreenWidth;
+              var screenHeight = SystemParameters.PrimaryScreenHeight;
 
-            // Ajustar el tamaño de la ventana a la resolución de la pantalla, dejando un margen
-            this.Width = screenWidth - 100; // Margen de 100 píxeles en ancho
-            this.Height = screenHeight - 100; // Margen de 100 píxeles en alto
+              // Ajustar el tamaño de la ventana a la resolución de la pantalla, dejando un margen
+              this.Width = screenWidth - 100; // Margen de 100 píxeles en ancho
+              this.Height = screenHeight - 100; // Margen de 100 píxeles en alto
 
-            // Centrar la ventana manualmente
-            this.Left = (screenWidth - this.Width) / 2;
-            this.Top = (screenHeight - this.Height) / 2;
-  */
-
+              // Centrar la ventana manualmente
+              this.Left = (screenWidth - this.Width) / 2;
+              this.Top = (screenHeight - this.Height) / 2;
+    */
+           menuItemalmacen.ToolTip = true;
 
             LoadJson();
             //posButton.IsEnabled = true;

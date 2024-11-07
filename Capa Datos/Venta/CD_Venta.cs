@@ -45,7 +45,7 @@ namespace Capa_Datos.Venta
         }
         #endregion
 
-        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int idStation)
+        public CE_VentaHeader Venta(string sucursal, string caja, string cardCode, int idCash, int idStation,string DocCur)
         {
             string sItemCode = "";
 
@@ -60,6 +60,7 @@ namespace Capa_Datos.Venta
                 da.SelectCommand.Parameters.Add("CardCode_", MySqlDbType.VarChar).Value = cardCode;
                 da.SelectCommand.Parameters.Add("IdCash_", MySqlDbType.Int32).Value = idCash;
                 da.SelectCommand.Parameters.Add("stationId_", MySqlDbType.Int32).Value = idStation;
+                da.SelectCommand.Parameters.Add("DocCur_", MySqlDbType.VarChar).Value = DocCur;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
@@ -98,6 +99,20 @@ namespace Capa_Datos.Venta
                 ce.Id = -1;
                 ce.Comments = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                                " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+
+                string mensaje = ce.Comments;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 4;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                 
 
                 return ce;
             }
@@ -183,6 +198,20 @@ namespace Capa_Datos.Venta
                 if (outErrorCode.Value.ToString() != "0")
                 {
                     sMensaje = outErrorMessage.Value.ToString();
+                    
+                    string mensaje = "Verificar el Producto "+ sMensaje;
+                    string Mensaje = mensaje.Replace(" ", "_");
+                    int Param = 5;
+
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                    // startInfo.Arguments = $"{IdTra}";
+                    startInfo.Arguments = $"{Mensaje} {Param}";
+                    Process.Start(startInfo);
+
                     return false;
                 }
 
@@ -193,6 +222,24 @@ namespace Capa_Datos.Venta
             {
                 sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                                " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+
+
+                string mensaje = sMensaje;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 5;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+
+
+
+
                 return false;
             }
 
@@ -401,7 +448,8 @@ namespace Capa_Datos.Venta
                         PriceList = Convert.ToDecimal(row[9]),
                         LineNum = Convert.ToInt32(row[10]),
                         Cantidad = Convert.ToDecimal(row[11]),
-                        TotalFrgn = Convert.ToDecimal(row[12])
+                        TotalFrgn = Convert.ToDecimal(row[12]),
+                        Currency = Convert.ToString(row[13])
                     };
 
                     ceLista.Add(ce);

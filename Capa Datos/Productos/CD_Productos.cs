@@ -119,7 +119,26 @@ namespace Capa_Datos.Productos
             {
                 //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
                 //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+
+
                 sMensaje = ex1.Message;
+
+                //sMensaje = "Excepcion tipo " + ex1.GetType() + " " + ex1.Message +
+                //               " ERROR mientras se ejecutaba la transacción [" + sItemCode + "].";
+                string mensaje = ex1.Message;
+                string Mensaje = mensaje.Replace(" ", "_");
+                int Param = 6;
+
+                // Crear una instancia de ProcessStartInfo
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                // startInfo.Arguments = $"{IdTra}";
+                startInfo.Arguments = $"{Mensaje} {Param}";
+                Process.Start(startInfo);
+                 
+
                 return false;
             }
             return true;

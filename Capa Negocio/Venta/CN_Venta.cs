@@ -11,9 +11,9 @@ namespace Capa_Negocio.Venta
 
 
         #region insert venta headerInical
-        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash, int idStation)
+        public CE_VentaHeader insertarVenta(string sucursal, string caja, string cardCode, int idCash, int idStation, string DocCur)
         {
-            return objDatos.Venta(sucursal, caja, cardCode, idCash, idStation);
+            return objDatos.Venta(sucursal, caja, cardCode, idCash, idStation, DocCur);
 
         }
         #endregion

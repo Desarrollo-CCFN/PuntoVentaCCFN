@@ -299,7 +299,7 @@
                 Width="93" 
                 Style="{DynamicResource tbStyle}"
                 RenderTransformOrigin="-0.113,0.822" 
-                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown">
+                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown" PreviewTextInput="tb_Cantidad_PreviewTextInput" PreviewKeyDown="tb_Cantidad_PreviewKeyDown">
                 <TextBox.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -334,7 +334,7 @@
                 Width="100" 
                 Style="{DynamicResource tbStyle}"
                 RenderTransformOrigin="-0.113,0.822" 
-                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown"/>
+                AutoWordSelection="True" Grid.Column="1" KeyDown="tb_FechaDoc_KeyDown" PreviewKeyDown="tb_Costo_PreviewKeyDown" PreviewTextInput="tb_Costo_PreviewTextInput" LostFocus="tb_Costo_LostFocus"/>
             <TextBlock x:Name="lb_tsr_Copy2" 
                 Text="Costo" 
                 HorizontalAlignment="Left" 

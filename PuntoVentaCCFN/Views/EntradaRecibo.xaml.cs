@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+ 
 
 namespace PuntoVentaCCFN.Views
 {
@@ -76,6 +78,8 @@ namespace PuntoVentaCCFN.Views
                 }
 
                 dt = objeto_CN_SolTraslado.CargarSolTraslado(iNoTst);
+
+               
 
                 GridSt.ItemsSource = dt.DefaultView; // objeto_CN_SolTraslado.CargarSolTraslado(iNoTst).DefaultView;
 
@@ -165,5 +169,32 @@ namespace PuntoVentaCCFN.Views
         {
 
         }
+
+        private void CantidadRecibo_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Expresión regular para permitir solo números decimales positivos (ej. 1.23, 0.56, 100)
+            Regex regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            e.Handled = !regex.IsMatch(((System.Windows.Controls.TextBox)sender).Text.Insert(((System.Windows.Controls.TextBox)sender).SelectionStart, e.Text));
+        }
+
+
+      /*  private void GridSt_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            // Verifica si la columna es "Cant. Recibo"
+            if (e.Column.Header.ToString() == "Cant. Recibo")
+            {
+                // Obtiene la fila que está siendo editada
+                var row = e.Row.Item as YourDataType; // Reemplaza 'YourDataType' por el tipo de datos de las filas
+
+                if (row != null && row.LineStatus == "C") // Verifica si el valor de "Status" es "C"
+                {
+                    // Cancela la edición si el status es "C"
+                    System.Windows.MessageBox.Show("No se puede editar 'Cant. Recibo' cuando el estado es 'C'.", "Edición no permitida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    e.Cancel = true;
+                }
+            }
+        }
+      */
+
     }
 }
