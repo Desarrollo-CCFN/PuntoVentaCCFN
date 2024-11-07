@@ -1631,14 +1631,23 @@ namespace PuntoVentaCCFN.Views
 
             if(!ventaI.Id.Equals(0))
             {
-                System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso!!");
+                System.Windows.MessageBox.Show(
+                "No se puede cambiar la moneda en una venta en curso. ¡Debe cancelar la venta en curso primero!",
+                  "Alerta Importante",
+                   MessageBoxButton.OK,
+               MessageBoxImage.Warning);
                 tbCodigoProducto.Focus();
                 return;
             }
 
             if(GridDatos.Items.Count > 0)
             {
-                System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso!!");
+                //System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso debe cancelar antes la venta en curso !!");
+                System.Windows.MessageBox.Show(
+                "No se puede cambiar la moneda en una venta en curso. ¡Debe cancelar la venta en curso primero!",
+               "Alerta Importante",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
                 tbCodigoProducto.Focus();
                 return;
             }
