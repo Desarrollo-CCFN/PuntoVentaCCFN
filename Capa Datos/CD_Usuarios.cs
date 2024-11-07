@@ -15,26 +15,34 @@ namespace Capa_Datos
         #region Consultar
         public CE_Usuarios Consulta(int idUsuario)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_Consultar", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("IdUsuario", MySqlDbType.Int32).Value = idUsuario;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt;
-            dt = ds.Tables[0];
-            DataRow row = dt.Rows[0];
-            ce.USERID = Convert.ToInt32(row[0]);
-            ce.USER_CODE = Convert.ToString(row[2]);
-            ce.U_NAME = Convert.ToString(row[1]);
-            ce.DfltsGroup = Convert.ToString(row[3]);
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_U_Consultar", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("IdUsuario", MySqlDbType.Int32).Value = idUsuario;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt;
+                dt = ds.Tables[0];
+                DataRow row = dt.Rows[0];
+                ce.USERID = Convert.ToInt32(row[0]);
+                ce.USER_CODE = Convert.ToString(row[2]);
+                ce.U_NAME = Convert.ToString(row[1]);
+                ce.DfltsGroup = Convert.ToString(row[3]);
 
-            ce.Locked = Convert.ToString(row[4]);
-            ce.SUPERUSER = Convert.ToString(row[5]);
-            ce.PASSWORD4 = Convert.ToString(row[6]);
+                ce.Locked = Convert.ToString(row[4]);
+                ce.SUPERUSER = Convert.ToString(row[5]);
+                ce.PASSWORD4 = Convert.ToString(row[6]);
 
 
-            return ce;
+                return ce;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
         #endregion
 
@@ -44,17 +52,23 @@ namespace Capa_Datos
         #region Borrar
         public void Borrar(int userId)
         {
-            MySqlCommand cmd = new MySqlCommand()
+            try
             {
-                Connection = conn.AbrirConexion(),
-                CommandText = "SP_U_BorrarUsuario",
-                CommandType = CommandType.StoredProcedure,
-            };
-            cmd.Parameters.AddWithValue("_USERID", userId);
-          
-            cmd.ExecuteNonQuery();
-            cmd.Parameters.Clear();
-            conn.CerrarConexion();
+                MySqlCommand cmd = new MySqlCommand()
+                {
+                    Connection = conn.AbrirConexion(),
+                    CommandText = "SP_U_BorrarUsuario",
+                    CommandType = CommandType.StoredProcedure,
+                };
+                cmd.Parameters.AddWithValue("_USERID", userId);
+
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                conn.CerrarConexion();
+            } catch (Exception ex) {
+            
+            }
+
         }
 #endregion
 
@@ -62,19 +76,26 @@ namespace Capa_Datos
         #region Insertar
         public void CD_INSERTAR(CE_Usuarios Usuarios)
         {
-            MySqlCommand cmd = new MySqlCommand()
+            try
             {
-                Connection = conn.AbrirConexion(),
-                CommandText = "SP_U_Insertar",
-                CommandType = CommandType.StoredProcedure,
-            };
-            cmd.Parameters.AddWithValue("_USERID", Usuarios.USERID);
-            cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
-            cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
-            cmd.ExecuteNonQuery();
-            cmd.Parameters.Clear();
+                MySqlCommand cmd = new MySqlCommand()
+                {
+                    Connection = conn.AbrirConexion(),
+                    CommandText = "SP_U_Insertar",
+                    CommandType = CommandType.StoredProcedure,
+                };
+                cmd.Parameters.AddWithValue("_USERID", Usuarios.USERID);
+                cmd.Parameters.AddWithValue("_USER_CODE", Usuarios.USER_CODE);
+                cmd.Parameters.AddWithValue("_U_NAME", Usuarios.U_NAME);
+                cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
 
-            conn.CerrarConexion();
+                conn.CerrarConexion();
+            } catch (Exception ex)
+            {
+
+            }
+
              
         }
         #endregion
@@ -229,31 +250,45 @@ namespace Capa_Datos
         #region CargarUsuarios
         public DataTable CargarUsuarios()
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_CargarUsuarios", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-            conn.CerrarConexion();
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_U_CargarUsuarios", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                conn.CerrarConexion();
 
-            return dt;
+                return dt;
+            } catch (Exception e)
+            {
+                return null;
+            }
+
         }
         #endregion
 
         #region BuscarUsuario
         public DataTable BuscarUsuario(string usuario)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_BuscarUsuario", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-            conn.CerrarConexion();
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_U_BuscarUsuario", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                conn.CerrarConexion();
 
-            return dt;
+                return dt;
+            } catch (MySqlException ex)
+            {
+                return null;
+            }
+
         }
 
         #endregion
@@ -261,33 +296,40 @@ namespace Capa_Datos
         #region AutUsuario
         public DataTable AutUsuario(string usuario, string Password)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_U_AutUsuario", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
-            da.SelectCommand.Parameters.AddWithValue("_PASSWORD4", Password);
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                DataRow row = dt.Rows[0];
-                ce.USERID = Convert.ToInt32(row[0]);
-                ce.USER_CODE = Convert.ToString(row[2]);
-                ce.U_NAME = Convert.ToString(row[1]);
-                ce.DfltsGroup = Convert.ToString(row[3]);
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_U_AutUsuario", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.AddWithValue("_U_NAME", usuario);
+                da.SelectCommand.Parameters.AddWithValue("_PASSWORD4", Password);
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
 
-                ce.Locked = Convert.ToString(row[4]);
-                ce.SUPERUSER = Convert.ToString(row[5]);
-                ce.PASSWORD4 = Convert.ToString(row[6]);
-                ce.Sucursal = Convert.ToString(row[7]);
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    ce.USERID = Convert.ToInt32(row[0]);
+                    ce.USER_CODE = Convert.ToString(row[2]);
+                    ce.U_NAME = Convert.ToString(row[1]);
+                    ce.DfltsGroup = Convert.ToString(row[3]);
 
+                    ce.Locked = Convert.ToString(row[4]);
+                    ce.SUPERUSER = Convert.ToString(row[5]);
+                    ce.PASSWORD4 = Convert.ToString(row[6]);
+                    ce.Sucursal = Convert.ToString(row[7]);
+
+                }
+                conn.CerrarConexion();
+
+
+                return dt;
+            } catch (Exception ex)
+            {
+                return null;
             }
-            conn.CerrarConexion();
-            
 
-            return dt;
         }
 
         #endregion
