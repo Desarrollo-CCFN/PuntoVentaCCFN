@@ -27,30 +27,38 @@ namespace Capa_Datos
         #region Consultar
         public List<CE_Denominacion> consulta(string _PayForm)
         {
-            List<CE_Denominacion> denominaciones = new List<CE_Denominacion>();
 
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_TC_CashDenom", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("_PayForm", MySqlDbType.String).Value = _PayForm;
-            DataSet ds = new DataSet();
-
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                CE_Denominacion ce = new CE_Denominacion
+                List<CE_Denominacion> denominaciones = new List<CE_Denominacion>();
+
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_TC_CashDenom", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("_PayForm", MySqlDbType.String).Value = _PayForm;
+                DataSet ds = new DataSet();
+
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    IdCDenom = Convert.ToInt32(row["Id"]),
-                    PayForm = Convert.ToString(row["PayForm"]),
-                    Descrip = Convert.ToString(row["Descrip"]),
-                    AmountValue = Convert.ToDecimal(row["AmountValue"])
-                };
-                denominaciones.Add(ce);
+                    CE_Denominacion ce = new CE_Denominacion
+                    {
+                        IdCDenom = Convert.ToInt32(row["Id"]),
+                        PayForm = Convert.ToString(row["PayForm"]),
+                        Descrip = Convert.ToString(row["Descrip"]),
+                        AmountValue = Convert.ToDecimal(row["AmountValue"])
+                    };
+                    denominaciones.Add(ce);
+                }
+
+                return denominaciones;
+            } catch (Exception ex)
+            {
+                return null;
             }
 
-            return denominaciones;
         }
         #endregion
 
@@ -58,32 +66,40 @@ namespace Capa_Datos
         #region Consultar
         public List<CE_Denominacion> Cajeras(string DfltsGroup)
         {
-            List<CE_Denominacion> cajeras = new List<CE_Denominacion>();
-
-
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_V_Cajeras", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("_DfltsGroup", MySqlDbType.String).Value = DfltsGroup;
-            DataSet ds = new DataSet();
-
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                CE_Denominacion ce = new CE_Denominacion
+                List<CE_Denominacion> cajeras = new List<CE_Denominacion>();
+
+
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_V_Cajeras", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("_DfltsGroup", MySqlDbType.String).Value = DfltsGroup;
+                DataSet ds = new DataSet();
+
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    Name = Convert.ToString(row["U_NAME"]) ,
-                    INTERNAL_K = Convert.ToInt32(row["INTERNAL_K"])
-                  //  AmountValue = Convert.ToDecimal(row["AmountValue"])
-                };
-                cajeras.Add(ce);
+                    CE_Denominacion ce = new CE_Denominacion
+                    {
+                        Name = Convert.ToString(row["U_NAME"]),
+                        INTERNAL_K = Convert.ToInt32(row["INTERNAL_K"])
+                        //  AmountValue = Convert.ToDecimal(row["AmountValue"])
+                    };
+                    cajeras.Add(ce);
+                }
+
+
+
+                return cajeras;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
 
-
-           
-            return cajeras;
         }
         #endregion
          

@@ -11,29 +11,43 @@ namespace Capa_Datos.Clientes
 
         public DataTable ConsultaClientesModal()
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_C_ConsultaClientes", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-            conn.CerrarConexion();
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_C_ConsultaClientes", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                conn.CerrarConexion();
 
-            return dt;
+                return dt;
+            } catch(Exception ex)
+            {
+                return null;
+            }
+
         }
 
         public DataTable ConsultaCliente(string busqueda)
         {
-            MySqlDataAdapter da = new MySqlDataAdapter("SP_C_BuscarCliente", conn.AbrirConexion());
-            da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("busqueda", MySqlDbType.VarChar).Value = busqueda;
-            DataSet ds = new DataSet();
-            ds.Clear();
-            da.Fill(ds);
-            DataTable dt = ds.Tables[0];
-            conn.CerrarConexion();
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter("SP_C_BuscarCliente", conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("busqueda", MySqlDbType.VarChar).Value = busqueda;
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                conn.CerrarConexion();
 
-            return dt;
+                return dt;
+            } catch(Exception ex)
+            {
+                return null;
+            }
+
         }
     }
 }

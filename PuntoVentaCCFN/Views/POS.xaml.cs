@@ -1522,9 +1522,18 @@ namespace PuntoVentaCCFN.Views
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+
+            if(!ventaI.Id.Equals(0))
+            {
+                System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso!!");
+                tbCodigoProducto.Focus();
+                return;
+            }
+
             if(GridDatos.Items.Count > 0)
             {
                 System.Windows.MessageBox.Show("No se puede cambiar moneda en venta en curso!!");
+                tbCodigoProducto.Focus();
                 return;
             }
 
@@ -1537,6 +1546,7 @@ namespace PuntoVentaCCFN.Views
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+                tbCodigoProducto.Focus();
                 return;
             }
 
@@ -1549,8 +1559,11 @@ namespace PuntoVentaCCFN.Views
                 tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
                 tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
                 tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+                tbCodigoProducto.Focus();
                 return;
             }
+
+            
         }
 
         private void tbCodigoProducto_GotFocus(object sender, RoutedEventArgs e)
