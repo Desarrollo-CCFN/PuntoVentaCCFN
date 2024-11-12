@@ -90,5 +90,11 @@ namespace Capa_Presentacion.Reportes
             Cerrar.ShowDialog();
 
         }
+
+        private void QuerysC_click(object sender, RoutedEventArgs e)
+        {
+            var Query = new Query();
+            Query.ShowDialog();
+        }
     }
 }

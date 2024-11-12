@@ -175,6 +175,14 @@
                     FontWeight="Bold"
                     BorderThickness="0"
                     Cursor="Hand" Click="Salir_Click" Grid.Row="1"/>
+                <Button x:Name="QuerysC" Content="Querys" HorizontalAlignment="Left" 
+                        Background="#FF136F6D"
+                        Foreground="White"
+                         FontWeight="Bold"
+                         BorderThickness="0"
+                        Height="56" Margin="629,32,0,0" 
+                        Grid.Row="1" VerticalAlignment="Top" 
+                        Width="129" Click="QuerysC_click"/>
 
 
 
