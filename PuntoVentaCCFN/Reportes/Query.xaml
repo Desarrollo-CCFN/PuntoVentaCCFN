@@ -26,7 +26,7 @@
                  FontSize="14" FontWeight="Bold"/>
 
         <Button x:Name="Ejecutar" Grid.Row="1" Content="Ejecutar" 
-                Margin="0,10,0,10" Height="30"
+                Margin="8,10,0,10" Height="30"
                 Background="LightGreen"
                 HorizontalAlignment="Left" 
                 Width="100" Click="Ejecutar_Click" FontWeight="Bold"/>
@@ -35,14 +35,29 @@
                    Background= "AntiqueWhite"
                    BorderBrush="MediumSlateBlue"  
                   AutoGenerateColumns="True" FontWeight="Bold" FontSize="13"/>
-       
-        
-        
+
+
+
         <Button x:Name="Cerrar_C" Content="Cerrar" HorizontalAlignment="Left" 
                 Height="30" Margin="175,0,0,0" 
                 Background="LightCoral"
                 Grid.Row="1" 
                 VerticalAlignment="Center" Width="100" FontWeight="Bold" Click="CerrarC"/>
-        <TextBlock x:Name="IP" HorizontalAlignment="Left" Margin="375,9,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Conectado al servidor con IP:" VerticalAlignment="Top" Height="26" Width="415" FontWeight="Bold" FontSize="13"/>
+        <TextBlock x:Name="IP" HorizontalAlignment="Left" Margin="316,9,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Conectado al servidor con IP:" VerticalAlignment="Top" Height="26" Width="414" FontWeight="Bold" FontSize="13"/>
+        <Button x:Name="ExportarExcel" Content="Excel" HorizontalAlignment="Left" 
+                Height="30" Margin="825,0,0,0" 
+                Grid.Row="1" 
+                Click="ExportarExcel_Click"
+                VerticalAlignment="Center" 
+                 Background="LightGreen"
+                Width="100" FontWeight="Bold"/>
+
+        <Button x:Name="CopiarPortapapeles" Grid.Row="1" Content="Portapapeles"
+        Margin="985,9,0,11" Height="30"
+        Background="LightYellow"
+        HorizontalAlignment="Left" 
+        Width="100" Click="CopiarPortapapeles_Click" FontWeight="Bold"/>
+ 
+
     </Grid>
 </Window>

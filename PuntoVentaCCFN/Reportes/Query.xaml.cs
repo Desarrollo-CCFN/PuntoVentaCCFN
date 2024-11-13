@@ -3,6 +3,8 @@ using System.Windows;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Net;
+using ClosedXML.Excel;
+using System.IO;
 
 
 
@@ -70,7 +72,55 @@ namespace Capa_Presentacion.Reportes
             }
         }
 
+        private void ExportarExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var dataTable = ((DataView)ResultsDataGrid.ItemsSource).ToTable();
 
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Resultados");
+                worksheet.Cell(1, 1).InsertTable(dataTable);
+
+                var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Excel files (*.xlsx)|*.xlsx",
+                    FileName = "ResultadosQuery.xlsx"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    workbook.SaveAs(saveFileDialog.FileName);
+                    System.Windows.MessageBox.Show("Datos exportados exitosamente a Excel.", "Exportación", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+        }
+
+        private void CopiarPortapapeles_Click(object sender, RoutedEventArgs e)
+        {
+            var dataTable = ((DataView)ResultsDataGrid.ItemsSource).ToTable();
+            StringWriter stringWriter = new StringWriter();
+
+            // Añadir los nombres de las columnas
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                stringWriter.Write(column.ColumnName + "\t");
+            }
+            stringWriter.WriteLine();
+
+            // Añadir los datos de cada fila
+            foreach (DataRow row in dataTable.Rows)
+            {
+                foreach (var cell in row.ItemArray)
+                {
+                    stringWriter.Write(cell.ToString() + "\t");
+                }
+                stringWriter.WriteLine();
+            }
+
+            // Copiar al portapapeles
+            System.Windows.Clipboard.SetText(stringWriter.ToString());
+            System.Windows.MessageBox.Show("Datos copiados al portapapeles. Puedes pegarlos en Excel.", "Copiado al Portapapeles", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void CerrarC(object sender, RoutedEventArgs e)
         {

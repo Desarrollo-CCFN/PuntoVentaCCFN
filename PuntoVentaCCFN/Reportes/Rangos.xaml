@@ -1,0 +1,26 @@
+﻿<Window x:Class="Capa_Presentacion.Reportes.Rangos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Capa_Presentacion.Reportes"
+        mc:Ignorable="d"
+           Icon="/SCS/IMG/Cierre_caja.png"
+		WindowStartupLocation="CenterScreen"
+        Background="#08769F"
+         x:Name="Tit2"
+        Title="Parametros de Fecha" Height="200" Width="350"
+		ResizeMode="NoResize"  
+        WindowStyle="SingleBorderWindow" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="61*"/>
+        </Grid.ColumnDefinitions>
+        
+        
+        
+        
+    </Grid>
+</Window>
