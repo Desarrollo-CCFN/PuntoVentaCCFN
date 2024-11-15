@@ -110,7 +110,7 @@ namespace Capa_Presentacion.Reportes
         private void ConsVenta_click(object sender, RoutedEventArgs e)
         {
 
-            var Rangos = new Rangos(1);
+            var Rangos = new Rangos(5);
             Rangos.Owner = this; // Establece MainReportes como el propietario
             Rangos.ShowDialog();
         }
@@ -118,7 +118,7 @@ namespace Capa_Presentacion.Reportes
         private void DetaVenta_click(object sender, RoutedEventArgs e)
         {
 
-            var Rangos = new Rangos(2);
+            var Rangos = new Rangos(6);
             Rangos.Owner = this; // Establece MainReportes como el propietario
             Rangos.ShowDialog();
         }

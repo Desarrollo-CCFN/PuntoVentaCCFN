@@ -13,14 +13,18 @@
 		ResizeMode="NoResize"  
         WindowStyle="SingleBorderWindow" >
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="61*"/>
-        </Grid.ColumnDefinitions>
-        
-        
-        
-        
+
+        <Label Content="Fecha Inicio:" HorizontalAlignment="Left" Height="25" Margin="20,24,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold"/>
+        <Label Content="Fecha Final:" HorizontalAlignment="Left" Height="25" Margin="20,64,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold"/>
+
+
+        <Button x:Name="Buscar" Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,104,0,0" Click="Click_Buscar"/>
+        <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="205,104,0,0" Click="Click_cerrar"/>
+        <TextBox x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135"/>
+        <TextBox x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135"/>
+
+
+
+
     </Grid>
 </Window>

@@ -83,12 +83,7 @@ namespace PuntoVentaCCFN.Views
         private void btn_Preview_Click(object sender, RoutedEventArgs e)
         {
             CerrarCaja(true);
- 
-
-
-             
-
-        }
+         }
 
         public void CerrarCaja(bool Preview)
         {
