@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Capa_Presentacion.Reportes"
-        mc:Ignorable="d"
+                mc:Ignorable="d"
            Icon="/SCS/IMG/Cierre_caja.png"
 		WindowStartupLocation="CenterScreen"
         Background="#08769F"
@@ -20,10 +20,17 @@
 
         <Button x:Name="Buscar" Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,104,0,0" Click="Click_Buscar"/>
         <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="205,104,0,0" Click="Click_cerrar"/>
-        <TextBox x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135"/>
-        <TextBox x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135"/>
+        <!--
+        <TextBox x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" FontWeight="Bold" TextAlignment="Center" />
+        <TextBox x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" FontWeight="Bold" TextAlignment="Center"/>
+         -->
 
-
+        <DatePicker x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" 
+                    VerticalAlignment="Top" Width="135" SelectedDateFormat="Short" FontWeight="Bold"
+                    SelectedDateChanged="FechaIn_SelectedDateChanged"/>
+        <DatePicker x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" 
+                    VerticalAlignment="Top" Width="135" SelectedDateFormat="Short" FontWeight="Bold"
+                    SelectedDateChanged="FechaOut_SelectedDateChanged"/>
 
 
     </Grid>

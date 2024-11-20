@@ -24,67 +24,67 @@ namespace Capa_Presentacion.Reportes
             {
                 case 5:
                  //   Label1.Content = "Número de TCK Venta:";
-                    this.Title = "Rangos de Fecha Concentrado de Ventas";
+                    this.Title = "Rangos de Fecha Concentrado Ventas dd/mm/yyyy";
                     break;
                 case 6:
                  //   Label1.Content = "Número de Retiro:";
-                    this.Title = "Rangos de Fecha Detallado de Ventas";
+                    this.Title = "Rangos de Fecha Detallado Ventas   dd/mm/yyyy";
                     break;
             }
 
+         }
+
+
+        private void FechaIn_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ValidarFechas();
+        }
+
+        private void FechaOut_SelectedDateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ValidarFechas();
+        }
+
+        private void ValidarFechas()
+        {
+            if (FechaIn.SelectedDate.HasValue && FechaOut.SelectedDate.HasValue)
+            {
+                DateTime fechaInicio = FechaIn.SelectedDate.Value;
+                DateTime fechaFinal = FechaOut.SelectedDate.Value;
+
+                if (fechaInicio > fechaFinal)
+                {
+                    System.Windows.MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha final.", "Error de Validación",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                    // Opcional: Reiniciar las fechas si son inválidas
+                    FechaIn.SelectedDate = null;
+                    FechaOut.SelectedDate = null;
+                }
             }
+        }
+
 
         private void Click_Buscar(object sender, RoutedEventArgs e)
         {
-            int IdTra = 0;
+            string IdTra_1 = FechaIn.Text+ FechaOut.Text;
             int Param = valueTo_;
+            int IdTra = 0;
+ 
 
-            // Validar que el texto no esté vacío y sea numérico
-            /*  if (string.IsNullOrWhiteSpace(txtPrenume.Text) || !int.TryParse(txtPrenume.Text, out int IdTra))
-              {
-                  System.Windows.Forms.MessageBox.Show("Por favor, ingrese un número válido.");
-                  return;
-              }
-
-
-
-              int Param = valueTo_;
-              CN_BusquedaReporte objConsulta = new CN_BusquedaReporte();
-              CE_BusquedaReporte objCe;
-
-              try
-              {
-                  objCe = objConsulta.ConsultaDatos(IdTra, Param);
-              }
-              catch (Exception ex)
-              {
-                  System.Windows.Forms.MessageBox.Show($"Error al consultar la base de datos: {ex.Message}");
-                  return;
-              }
-
-             if (objCe != null && objCe.IdTr_ == 1)      // realiza la validacion 
-              {
-                  EjecutarProcesoExterno(IdTra, Param);
-              }
-              else
-              {
-                  System.Windows.Forms.MessageBox.Show("No existe información que desea buscar. Intente con otro número de folio.");
-              }*/
-
-            EjecutarProcesoExterno(IdTra, Param);
+           EjecutarProcesoExterno(IdTra, Param, IdTra_1);
 
             this.Close();
 
-
         }
 
-        private void EjecutarProcesoExterno(int IdTra, int Param)
+        private void EjecutarProcesoExterno(int IdTra, int Param, string IdTra_1)
         {
             // Crear una instancia de ProcessStartInfo
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe", // Ruta completa al ejecutable
-                Arguments = $"{IdTra} {Param}" // Argumentos para el ejecutable
+                Arguments = $"{IdTra} {Param} {IdTra_1}" // Argumentos para el ejecutable
             };
 
             try
