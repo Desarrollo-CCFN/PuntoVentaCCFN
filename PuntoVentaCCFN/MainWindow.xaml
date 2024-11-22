@@ -14,7 +14,10 @@
         MouseDown="Window_MouseDown"
            
         Background="Transparent" 
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+         
+        
+    >
     <Window.Resources>
         <!--  WindowState="Maximized"-->
         <!--#region Leyendas de iconos-->
@@ -695,6 +698,7 @@
     Margin="367,3,0,0"
     HorizontalAlignment="Left"
     VerticalAlignment="Top"/>
+ 
 
                 <!--#endregion-->
             </Grid>

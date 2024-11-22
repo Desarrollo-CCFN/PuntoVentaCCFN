@@ -62,7 +62,8 @@ namespace Capa_Presentacion.Reportes
         private void Apertura_Click(object sender, RoutedEventArgs e)
         {
             var Cerrar = new Cerrar(3);
-                Cerrar.ShowDialog();
+            Cerrar.Owner = this; // Establece MainReportes como el propietario
+            Cerrar.ShowDialog();
                 
 
 
@@ -72,6 +73,7 @@ namespace Capa_Presentacion.Reportes
         {
 
             var Cerrar = new Cerrar(2);
+            Cerrar.Owner = this; // Establece MainReportes como el propietario
             Cerrar.ShowDialog();
 
 
@@ -80,15 +82,45 @@ namespace Capa_Presentacion.Reportes
         private void retiros_Click(object sender, RoutedEventArgs e)
         {
             var Cerrar = new Cerrar(4);
+            Cerrar.Owner = this; // Establece MainReportes como el propietario
             Cerrar.ShowDialog();
         }
 
         private void entrega_Click(object sender, RoutedEventArgs e)
         {
 
-            var Cerrar = new Cerrar(1);
-            Cerrar.ShowDialog();
+            // var Cerrar = new Cerrar(1);
+            // Cerrar.ShowDialog();
+            // Asigna el UserControl Cerrar a ContentArea en lugar de abrirlo como ventana modal
+           // ContentArea.Content = new Cerrar(1); // Muestra el UserControl Cerrar en el área de contenido
+          
+             Cerrar Cerrar = new Cerrar(1);
+            Cerrar.Owner = this; // Establece MainReportes como el propietario
+            Cerrar.ShowDialog();  // Muestra la ventana como modal
 
+        }
+
+        private void QuerysC_click(object sender, RoutedEventArgs e)
+        {
+            var Query = new Query();
+            Query.Owner = this; // Establece MainReportes como el propietario
+            Query.ShowDialog();
+        }
+
+        private void ConsVenta_click(object sender, RoutedEventArgs e)
+        {
+
+            var Rangos = new Rangos(5);
+            Rangos.Owner = this; // Establece MainReportes como el propietario
+            Rangos.ShowDialog();
+        }
+
+        private void DetaVenta_click(object sender, RoutedEventArgs e)
+        {
+
+            var Rangos = new Rangos(6);
+            Rangos.Owner = this; // Establece MainReportes como el propietario
+            Rangos.ShowDialog();
         }
     }
 }

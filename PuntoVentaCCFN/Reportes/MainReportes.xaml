@@ -7,15 +7,16 @@
         mc:Ignorable="d"
        
         Title="MainReportes" Height="500" Width="800"
-        
-        
- 
+       
 		WindowStyle="None"
   ResizeMode="NoResize"
   WindowStartupLocation="CenterScreen"
         Background="Transparent"
      AllowsTransparency="True"
-  MouseDown="Window_MouseDown" Cursor="Hand"
+  MouseDown="Window_MouseDown"  
+        Cursor="Hand"
+        ShowInTaskbar="False"
+        
         >
     <!-- Background="#08769F" -->
 
@@ -159,7 +160,7 @@
                                 TextAlignment="Center"
                                 VerticalAlignment="Center" 
                                  HorizontalAlignment="Center"/>
-                      </Button>
+                </Button>
 
 
 
@@ -175,8 +176,32 @@
                     FontWeight="Bold"
                     BorderThickness="0"
                     Cursor="Hand" Click="Salir_Click" Grid.Row="1"/>
+                <Button x:Name="QuerysC" Content="Querys" HorizontalAlignment="Left" 
+                        Background="#FF136F6D"
+                        Foreground="White"
+                         FontWeight="Bold"
+                         BorderThickness="0"
+                        Height="56" Margin="621,35,0,0" 
+                        Grid.Row="1" VerticalAlignment="Top" 
+                        Width="129" Click="QuerysC_click"/>
 
+                <Button x:Name="ConsVenta" Content="Concentrado Venta" HorizontalAlignment="Center" 
+                        Background="#FF136F6D"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        Height="56" 
+                        Margin="0,24,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top" Width="129" Click="ConsVenta_click"/>
 
+                <Button x:Name="DetaVenta" Content="Detallado Venta" HorizontalAlignment="Left" 
+                         Background="#FF136F6D"
+                         Foreground="White"
+                         FontWeight="Bold"
+                        Height="56" Margin="330,104,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top" Width="129" Click="DetaVenta_click"/>
+
+                <ContentControl x:Name="ContentArea" Grid.Row="1" 
+                    Margin="150,75,150,50"/>
 
 
             </Grid>

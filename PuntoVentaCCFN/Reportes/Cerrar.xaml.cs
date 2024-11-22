@@ -29,7 +29,7 @@ namespace Capa_Presentacion.Reportes
                     this.Title = "Tck Venta";
                     break;
                 case 3:
-                    Label1.Content = "Número de Cierre de Caja:";
+                    Label1.Content = "Num. Cierre de Caja:";
                     this.Title = "Cierre de Caja";
                     break;
 
