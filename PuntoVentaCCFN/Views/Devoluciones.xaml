@@ -297,13 +297,13 @@
                 HorizontalAlignment="Left" Width="84" Margin="70,4,0,10"/>
             <TextBox
                 Grid.Column="1"
-                x:Name="tbListaPrecio"
+                x:Name="tbNumTicket"
                 Style="{DynamicResource tbStyle}"
                 Grid.Row="4" Grid.ColumnSpan="4" Margin="10,0,175,0"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Blue"
                 Grid.Column="4"
-                Grid.Row="4" Margin="106,2,30,0" 
+                Grid.Row="4" Margin="106,2,30,0" Click="CargarHeader" 
                 >
                 <TextBlock Text="Buscar"
                            Foreground="White"
@@ -326,8 +326,9 @@
           CanUserResizeRows="False"
           CanUserDeleteRows="False"
           CanUserSortColumns="False"
-          SelectionMode="Single"
+          SelectionMode="Extended"
           RowBackground="Transparent"
+           
           HeadersVisibility="Column"
           GridLinesVisibility="Horizontal"
           HorizontalGridLinesBrush="#35baf6" Margin="0,0,20,0"
@@ -344,7 +345,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Descripcion" Width="350" Binding="{Binding ItemName}">
+                    <DataGridTextColumn Header="Descripcion" Width="350" Binding="{Binding Dscription}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -360,7 +361,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario" Width="*" Binding="{Binding Precio_Base, StringFormat={}{0:###0.0000}}">
+                    <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Quantity}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -368,7 +369,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto" Width="*" Binding="{Binding Impuesto, StringFormat={}{0:###0.00}}">
+                    <DataGridTextColumn Header="Importe MXN" Width="*" Binding="{Binding LineTotal, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -376,31 +377,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Precio Unitario FC" Width="*" Binding="{Binding Precio_Base_FC, StringFormat={}{0:###0.0000}}">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Impuesto FC" Width="*" Binding="{Binding Impuesto_FC, StringFormat={}{0:###0.00}}">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Path=Cantidad}">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Importe" Width="*" Binding="{Binding Total, StringFormat={}{0:###0.00}}">
+                    <DataGridTextColumn Header="Importe USD" Width="*" Binding="{Binding LineTotalFrgn, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -410,6 +387,83 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <TextBlock
+                Grid.Column="8"
+                Text="Num. Recibo"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="9,18,0,16" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+            <TextBlock Grid.Row="1"
+                Grid.Column="9"
+                Text=""
+                       x:Name="lblRecibo"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="110,0,0,14"/>
+            <TextBlock
+                Grid.Column="9"
+                Text="Fecha"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="1,29,0,5" Grid.RowSpan="2" Grid.Row="1"/>
+            <TextBlock Grid.Row="2"
+                Grid.Column="9"
+                Text=""
+                x:Name="lblFecha"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="109,2,0,2"/>
+            <TextBlock
+                Grid.Column="9"
+                Text="Moneda"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="3,14,0,0" Grid.Row="3"/>
+            <TextBlock Grid.Row="3"
+                Grid.Column="9"
+                Text=""
+                x:Name="lblMoneda"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="111,12,0,2"/>
+            <TextBlock
+                Grid.Column="9"
+                Text="Tipo de Cambio"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="306,1,0,13" Grid.Row="1"/>
+            <TextBlock Grid.Row="1"
+                Grid.Column="9"
+                Text=""
+                x:Name="lblRate"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="428,2,0,12"/>
+            <TextBlock
+                Grid.Column="9"
+                Text="Total MXN"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="307,0,0,4" Grid.Row="2"/>
+            <TextBlock Grid.Row="2"
+                Grid.Column="9"
+                Text=""
+                x:Name="lblMXN"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="429,2,0,2"/>
+            <TextBlock
+                Grid.Column="9"
+                Text="Total USD"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="308,15,0,29" Grid.Row="3" Grid.RowSpan="2"/>
+            <TextBlock Grid.Row="3"
+                Grid.Column="9"
+                Text=""
+                x:Name="lblUSD"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="84" Margin="432,16,0,28" Grid.RowSpan="2"/>
+            <Button Style="{DynamicResource btnSide}" 
+                Background="Blue"
+                Grid.Column="9"
+                Grid.Row="14" Margin="348,82,72,34" Click="Button_Click" 
+                >
+                <TextBlock Text="Procesar Devolucion"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                           />
+            </Button>
         </Grid>
     </Border>
 
