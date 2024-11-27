@@ -122,5 +122,12 @@ namespace Capa_Presentacion.Reportes
             Rangos.Owner = this; // Establece MainReportes como el propietario
             Rangos.ShowDialog();
         }
+
+        private void VentaXart_click(object sender, RoutedEventArgs e)
+        {
+            var Rangos = new Rangos(7);
+            Rangos.Owner = this; // Establece MainReportes como el propietario
+            Rangos.ShowDialog();
+        }
     }
 }

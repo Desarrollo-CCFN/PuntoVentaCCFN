@@ -9,28 +9,34 @@
 		WindowStartupLocation="CenterScreen"
         Background="#08769F"
          x:Name="Tit2"
-        Title="Parametros de Fecha" Height="200" Width="350"
+        Title="Parametros de Fecha" Height="250" Width="350"
 		ResizeMode="NoResize"  
         WindowStyle="SingleBorderWindow" >
     <Grid>
 
-        <Label Content="Fecha Inicio:" HorizontalAlignment="Left" Height="25" Margin="20,24,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold"/>
-        <Label Content="Fecha Final:" HorizontalAlignment="Left" Height="25" Margin="20,64,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold"/>
+        <Label Content="Fecha Inicio:" HorizontalAlignment="Left" Height="25" Margin="20,26,0,0" VerticalAlignment="Top" Width="85" FontWeight="Bold"/>
+        <Label Content="Fecha Final:" HorizontalAlignment="Left" Height="25" Margin="20,66,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold"/>
+
+        <Label x:Name="labelArt" Content="Articulo:" HorizontalAlignment="Left" Height="25" Margin="25,107,0,0" VerticalAlignment="Top" Width="80" FontWeight="Bold"/>
 
 
-        <Button x:Name="Buscar" Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,104,0,0" Click="Click_Buscar"/>
-        <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="205,104,0,0" Click="Click_cerrar"/>
+        <Button x:Name="Buscar" Content="Buscar" Background="LightGreen" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,152,0,0" Click="Click_Buscar"/>
+        <Button x:Name="cerrar" Content="Cancelar" Background="LightCoral" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="205,152,0,0" Click="Click_cerrar"/>
         <!--
         <TextBox x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" FontWeight="Bold" TextAlignment="Center" />
         <TextBox x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="135" FontWeight="Bold" TextAlignment="Center"/>
          -->
 
-        <DatePicker x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,24,0,0" 
+        <DatePicker x:Name="FechaIn" HorizontalAlignment="Left" Height="25" Margin="115,26,0,0" 
                     VerticalAlignment="Top" Width="135" SelectedDateFormat="Short" FontWeight="Bold"
                     SelectedDateChanged="FechaIn_SelectedDateChanged"/>
-        <DatePicker x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,64,0,0" 
+        <DatePicker x:Name="FechaOut" HorizontalAlignment="Left" Height="25" Margin="115,66,0,0" 
                     VerticalAlignment="Top" Width="135" SelectedDateFormat="Short" FontWeight="Bold"
                     SelectedDateChanged="FechaOut_SelectedDateChanged"/>
+
+        <TextBox x:Name="Art" HorizontalAlignment="Left" Height="25" 
+                 Margin="115,107,0,0" TextWrapping="Wrap" 
+                  Text="" VerticalAlignment="Top" Width="135" FontWeight="Bold"/>
 
 
     </Grid>

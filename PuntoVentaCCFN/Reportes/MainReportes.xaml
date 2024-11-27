@@ -197,11 +197,18 @@
                          Background="#FF136F6D"
                          Foreground="White"
                          FontWeight="Bold"
-                        Height="56" Margin="330,104,0,0" Grid.Row="1" 
-                        VerticalAlignment="Top" Width="129" Click="DetaVenta_click"/>
+                        Height="56" Margin="330,100,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top" Width="129" 
+                        Click="DetaVenta_click"/>
 
-                <ContentControl x:Name="ContentArea" Grid.Row="1" 
-                    Margin="150,75,150,50"/>
+                <Button x:Name="VentaXart" Content="Ventas X Artículo" 
+                         Background="#FF136F6D"
+                         Foreground="White"
+                        HorizontalAlignment="Left" 
+                        Height="56" Margin="329,174,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top" Width="129"
+                        Click="VentaXart_click"
+                        />
 
 
             </Grid>

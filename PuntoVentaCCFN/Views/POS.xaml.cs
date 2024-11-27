@@ -1278,17 +1278,18 @@ namespace PuntoVentaCCFN.Views
             startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // Ruta completa al ejecutable de RetirosCaja
 
             // startInfo.Arguments = $"{IdTra}";
+            // startInfo.Arguments = $"{ventaI.NumTck} {Param}";
             startInfo.Arguments = $"{numTck} {Param}";
 
             // Ejecutar el programa externo
             try
             {
                 Process.Start(startInfo);
-                System.Windows.MessageBox.Show("Venta realizada con exito! " + numTck);
+                System.Windows.MessageBox.Show("Venta realizada con exito! " + ventaI.NumTck + " - "+ numTck);
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Error al imprimir ticket de venta " + numTck + "\n" + ex.Message);
+                System.Windows.MessageBox.Show("Error al imprimir ticket de venta " + ventaI.NumTck + " - " + numTck + "\n" + ex.Message);
             }
             
             

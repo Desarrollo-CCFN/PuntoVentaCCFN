@@ -2,6 +2,7 @@
 using Capa_Entidad;
 using Capa_Negocio;
 using Org.BouncyCastle.Crypto;
+using PuntoVentaCCFN;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -25,10 +26,32 @@ namespace Capa_Presentacion.Reportes
                 case 5:
                  //   Label1.Content = "Número de TCK Venta:";
                     this.Title = "Rangos de Fecha Concentrado Ventas dd/mm/yyyy";
+                    Art.Visibility = Visibility.Collapsed;
+                   labelArt.Visibility = Visibility.Collapsed;
+
+                    Tit2.Height = 200; // Altura como un valor numérico, no una cadena
+                    Buscar.Margin = new Thickness(80, 114, 0, 0); // Margen como un objeto Thickness
+                    cerrar.Margin = new Thickness(205, 114, 0, 0);
+
+
                     break;
                 case 6:
                  //   Label1.Content = "Número de Retiro:";
                     this.Title = "Rangos de Fecha Detallado Ventas   dd/mm/yyyy";
+                    Art.Visibility = Visibility.Collapsed;
+                   labelArt.Visibility = Visibility.Collapsed;
+                    Tit2.Height = 200; // Altura como un valor numérico, no una cadena
+                    Buscar.Margin = new Thickness(80, 114, 0, 0); // Margen como un objeto Thickness
+                    cerrar.Margin = new Thickness(205, 114, 0, 0);
+                    break;
+
+                case 7:
+                    //   Label1.Content = "Número de Retiro:";
+                    this.Title = "Ventas Artículos  dd/mm/yyyy";
+                   
+                    Tit2.Height = 250;
+                    Buscar.Margin = new Thickness(80, 152, 0, 0);
+                    cerrar.Margin = new Thickness(205, 152, 0, 0);
                     break;
             }
 
@@ -65,26 +88,43 @@ namespace Capa_Presentacion.Reportes
         }
 
 
+
         private void Click_Buscar(object sender, RoutedEventArgs e)
         {
             string IdTra_1 = FechaIn.Text+ FechaOut.Text;
             int Param = valueTo_;
             int IdTra = 0;
- 
+            string Art = this.Art.Text;
 
-           EjecutarProcesoExterno(IdTra, Param, IdTra_1);
+
+
+            if ((valueTo_ == 7 && string.IsNullOrEmpty(this.Art.Text)) || valueTo_ == 5 || valueTo_ == 6)
+            {
+                if (valueTo_ == 7 && string.IsNullOrEmpty(this.Art.Text))
+                {
+                    System.Windows.MessageBox.Show("No se agregó código de producto. Se realizará una búsqueda total.",
+                                                    "Aviso de Búsqueda Total",
+                                                    MessageBoxButton.OK,
+                                                    MessageBoxImage.Warning);
+                }
+
+                Art = "*";
+            }
+
+
+            EjecutarProcesoExterno(IdTra, Param, IdTra_1, Art);
 
             this.Close();
 
         }
 
-        private void EjecutarProcesoExterno(int IdTra, int Param, string IdTra_1)
+        private void EjecutarProcesoExterno(int IdTra, int Param, string IdTra_1, string Art)
         {
             // Crear una instancia de ProcessStartInfo
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = @"C:\PuntoVenta\reportes\WindowsTesoreria.exe", // Ruta completa al ejecutable
-                Arguments = $"{IdTra} {Param} {IdTra_1}" // Argumentos para el ejecutable
+                Arguments = $"{IdTra} {Param} {IdTra_1} {Art}" // Argumentos para el ejecutable
             };
 
             try
