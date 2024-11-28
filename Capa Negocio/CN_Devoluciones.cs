@@ -18,9 +18,19 @@ namespace Capa_Negocio
             return obDatos.CargarDetalle(NumTicket);
         }
 
-        public bool DevoluacionHeader(int _idHeader, int __UserId, ref string sMensaje)
+        public bool DevoluacionHeader(string _NumTck,ref string sMensaje)
         {
-            return obDatos.DevolucionHeader(_idHeader, __UserId, ref sMensaje);
+            return obDatos.DevolucionHeader(_NumTck, ref sMensaje);
+        }
+
+        public bool DevolucionDetalle(string _NumTck, int LineNum, ref string sMensaje)
+        {
+            return obDatos.DevolucionDetalle(_NumTck, LineNum, ref sMensaje);
+        }
+
+        public bool DevolucionCierre(int idHeader, int UserId, ref string sMensaje)
+        {
+            return obDatos.DevolucionCierre(idHeader, UserId, ref sMensaje);
         }
     }
 }

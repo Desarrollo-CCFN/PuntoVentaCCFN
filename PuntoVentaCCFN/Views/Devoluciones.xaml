@@ -331,7 +331,7 @@
            
           HeadersVisibility="Column"
           GridLinesVisibility="Horizontal"
-          HorizontalGridLinesBrush="#35baf6" Margin="0,0,20,0"
+          HorizontalGridLinesBrush="#35baf6" Margin="0,0,20,0" SelectionChanged="GridDatos_SelectionChanged"
           >
                 <DataGrid.CellStyle>
                     <Style/>
@@ -464,6 +464,13 @@
                     VerticalAlignment="Center"
                            />
             </Button>
+            <TextBlock
+                Grid.Column="9"
+                FontSize="20"
+                Text="Total: "
+                x:Name="lblTotal"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="305" Margin="65,6,0,3" Grid.Row="13"/>
         </Grid>
     </Border>
 

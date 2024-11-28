@@ -44,9 +44,21 @@ namespace Capa_Presentacion.Views
 
              _oDevolucionHeader = _oDevoluciones.CargarHeader(tbNumTicket.Text);
 
-            if(_oDevolucionHeader == null)
+            if(_oDevolucionHeader.Id == -1)
             {
                 System.Windows.MessageBox.Show("Venta no encontrada en el rango de fechas!!");
+                return;
+            }
+
+            if (_oDevolucionHeader.Id == -2)
+            {
+                System.Windows.MessageBox.Show("Venta ya cuenta con devolucion!!!");
+                return;
+            }
+
+            if (_oDevolucionHeader.Id == -3)
+            {
+                System.Windows.MessageBox.Show("Error al buscar venta [SP_V_DevoHeader]");
                 return;
             }
 
@@ -69,23 +81,48 @@ namespace Capa_Presentacion.Views
 
         public void getSelectedItems()
         {
+            int idHeader = 0;
+
             if(GridDatos.SelectedItems.Count == 0) {
                 System.Windows.MessageBox.Show("Debes seleccionar productos a devolver!!");
                 return;
             }
 
-            for(int i = 0; i < GridDatos.SelectedItems.Count; i++)
+            if(!_oDevoluciones.DevoluacionHeader(_oDevolucionHeader.NumTck, ref sMensaje)) {
+                System.Windows.MessageBox.Show(sMensaje);
+                return;
+            } else
             {
-                DataRowView dataRowView = (DataRowView)GridDatos.SelectedItems[i];
+                idHeader = Convert.ToInt32(sMensaje);
+                //id devolucion header
+                for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
+                {
+                    DataRowView dataRowView = (DataRowView)GridDatos.SelectedItems[i];
+                    if(!_oDevoluciones.DevolucionDetalle(_oDevolucionHeader.NumTck, Convert.ToInt32(dataRowView.Row[4].ToString()), ref sMensaje))
+                    {
+                        System.Windows.MessageBox.Show(sMensaje);
+                        break;
+                    }
 
+                }
+                
             }
 
-            if(!_oDevoluciones.DevoluacionHeader(_oDevolucionHeader.Id, int.Parse(MainWindow.AppConfig1.Caja), ref sMensaje)) {
+            if(!_oDevoluciones.DevolucionCierre(idHeader, 1, ref sMensaje))
+            {
                 System.Windows.MessageBox.Show(sMensaje);
                 return;
             }
 
             System.Windows.MessageBox.Show("Exito!!");
+            GridDatos.ItemsSource = null;
+            tbNumTicket.Text = "";
+            lblRecibo.Text = "";
+            lblFecha.Text = "";
+            lblMoneda.Text = "";
+            lblRate.Text = "";
+            lblMXN.Text = "";
+            lblUSD.Text = "";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -101,6 +138,18 @@ namespace Capa_Presentacion.Views
             public decimal Quantiy { get; set; }
             public decimal LineTotal { get; set; }
             public decimal LineTotalFrgn { get; set; }
+        }
+
+        
+        private void GridDatos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            double total = 0;
+            for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
+            {
+                DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
+                total += Convert.ToDouble(dataRow.Row[10].ToString());
+                lblTotal.Text = "Total: $" + total.ToString();
+            }
         }
     }
 }
