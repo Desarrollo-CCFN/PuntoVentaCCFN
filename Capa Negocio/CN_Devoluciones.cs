@@ -23,9 +23,9 @@ namespace Capa_Negocio
             return obDatos.DevolucionHeader(_NumTck, ref sMensaje);
         }
 
-        public bool DevolucionDetalle(string _NumTck, int LineNum, ref string sMensaje)
+        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, ref string sMensaje)
         {
-            return obDatos.DevolucionDetalle(_NumTck, LineNum, ref sMensaje);
+            return obDatos.DevolucionDetalle(_NumTck, LineNum, cantidad, ref sMensaje);
         }
 
         public bool DevolucionCierre(int idHeader, int UserId, ref string sMensaje)

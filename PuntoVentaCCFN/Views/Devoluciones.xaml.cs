@@ -46,7 +46,7 @@ namespace Capa_Presentacion.Views
 
             if(_oDevolucionHeader.Id == -1)
             {
-                System.Windows.MessageBox.Show("Venta no encontrada en el rango de fechas!!");
+                System.Windows.MessageBox.Show("Venta fuera de rango de fecha!!");
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace Capa_Presentacion.Views
                 for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
                 {
                     DataRowView dataRowView = (DataRowView)GridDatos.SelectedItems[i];
-                    if(!_oDevoluciones.DevolucionDetalle(_oDevolucionHeader.NumTck, Convert.ToInt32(dataRowView.Row[4].ToString()), ref sMensaje))
+                    if(!_oDevoluciones.DevolucionDetalle(_oDevolucionHeader.NumTck, Convert.ToInt32(dataRowView.Row[4].ToString()), Convert.ToDouble(dataRowView.Row[7].ToString()), ref sMensaje))
                     {
                         System.Windows.MessageBox.Show(sMensaje);
                         break;

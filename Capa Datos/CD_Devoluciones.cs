@@ -128,7 +128,7 @@ namespace Capa_Datos
             }
         }
 
-        public bool DevolucionDetalle(string _NumTck, int LineNum, ref string sMensaje)
+        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, ref string sMensaje)
         {
             string _sStoredName = "";
 
@@ -140,6 +140,7 @@ namespace Capa_Datos
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.Add("_NumTck", MySqlDbType.VarChar).Value = _NumTck;
                 da.SelectCommand.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
+                da.SelectCommand.Parameters.Add("_Cantidad", MySqlDbType.Decimal).Value = cantidad;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
