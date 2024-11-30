@@ -39,6 +39,12 @@ namespace Capa_Presentacion.Reportes
                     break;
 
 
+                case 8:
+                    Label1.Content = "Número de Devolución:";
+                    this.Title = "Reimpresión Devolución TCK";
+                    break;
+
+
             }
         }
 

@@ -55,7 +55,7 @@
       RenderTransformOrigin="0.5,0.5" Margin="0,0,-2,0">
 
 
-            <Grid>
+            <Grid x:Name="TckDevolucion">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15*"/>
                     <RowDefinition Height="83*"/>
@@ -108,7 +108,7 @@
 
 
 
-                <Button x:Name="TCK" Content="TCK VENTAS" 
+                <Button x:Name="TCK" Content="Tck Ventas" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Top" 
                     Width="129" 
@@ -209,6 +209,12 @@
                         VerticalAlignment="Top" Width="129"
                         Click="VentaXart_click"
                         />
+                <Button x:Name="Tck_Devolucion" Content="Tck Devolución" 
+                         Background="#FF136F6D"
+                         Foreground="White"
+                        HorizontalAlignment="Left" 
+                        Height="60" Margin="330,245,0,0" Grid.Row="1" 
+                        VerticalAlignment="Top" Width="129" Click="Button_Click_Devolucion"/>
 
 
             </Grid>
