@@ -190,6 +190,11 @@ namespace PuntoVentaCCFN
             DataContext = new Usuarios();
         }
 
+        private void Devoluciones_Click(object sender, RoutedEventArgs e)
+        {
+            DataContext = new Devoluciones();
+        }
+
         private void Pos_Click(object sender, RoutedEventArgs e)
         {
 

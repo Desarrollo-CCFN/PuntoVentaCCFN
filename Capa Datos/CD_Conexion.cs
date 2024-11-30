@@ -12,13 +12,13 @@ namespace Capa_Datos
         // public static readonly string CadenaConexion = "server=localhost;uid=root; pwd=root.2024;database=db_s12;";
 
 
-       // Primero: 130 — Versión principal o Major Version.
-      //  Segundo: 0 — Versión secundaria o Minor Version.  
+        // Primero: 130 — Versión principal o Major Version.
+        //  Segundo: 0 — Versión secundaria o Minor Version.  
         //Tercero: 6723 — Build Number o número de compilación.  
-       //     Cuarto: 116 — Patch Number o número de parche.//diamesaño modificacion
+        //     Cuarto: 116 — Patch Number o número de parche.//diamesaño modificacion
 
 
-           public static readonly string Ver = "5.0.3.291124";
+           public static readonly string Ver = "5.0.2.201124";
     }
 
 

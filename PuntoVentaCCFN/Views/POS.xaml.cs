@@ -73,10 +73,12 @@ namespace PuntoVentaCCFN.Views
         private int nombreCajaInt;
         private string sCodigoBarra;
         private bool bGs11128 = false;
+
+
         public POS()
         {
             InitializeComponent();
-           this.tbCodigoProducto.Focus();
+            this.tbCodigoProducto.Focus();
             IniciarConfiguracion();
             VerificarVenta();
         }
