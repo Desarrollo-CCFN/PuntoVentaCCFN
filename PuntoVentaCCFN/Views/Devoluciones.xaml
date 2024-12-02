@@ -328,7 +328,7 @@
           CanUserSortColumns="False"
           SelectionMode="Extended"
           RowBackground="Transparent"
-           
+          CellEditEnding="GridDatos_CellEditEnding"
           HeadersVisibility="Column"
           GridLinesVisibility="Horizontal"
           HorizontalGridLinesBrush="#35baf6" Margin="0,0,20,0" SelectionChanged="GridDatos_SelectionChanged"
@@ -337,7 +337,7 @@
                     <Style/>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Cod Producto" Width="100" Binding="{Binding ItemCode}">
+                    <DataGridTextColumn  IsReadOnly="True" Header="Cod Producto" Width="100" Binding="{Binding ItemCode}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -345,7 +345,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Descripcion" Width="350" Binding="{Binding Dscription}">
+                    <DataGridTextColumn IsReadOnly="True" Header="Descripcion" Width="350" Binding="{Binding Dscription}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -353,7 +353,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Unidad" Width="70" Binding="{Binding Unidad}">
+                    <DataGridTextColumn IsReadOnly="True" Header="Unidad" Width="70" Binding="{Binding Unidad}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -361,7 +361,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Quantity}">
+                    <DataGridTextColumn IsReadOnly="True" Header="Cantidad" Width="*" Binding="{Binding Quantity}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -369,7 +369,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Importe MXN" Width="*" Binding="{Binding LineTotal, StringFormat={}{0:###0.00}}">
+                    <DataGridTextColumn IsReadOnly="True" Header="Importe MXN" Width="*" Binding="{Binding LineTotal, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -377,7 +377,23 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Importe USD" Width="*" Binding="{Binding LineTotalFrgn, StringFormat={}{0:###0.00}}">
+                    <DataGridTextColumn IsReadOnly="True" Header="Importe USD" Width="*" Binding="{Binding TotalFrgn, StringFormat={}{0:###0.00}}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="False" Header="Cant. Devolver" Width="*" Binding="{Binding QtyDevolver}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn IsReadOnly="True" Header="Importe" Width="*" Binding="{Binding ImporteFinal, StringFormat={}{0:###0.00}}">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -464,6 +480,21 @@
                     VerticalAlignment="Center"
                            />
             </Button>
+            <ComboBox Grid.Row="13"
+                    Grid.Column="4"
+          x:Name="cbPago" Margin="13,10,77,10" SelectionChanged="cbPago_SelectionChanged"
+                      >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <TextBlock
                 Grid.Column="9"
                 FontSize="20"
@@ -471,6 +502,17 @@
                 x:Name="lblTotal"
                 Foreground="White"
                 HorizontalAlignment="Left" Width="305" Margin="65,6,0,3" Grid.Row="13"/>
+            <TextBlock
+                Grid.Column="2"
+                Text="Formas de Pago"
+                Foreground="White"
+                HorizontalAlignment="Left" Width="126" Margin="53,11,0,13" Grid.Row="13" Grid.ColumnSpan="2"/>
+            <TextBox
+                Grid.Column="4"
+                x:Name="textVoucher"
+                IsEnabled="False"
+                Style="{DynamicResource tbStyle}"
+                Grid.Row="13" Grid.ColumnSpan="3" Margin="197,5,68,5"/>
         </Grid>
     </Border>
 

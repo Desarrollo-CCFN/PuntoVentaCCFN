@@ -73,6 +73,8 @@ namespace Capa_Datos
                 ds.Clear();
                 da.Fill(ds);
                 DataTable dt = ds.Tables[0];
+                dt.Columns.Add("QtyDevolver", typeof(Int32));
+                dt.Columns.Add("ImporteFinal", typeof(double));
                 conn.CerrarConexion();
 
                 return dt;
@@ -82,7 +84,7 @@ namespace Capa_Datos
             }
         }
 
-        public bool DevolucionHeader(string _NumTck, ref string sMensaje)
+        public bool DevolucionHeader(string _NumTck, string FormaPago, string Folio, ref string sMensaje)
         {
             string _sStoredName = "";
 
@@ -93,7 +95,8 @@ namespace Capa_Datos
                 MySqlDataAdapter da = new MySqlDataAdapter(_sStoredName, conn.AbrirConexion());
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.Add("NumTck_", MySqlDbType.VarChar).Value = _NumTck;
-
+                da.SelectCommand.Parameters.Add("FormaPago_", MySqlDbType.VarChar).Value = FormaPago;
+                da.SelectCommand.Parameters.Add("FolioElectronico_", MySqlDbType.VarChar).Value = Folio;
 
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
@@ -128,7 +131,7 @@ namespace Capa_Datos
             }
         }
 
-        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, ref string sMensaje)
+        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, int _idHeader, double _Monto, ref string sMensaje)
         {
             string _sStoredName = "";
 
@@ -141,7 +144,8 @@ namespace Capa_Datos
                 da.SelectCommand.Parameters.Add("_NumTck", MySqlDbType.VarChar).Value = _NumTck;
                 da.SelectCommand.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = LineNum;
                 da.SelectCommand.Parameters.Add("_Cantidad", MySqlDbType.Decimal).Value = cantidad;
-
+                da.SelectCommand.Parameters.Add("_IdHeader", MySqlDbType.Int32).Value = _idHeader;
+                da.SelectCommand.Parameters.Add("_Monto", MySqlDbType.Decimal).Value = _Monto;
                 MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;
                 da.SelectCommand.Parameters.Add(outErrorCode);
@@ -211,6 +215,43 @@ namespace Capa_Datos
                                " ERROR mientras se ejecutaba la transacción [" + _sStoredName + "].";
                 return false;
             }
+        }
+
+        public List<PayForm> GetPayForms(string _NumTck, ref string sMensaje)
+        {
+            string _sStoredName = "SP_V_DevolPagos";
+            
+            List<PayForm> _listPayForm = new List<PayForm>();
+            try
+            {
+                MySqlDataAdapter da = new MySqlDataAdapter(_sStoredName, conn.AbrirConexion());
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("_NumTck", MySqlDbType.VarChar).Value = _NumTck;
+                da.SelectCommand.ExecuteNonQuery();
+                DataSet ds = new DataSet();
+                ds.Clear();
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+                for(int i = 0; i < dt.Rows.Count; i++)
+                {
+                    PayForm _obj = new PayForm();
+                    DataRow dr = dt.Rows[i];
+                    //_obj.Id = Convert.ToInt32(dr[0]);
+                    _obj.Name = Convert.ToString(dr[0]);
+                    _listPayForm.Add(_obj);
+                }
+                
+                return _listPayForm;
+
+            } catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public class PayForm
+        {
+            public string Name { get; set; }
         }
     }
 }

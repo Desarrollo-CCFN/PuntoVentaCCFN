@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Capa_Datos;
 using Capa_Entidad.Devoluciones;
+using static Capa_Datos.CD_Devoluciones;
 
 
 namespace Capa_Negocio
@@ -18,19 +19,24 @@ namespace Capa_Negocio
             return obDatos.CargarDetalle(NumTicket);
         }
 
-        public bool DevoluacionHeader(string _NumTck,ref string sMensaje)
+        public bool DevoluacionHeader(string _NumTck,string FormaPago, string Folio, ref string sMensaje)
         {
-            return obDatos.DevolucionHeader(_NumTck, ref sMensaje);
+            return obDatos.DevolucionHeader(_NumTck, FormaPago, Folio, ref sMensaje);
         }
 
-        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, ref string sMensaje)
+        public bool DevolucionDetalle(string _NumTck, int LineNum, double cantidad, int idHeader, double Monto, ref string sMensaje)
         {
-            return obDatos.DevolucionDetalle(_NumTck, LineNum, cantidad, ref sMensaje);
+            return obDatos.DevolucionDetalle(_NumTck, LineNum, cantidad, idHeader, Monto, ref sMensaje);
         }
 
         public bool DevolucionCierre(int idHeader, int UserId, ref string sMensaje)
         {
             return obDatos.DevolucionCierre(idHeader, UserId, ref sMensaje);
+        }
+
+        public List<PayForm> GetPayForms(string _NumTck, ref string sMensaje)
+        {
+            return obDatos.GetPayForms(_NumTck, ref sMensaje);
         }
     }
 }
