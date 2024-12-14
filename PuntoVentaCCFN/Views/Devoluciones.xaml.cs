@@ -1,21 +1,8 @@
 ﻿using Capa_Entidad.Devoluciones;
 using Capa_Negocio;
-using PuntoVentaCCFN;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static Capa_Datos.CD_Devoluciones;
 
 namespace Capa_Presentacion.Views
@@ -103,7 +90,7 @@ namespace Capa_Presentacion.Views
             //    return;
             //}
             voucher = textVoucher.Text;
-            if (cbPago.SelectedValue.ToString() != "EF")
+            if (cbPago.SelectedValue.ToString() != "EF" || cbPago.SelectedValue.ToString() != "EFU")
             {
                 if(textVoucher.Text == "")
                 {
