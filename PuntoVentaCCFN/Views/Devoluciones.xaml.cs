@@ -1,4 +1,5 @@
-﻿using Capa_Entidad.Devoluciones;
+﻿using Capa_Datos;
+using Capa_Entidad.Devoluciones;
 using Capa_Negocio;
 using System.Data;
 using System.Windows;
@@ -16,6 +17,11 @@ namespace Capa_Presentacion.Views
 
         CE_DevolucionHeader _oDevolucionHeader = new CE_DevolucionHeader();
         CE_DevolucionDetalle _oDevolucionDetalle = new CE_DevolucionDetalle();
+
+        readonly CD_Devoluciones objeto_DevolVentaEjecuta = new CD_Devoluciones();
+
+        // CE_DevolucionHeader _oDevolVentaEjecuta = new CE_DevolucionHeader();
+
         List<PayForm> ListPagos = new List<PayForm>();
         public string sMensaje = null;
         string voucher = "";
@@ -32,9 +38,17 @@ namespace Capa_Presentacion.Views
                 return;
             }
 
-             _oDevolucionHeader = _oDevoluciones.CargarHeader(tbNumTicket.Text);
+             string smensaje = string.Empty;
 
-            if(_oDevolucionHeader.Id == -1)
+             _oDevolucionHeader = _oDevoluciones.CargarHeader(tbNumTicket.Text, ref smensaje);
+
+            if (smensaje != string.Empty )
+            {
+                System.Windows.MessageBox.Show(smensaje);
+                return;
+            }
+
+            if (_oDevolucionHeader.Id == -1)
             {
                 System.Windows.MessageBox.Show("Venta fuera de rango de fecha!!");
                 return;
@@ -81,16 +95,22 @@ namespace Capa_Presentacion.Views
             cbPago.SelectedValuePath = "Name";
         }
 
-        public void getSelectedItems()
+        public void getSelectedItems(ref string smensaje)
         {
-            int idHeader = 0;
+            // int idHeader = 0;
 
             //if(GridDatos.SelectedItems.Count == 0) {
             //    System.Windows.MessageBox.Show("Debes seleccionar productos a devolver!!");
             //    return;
             //}
+            if (cbPago.SelectedValue ==  null)
+            {
+                System.Windows.MessageBox.Show("Seleccionar la forma de pago de la devolución");
+                return;
+            }
+
             voucher = textVoucher.Text;
-            if (cbPago.SelectedValue.ToString() != "EF" || cbPago.SelectedValue.ToString() != "EFU")
+            if (cbPago.SelectedValue.ToString() != "EF" && cbPago.SelectedValue.ToString() != "EFU")
             {
                 if(textVoucher.Text == "")
                 {
@@ -98,7 +118,7 @@ namespace Capa_Presentacion.Views
                     return;
                 }
             }
-            
+            /*
             if (!_oDevoluciones.DevoluacionHeader(_oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje)) {
                 System.Windows.MessageBox.Show(sMensaje);
                 return;
@@ -126,21 +146,81 @@ namespace Capa_Presentacion.Views
                 System.Windows.MessageBox.Show(sMensaje);
                 return;
             }
+            */
 
-            System.Windows.MessageBox.Show("Exito!!");
-            GridDatos.ItemsSource = null;
-            tbNumTicket.Text = "";
-            lblRecibo.Text = "";
-            lblFecha.Text = "";
-            lblMoneda.Text = "";
-            lblRate.Text = "";
-            lblMXN.Text = "";
-            lblUSD.Text = "";
+            int iRows = 0;
+                        
+            string sJson = "";
+            
+           // try
+            //{
+                foreach (DataRowView dr in GridDatos.ItemsSource)
+                {
+                
+                // System.Windows.MessageBox.Show(Convert.ToString(dr.Row[4]) + "\n" + Convert.ToString(dr.Row[16]));
+
+                if (Convert.ToInt32(dr.Row[16]) != 0)
+                    {
+                        iRows++;
+
+                    
+
+                    if (sJson == "")
+                        {
+                            sJson = $@"[[""{Convert.ToString(dr.Row[4])}"", 
+                                               {Convert.ToString(dr.Row[16])},
+                                               ""{Convert.ToString(dr.Row[17])}""]";
+                        }
+                        else
+                        {
+                            sJson += $@",[""{Convert.ToString(dr.Row[4])}"", 
+                                               { Convert.ToString(dr.Row[16])},
+                                               ""{Convert.ToString(dr.Row[17])}""]";
+                        }
+                    }
+
+                        
+                }
+
+                sJson += "]";
+
+                if (iRows == 0)
+                {
+                    sMensaje = "No existe partidas por procesar !!!";
+                    return ;
+                }
+
+                if (!_oDevoluciones.DevolVentaEjecuta(0, sJson, _oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje))
+                {
+                    System.Windows.MessageBox.Show(sMensaje);
+                    return;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Exito!!");
+                    GridDatos.ItemsSource = null;
+                    tbNumTicket.Text = "";
+                    lblRecibo.Text = "";
+                    lblFecha.Text = "";
+                    lblMoneda.Text = "";
+                    lblRate.Text = "";
+                    lblMXN.Text = "";
+                    lblUSD.Text = "";
+                }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            getSelectedItems();
+            string smensaje = string.Empty;
+
+            getSelectedItems(ref smensaje);
+
+            if (smensaje.Length > 0)
+            {
+                System.Windows.MessageBox.Show(sMensaje);
+                return;
+            }
+
         }
 
         public class GridList
