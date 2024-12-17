@@ -206,6 +206,8 @@ namespace Capa_Presentacion.Views
                     lblRate.Text = "";
                     lblMXN.Text = "";
                     lblUSD.Text = "";
+                textVoucher.Text = "";
+                //cbPago.Text = string.Empty;
                 }
         }
 
@@ -300,7 +302,7 @@ namespace Capa_Presentacion.Views
         {
             string content = cbPago.SelectedValue.ToString();
             
-            if (content == "EF")
+            if (content == "EF" || content == "EFU")
             {
                 Pago = "EF";
                 voucher = "";
