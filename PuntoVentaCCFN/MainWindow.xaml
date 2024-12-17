@@ -622,7 +622,7 @@
 
                             <MenuItem Click="Devoluciones_Click" Template="{StaticResource Menu_Template}" x:Name="Devoluciones" ToolTip="Devoluciones">
                                 <MenuItem.Icon>
-                                    <Image Source="/SCS/IMG/ventaccfn.png"></Image>
+                                    <Image Source="/SCS/IMG/Devolucion.png"></Image>
                                 </MenuItem.Icon>
                             </MenuItem>
 

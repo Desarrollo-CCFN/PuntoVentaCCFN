@@ -4,6 +4,7 @@ using PuntoVentaCCFN;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,6 +141,13 @@ namespace Capa_Presentacion.Views
                 return;
             }
 
+
+
+            Imprimir(idHeader);
+
+
+
+
             System.Windows.MessageBox.Show("Exito!!");
             GridDatos.ItemsSource = null;
             tbNumTicket.Text = "";
@@ -150,6 +158,37 @@ namespace Capa_Presentacion.Views
             lblMXN.Text = "";
             lblUSD.Text = "";
         }
+
+
+        void Imprimir(int numTck)
+        {
+
+
+            int Param = 8;
+            // Crear una instancia de ProcessStartInfo
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // impresion devolucion
+
+            // startInfo.Arguments = $"{IdTra}";
+            // startInfo.Arguments = $"{ventaI.NumTck} {Param}";
+            startInfo.Arguments = $"{numTck} {Param}";
+
+            // Ejecutar el programa externo
+            try
+            {
+                Process.Start(startInfo);
+                System.Windows.MessageBox.Show("Devolución realizada con exito! " + _oDevolucionHeader.NumTck + " - " + numTck);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error al imprimir devolución " + _oDevolucionHeader.NumTck + " - " + numTck + "\n" + ex.Message);
+            }
+
+              
+        }
+
+
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
