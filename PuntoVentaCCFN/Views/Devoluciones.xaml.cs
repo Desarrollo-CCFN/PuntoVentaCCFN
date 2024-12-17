@@ -3,6 +3,8 @@ using Capa_Entidad.Devoluciones;
 using Capa_Negocio;
 using System.Data;
 using System.Windows;
+using System.IO;
+using System.Diagnostics;
 using System.Windows.Controls;
 using static Capa_Datos.CD_Devoluciones;
 
@@ -197,6 +199,7 @@ namespace Capa_Presentacion.Views
                 }
                 else
                 {
+                    Imprimir(_oDevolucionHeader.Id);      //Id devolucion
                     System.Windows.MessageBox.Show("Exito!!");
                     GridDatos.ItemsSource = null;
                     tbNumTicket.Text = "";
