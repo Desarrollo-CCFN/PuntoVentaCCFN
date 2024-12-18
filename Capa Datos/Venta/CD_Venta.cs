@@ -184,6 +184,7 @@ namespace Capa_Datos.Venta
                 conm.Parameters.Add("_UomEntry", MySqlDbType.Int32).Value = detalle.UomEntry;
                 conm.Parameters.Add("_LineNum", MySqlDbType.Int32).Value = detalle.LineNum;
                 conm.Parameters.Add("_ReemplazaPartida", MySqlDbType.VarChar).Value = "N";
+                //conm.Parameters.Add("_ReemplazaPartida", MySqlDbType.VarChar).Value = DBNull.Value;    //Guarda el usuario que autorizo cambio cantidad primera vez en Null
 
                 MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
                 outErrorCode.Direction = ParameterDirection.Output;

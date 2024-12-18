@@ -224,13 +224,13 @@
                     CellEditEnding="GridSt_CellEditEnding"
                      GridLinesVisibility="Horizontal"
                       
-                     HorizontalGridLinesBrush="#35baf6" Margin="0,129,81,217" RenderTransformOrigin="0.505,0.52" Grid.Column="1" HorizontalAlignment="Right" Width="1219" ItemsSource="{Binding CanUserAddRows.TrueString, ElementName=GridSt}" Grid.ColumnSpan="2">
+                     HorizontalGridLinesBrush="#35baf6" Margin="100,129,81,217" RenderTransformOrigin="0.505,0.52" ItemsSource="{Binding CanUserAddRows.TrueString, ElementName=GridSt}" Grid.ColumnSpan="3">
                 <DataGrid.CellStyle>
                     <Style/>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Linea" Width="50" Binding="{Binding LineNum}" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Codigo" Width="100" Binding="{Binding ItemCode}" />
+                    <DataGridTextColumn Header="Código" Width="100" Binding="{Binding ItemCode}" />
                     <DataGridTextColumn Header="Descripción" Width="300" Binding="{Binding Dscription}" IsReadOnly="True" />
                     <DataGridTextColumn Header="Cantidad" Width="100" Binding="{Binding Quantity}" />
                     <DataGridTextColumn Header="UmI" Width="100" Binding="{Binding UmI}" IsReadOnly="True" />

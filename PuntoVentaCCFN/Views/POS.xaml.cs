@@ -212,7 +212,7 @@ namespace PuntoVentaCCFN.Views
         {
 
             //var tipoCambio = objeto_CN_TipoCambio.Consulta();
-            tbTipoCambio.Text = tipoCambio.ToString();
+            tbTipoCambio.Text = tipoCambio.ToString("F4");
         }
         #endregion
 
@@ -870,6 +870,8 @@ namespace PuntoVentaCCFN.Views
                         return;
                     }
 
+
+                   // System.Windows.MessageBox.Show(Nom_Supervisor.U_Name);
                     string sMensaje = "";
                     if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t), ref sMensaje))
                     {
@@ -1231,7 +1233,7 @@ namespace PuntoVentaCCFN.Views
             if (objCe.Tp_ > 0)
             {
                                 
-                tbTipoCambio.Text = objCe.Tp_.ToString(); ;  
+                tbTipoCambio.Text = objCe.Tp_.ToString("F4"); ;  
                 tbTipoCambio.UpdateLayout();
 
             }
