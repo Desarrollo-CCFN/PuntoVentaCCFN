@@ -199,9 +199,9 @@ namespace Capa_Presentacion.Views
                 }
                 else
                 {
-                    Imprimir(_oDevolucionHeader.Id);      //Id devolucion
-                    System.Windows.MessageBox.Show("Exito!!");
-                    GridDatos.ItemsSource = null;
+                   
+                System.Windows.MessageBox.Show("Se realizó con éxito la devolución del TCK de Venta: " + _oDevolucionHeader.NumTck, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                GridDatos.ItemsSource = null;
                     tbNumTicket.Text = "";
                     lblRecibo.Text = "";
                     lblFecha.Text = "";
@@ -210,12 +210,13 @@ namespace Capa_Presentacion.Views
                     lblMXN.Text = "";
                     lblUSD.Text = "";
                 textVoucher.Text = "";
+                lblTotal.Text = "";
                 //cbPago.Text = string.Empty;
                 }
         }
 
 
-        void Imprimir(int numTck)
+        /*void Imprimir(int numTck)
         {
 
 
@@ -240,7 +241,7 @@ namespace Capa_Presentacion.Views
             }
 
               
-        }
+        }*/
 
 
 
