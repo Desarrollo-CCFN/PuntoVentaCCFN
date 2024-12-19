@@ -424,7 +424,7 @@
                 Text=""
                 x:Name="lblFecha"
                 Foreground="White"
-                HorizontalAlignment="Left" Width="84" Margin="109,2,0,2"/>
+                HorizontalAlignment="Left" Width="146" Margin="109,2,0,2"/>
             <TextBlock
                 Grid.Column="9"
                 Text="Moneda"

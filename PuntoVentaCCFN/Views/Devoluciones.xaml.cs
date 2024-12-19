@@ -71,9 +71,9 @@ namespace Capa_Presentacion.Views
             lblRecibo.Text = _oDevolucionHeader.NumTck;
             lblFecha.Text = _oDevolucionHeader.Fecha;
             lblMoneda.Text = _oDevolucionHeader.DocCur;
-            lblRate.Text = "$" + _oDevolucionHeader.DocRate.ToString();
-            lblMXN.Text = "$" +  _oDevolucionHeader.DocTotal.ToString();
-            lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString();
+            lblRate.Text = "$" + _oDevolucionHeader.DocRate.ToString("N2");
+            lblMXN.Text = "$" +  _oDevolucionHeader.DocTotal.ToString("N2");
+            lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString("N2");
 
             CargarDetalle();
             CargarFormasPago();
@@ -267,7 +267,8 @@ namespace Capa_Presentacion.Views
             {
                 DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
                 total += Convert.ToDouble(dataRow.Row[17].ToString());
-                lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
+            //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
+                lblTotal.Text = "Total: $" + total.ToString("N2") + " " + dataRow.Row[8].ToString();
             }
         }
 

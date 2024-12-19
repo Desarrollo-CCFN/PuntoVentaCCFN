@@ -192,7 +192,29 @@ namespace PuntoVentaCCFN
 
         private void Devoluciones_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new Devoluciones();
+
+            var Acceso = new Acceso(5);
+            Acceso.ShowDialog();
+            if (Acceso.ReturnValue >= 3)
+            { 
+
+                DataContext = new Devoluciones();
+
+
+                //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+              //  var Devoluciones = new Devoluciones();   // Activa el Password de acceso
+             //   Devoluciones.Owner = this; // Establece MainReportes como el propietario
+                                           // MainReportes.retiros.Visibility = Visibility.Collapsed;
+                                           //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
+                                           //MainReportes.Show();
+                                           // Abre MainReportes como ventana modal
+             //   Devoluciones.ShowDialog();
+
+
+
+            }
+ 
+
         }
 
         private void Pos_Click(object sender, RoutedEventArgs e)
