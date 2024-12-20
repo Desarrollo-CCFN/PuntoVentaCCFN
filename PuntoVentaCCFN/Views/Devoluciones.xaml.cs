@@ -23,6 +23,7 @@ namespace Capa_Presentacion.Views
         readonly CD_Devoluciones objeto_DevolVentaEjecuta = new CD_Devoluciones();
 
         // CE_DevolucionHeader _oDevolVentaEjecuta = new CE_DevolucionHeader();
+        double total = 0;
 
         List<PayForm> ListPagos = new List<PayForm>();
         public string sMensaje = null;
@@ -74,6 +75,8 @@ namespace Capa_Presentacion.Views
             lblRate.Text = "$" + _oDevolucionHeader.DocRate.ToString("N2");
             lblMXN.Text = "$" +  _oDevolucionHeader.DocTotal.ToString("N2");
             lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString("N2");
+            lblTotal.Text = "Total: $";
+             total = 0;
 
             CargarDetalle();
             CargarFormasPago();
@@ -259,7 +262,7 @@ namespace Capa_Presentacion.Views
             //saldo();
         }
 
-        double total = 0;
+       // double total = 0;
         public void saldo()
         {
             
@@ -267,8 +270,8 @@ namespace Capa_Presentacion.Views
             {
                 DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
                 total += Convert.ToDouble(dataRow.Row[17].ToString());
-            //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
-                lblTotal.Text = "Total: $" + total.ToString("N2") + " " + dataRow.Row[8].ToString();
+                //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
+                lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
             }
         }
 
@@ -288,7 +291,8 @@ namespace Capa_Presentacion.Views
 
             item.Row[16] = Convert.ToInt32(t);
 
-            if (item.Row[8].ToString() == "MXN") 
+           // if (item.Row[8].ToString() == "MXN") 
+            if (lblMoneda.Text == "MXN")
             {
                 priceUnit = Convert.ToDouble(item.Row[10]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
