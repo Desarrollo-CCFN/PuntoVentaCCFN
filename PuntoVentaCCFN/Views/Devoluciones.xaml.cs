@@ -24,6 +24,7 @@ namespace Capa_Presentacion.Views
 
         // CE_DevolucionHeader _oDevolVentaEjecuta = new CE_DevolucionHeader();
         double total = 0;
+       
 
         List<PayForm> ListPagos = new List<PayForm>();
         public string sMensaje = null;
@@ -265,14 +266,34 @@ namespace Capa_Presentacion.Views
        // double total = 0;
         public void saldo()
         {
-            
-            for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
+             total = 0;
+
+  
+            int totalRenglones = GridDatos.Items.Count;
+
+            //  System.Windows.MessageBox.Show($"Cantidad de renglones: {totalRenglones}", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            /*
+                        for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
+                        {
+                            DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
+
+                             total += Convert.ToDouble(dataRow.Row[17].ToString());
+
+
+                            //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
+                            lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
+                        }*/
+
+            for (int i = 0; i < totalRenglones; i++)
             {
-                DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
+                // Obtener el DataRowView del renglón actual
+                DataRowView dataRow = (DataRowView)GridDatos.Items[i];
+
                 total += Convert.ToDouble(dataRow.Row[17].ToString());
-                //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
-                lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
             }
+            lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
+
         }
 
         private void GridDatos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -291,17 +312,19 @@ namespace Capa_Presentacion.Views
 
             item.Row[16] = Convert.ToInt32(t);
 
-           // if (item.Row[8].ToString() == "MXN") 
+            // if (item.Row[8].ToString() == "MXN") 
             if (lblMoneda.Text == "MXN")
             {
                 priceUnit = Convert.ToDouble(item.Row[10]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
+            
                 item.Row[17] = LineTotalFinal;
 
             } else
             {
                 priceUnit = Convert.ToDouble(item.Row[11]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
+    
                 item.Row[17] = LineTotalFinal;
             }
 
