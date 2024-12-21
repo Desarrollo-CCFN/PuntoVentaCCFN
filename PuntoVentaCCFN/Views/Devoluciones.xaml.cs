@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls;
 using static Capa_Datos.CD_Devoluciones;
+using System.Windows.Input;
 
 namespace Capa_Presentacion.Views
 {
@@ -33,7 +34,9 @@ namespace Capa_Presentacion.Views
         public Devoluciones()
         {
             InitializeComponent();
+            tbNumTicket.Focus(); // Establece el foco en el TextBox
         }
+ 
 
         private void CargarHeader(object sender, RoutedEventArgs e)
         {
@@ -235,6 +238,18 @@ namespace Capa_Presentacion.Views
 
         }
 
+        #region teclas rapidas
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                Button_Click(sender, e);
+                //CargarHeader(sender, e);
+            }
+
+        }
+        #endregion
+
         public class GridList
         {
             public int CodigoError { get; set; }
@@ -347,6 +362,14 @@ namespace Capa_Presentacion.Views
                 Pago = content;
                 textVoucher.IsEnabled = true;
                 
+            }
+        }
+
+        private void tbNumTicket_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                CargarHeader(sender, e);
             }
         }
     }
