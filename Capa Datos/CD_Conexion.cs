@@ -18,7 +18,7 @@ namespace Capa_Datos
         //     Cuarto: 116 — Patch Number o número de parche.//diamesaño modificacion
 
 
-           public static readonly string Ver = "5.0.2.21122024";
+           public static readonly string Ver = "5.0.1.23122024";
     }
 
 

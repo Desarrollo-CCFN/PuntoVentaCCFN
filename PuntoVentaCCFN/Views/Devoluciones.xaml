@@ -521,21 +521,21 @@
                       FontWeight="Bold"
                        Text="DEVOLUCIÓN DE VENTA" Grid.RowSpan="2"/>
 
-            <TextBlock Grid.Column="6" HorizontalAlignment="Left" 
-                       Height="20" Margin="74,0,0,0" Grid.Row="4" 
+            <TextBlock Grid.Column="9" HorizontalAlignment="Left" 
+                       Height="20" Margin="445,8,0,0" Grid.Row="14" 
                            FontSize="18"
                           FontWeight="Bold"
                             Foreground="White"
-                       TextWrapping="Wrap" VerticalAlignment="Center" 
+                       TextWrapping="Wrap" VerticalAlignment="Top" 
                        Width="45"><Run Language="es-mx" Text="(F2)"/>
             </TextBlock>
-            <TextBlock Grid.Column="6" HorizontalAlignment="Center" 
-                       Height="20" Grid.Row="5" 
+            <TextBlock Grid.Column="9" HorizontalAlignment="Left" 
+                       Height="20" Grid.Row="14" 
                         FontSize="16"
                         FontWeight="Bold"
                         Foreground="Yellow"
                        TextWrapping="Wrap" Text="PROCESAR DEVOLUCIÓN" 
-                       VerticalAlignment="Center" Width="190"/>
+                       VerticalAlignment="Top" Width="190" Margin="376,38,0,0"/>
 
         </Grid>
 
