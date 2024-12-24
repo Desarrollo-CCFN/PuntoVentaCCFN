@@ -189,7 +189,8 @@ namespace Capa_Presentacion.Views
                 if (iRows == 0)
                 {
                     sMensaje = "No existe partidas por procesar !!!";
-                    return ;
+                System.Windows.MessageBox.Show(sMensaje);
+                return ;
                 }
 
                 if (!_oDevoluciones.DevolVentaEjecuta(0, sJson, _oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje))
