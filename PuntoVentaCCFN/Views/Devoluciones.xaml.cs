@@ -293,9 +293,25 @@ namespace Capa_Presentacion.Views
             
             for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
             {
+                double priceUnit = 0;
                 DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
-                total += Convert.ToDouble(dataRow.Row[17].ToString());
-                lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
+
+                if(Convert.ToInt32(dataRow.Row[16]) == 0)
+                {
+                    total = 0;
+                }
+
+                if (_oDevolucionHeader.DocCur == "MXN")
+                {
+                    priceUnit = Convert.ToDouble(dataRow.Row[10]) / Convert.ToInt32(dataRow.Row[7]);
+                    total += priceUnit * Convert.ToInt32(dataRow.Row[16]);
+                } else
+                {
+                    priceUnit = Convert.ToDouble(dataRow.Row[11]) / Convert.ToInt32(dataRow.Row[7]);
+                    total += priceUnit * Convert.ToInt32(dataRow.Row[16]);
+                }
+                
+                lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + _oDevolucionHeader.DocCur;
             }
         }
 
@@ -315,7 +331,7 @@ namespace Capa_Presentacion.Views
 
             item.Row[16] = Convert.ToInt32(t);
 
-            if (item.Row[8].ToString() == "MXN") 
+            if (_oDevolucionHeader.DocCur == "MXN") 
             {
                 priceUnit = Convert.ToDouble(item.Row[10]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
