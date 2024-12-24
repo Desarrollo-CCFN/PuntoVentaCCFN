@@ -98,7 +98,7 @@ namespace Capa_Presentacion.Views
                     {
                         ReturnValue = int.Parse(UserId);     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
                         this.Close();                   // EN LA PANTALLA ORIGEN
-
+                        Nom_Supervisor.U_Name = UserName;
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 4)   // cuando pide autorizacion para rendicion de caja
                     {
@@ -106,6 +106,14 @@ namespace Capa_Presentacion.Views
                         this.Close();                   // EN LA PANTALLA ORIGEN
 
                     }
+
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 5)   // cuando pide autorizacion para Devolucion TCK
+                    {
+                        ReturnValue = int.Parse(UserId);     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
+                        this.Close();                   // EN LA PANTALLA ORIGEN
+                        Nom_Supervisor.U_Name = UserName;
+                    }
+ 
 
                     else
                         {

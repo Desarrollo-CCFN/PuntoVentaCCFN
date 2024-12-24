@@ -3,6 +3,8 @@ using System.Data;
 using Capa_Entidad.Devoluciones;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Capa_Datos
 {
@@ -172,8 +174,72 @@ namespace Capa_Datos
                 if (outErrorCode.Value.ToString() != "0")
                 {
                     sMensaje = outErrorMessage.Value.ToString();
+
+                    string mensaje = "Error al imprimir devolución " + sMensaje ;
+                    string Mensaje = mensaje.Replace(" ", "_");
+                    int Param1 = 7;
+
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo1 = new ProcessStartInfo();
+                    startInfo1.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+ 
+                    startInfo1.Arguments = $"{Mensaje} {Param1}";
+                    Process.Start(startInfo1);
+ 
+
                     return false;
                 }
+                else
+                {
+                    int numTck = 0;
+                    string input = outErrorMessage.Value.ToString();
+
+                    Regex regex = new Regex(@"\[(\d+)\]");
+                    Match match = regex.Match(input);
+                    numTck = int.Parse(match.Groups[1].Value);
+
+
+                    int Param = 8;
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // impresion devolucion
+
+                    // startInfo.Arguments = $"{IdTra}";
+                    // startInfo.Arguments = $"{ventaI.NumTck} {Param}";
+                    startInfo.Arguments = $"{numTck} {Param}";
+
+                    // Ejecutar el programa externo
+                    try
+                    {
+                        Process.Start(startInfo);
+                      //  System.Windows.MessageBox.Show("Devolución realizada con exito! " + _NumTck + " - " + input);
+                    }
+                    catch (Exception ex)
+                    { 
+                        string mensaje = "Error al imprimir devolución " + _NumTck + " - " + input;
+                        string Mensaje = mensaje.Replace(" ", "_");
+                        int Param1 = 7;
+
+                        // Crear una instancia de ProcessStartInfo
+                        ProcessStartInfo startInfo1 = new ProcessStartInfo();
+                        startInfo1.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                        // startInfo.Arguments = $"{IdTra}";
+                        startInfo1.Arguments = $"{Mensaje} {Param1}";
+                        Process.Start(startInfo1);
+ 
+                    }
+                   
+                }
+
+
+
+
+
+
+
+
                 /*
                 else
                 {

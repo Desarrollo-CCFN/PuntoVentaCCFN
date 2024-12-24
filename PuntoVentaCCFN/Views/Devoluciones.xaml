@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Capa_Presentacion.Views"
+             KeyDown="Window_KeyDown" 
              mc:Ignorable="d" 
              d:DesignHeight="865" 
              d:DesignWidth="1425" >
@@ -260,7 +261,7 @@
 
     </UserControl.Resources>
     <Border CornerRadius="10" Background="#5b7bb2">
-        <Grid>
+        <Grid Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="50"/>
@@ -299,7 +300,7 @@
                 Grid.Column="1"
                 x:Name="tbNumTicket"
                 Style="{DynamicResource tbStyle}"
-                Grid.Row="4" Grid.ColumnSpan="4" Margin="10,0,175,0"/>
+                Grid.Row="4" Grid.ColumnSpan="4" Margin="10,0,175,0" KeyDown="tbNumTicket_KeyDown"/>
             <Button Style="{DynamicResource btnSide}" 
                 Background="Blue"
                 Grid.Column="4"
@@ -424,7 +425,7 @@
                 Text=""
                 x:Name="lblFecha"
                 Foreground="White"
-                HorizontalAlignment="Left" Width="84" Margin="109,2,0,2"/>
+                HorizontalAlignment="Left" Width="146" Margin="109,2,0,2"/>
             <TextBlock
                 Grid.Column="9"
                 Text="Moneda"
@@ -513,7 +514,31 @@
                 IsEnabled="False"
                 Style="{DynamicResource tbStyle}"
                 Grid.Row="13" Grid.ColumnSpan="3" Margin="197,5,68,5"/>
+
+            <TextBlock Grid.Column="4" 
+                       Foreground="White"
+                        FontSize="20" Margin="20,15,0,3" TextWrapping="Wrap" 
+                      FontWeight="Bold"
+                       Text="DEVOLUCIÓN DE VENTA" Grid.RowSpan="2"/>
+
+            <TextBlock Grid.Column="9" HorizontalAlignment="Left" 
+                       Height="20" Margin="445,8,0,0" Grid.Row="14" 
+                           FontSize="18"
+                          FontWeight="Bold"
+                            Foreground="White"
+                       TextWrapping="Wrap" VerticalAlignment="Top" 
+                       Width="45"><Run Language="es-mx" Text="(F2)"/>
+            </TextBlock>
+            <TextBlock Grid.Column="9" HorizontalAlignment="Left" 
+                       Height="20" Grid.Row="14" 
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="Yellow"
+                       TextWrapping="Wrap" Text="PROCESAR DEVOLUCIÓN" 
+                       VerticalAlignment="Top" Width="190" Margin="376,38,0,0"/>
+
         </Grid>
+
     </Border>
 
 </UserControl>

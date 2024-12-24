@@ -21,11 +21,11 @@ namespace Capa_Presentacion.Reportes
             switch (valueTo_)
             {
                 case 1:
-                    Label1.Content = "Número de TCK Venta:";
+                    Label1.Content = "Número de Retiro:";
                      this.Title = "Retiro";
                     break;
                 case 2:
-                    Label1.Content = "Número de Retiro:";
+                    Label1.Content = "Número de Tck Venta:";
                     this.Title = "Tck Venta";
                     break;
                 case 3:

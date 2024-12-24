@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Windows.Controls;
 using static Capa_Datos.CD_Devoluciones;
+using System.Windows.Input;
 
 namespace Capa_Presentacion.Views
 {
@@ -23,6 +24,8 @@ namespace Capa_Presentacion.Views
         readonly CD_Devoluciones objeto_DevolVentaEjecuta = new CD_Devoluciones();
 
         // CE_DevolucionHeader _oDevolVentaEjecuta = new CE_DevolucionHeader();
+        double total = 0;
+       
 
         List<PayForm> ListPagos = new List<PayForm>();
         public string sMensaje = null;
@@ -31,7 +34,9 @@ namespace Capa_Presentacion.Views
         public Devoluciones()
         {
             InitializeComponent();
+            tbNumTicket.Focus(); // Establece el foco en el TextBox
         }
+ 
 
         private void CargarHeader(object sender, RoutedEventArgs e)
         {
@@ -71,9 +76,11 @@ namespace Capa_Presentacion.Views
             lblRecibo.Text = _oDevolucionHeader.NumTck;
             lblFecha.Text = _oDevolucionHeader.Fecha;
             lblMoneda.Text = _oDevolucionHeader.DocCur;
-            lblRate.Text = "$" + _oDevolucionHeader.DocRate.ToString();
-            lblMXN.Text = "$" +  _oDevolucionHeader.DocTotal.ToString();
-            lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString();
+            lblRate.Text = "$" + _oDevolucionHeader.DocRate.ToString("N2");
+            lblMXN.Text = "$" +  _oDevolucionHeader.DocTotal.ToString("N2");
+            lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString("N2");
+            lblTotal.Text = "Total: $";
+             total = 0;
 
             CargarDetalle();
             CargarFormasPago();
@@ -200,9 +207,9 @@ namespace Capa_Presentacion.Views
                 }
                 else
                 {
-                    Imprimir(_oDevolucionHeader.Id);      //Id devolucion
-                    System.Windows.MessageBox.Show("Exito!!");
-                    GridDatos.ItemsSource = null;
+                   
+                System.Windows.MessageBox.Show("Se realizó con éxito la devolución del TCK de Venta: " + _oDevolucionHeader.NumTck, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                GridDatos.ItemsSource = null;
                     tbNumTicket.Text = "";
                     lblRecibo.Text = "";
                     lblFecha.Text = "";
@@ -211,40 +218,12 @@ namespace Capa_Presentacion.Views
                     lblMXN.Text = "";
                     lblUSD.Text = "";
                 textVoucher.Text = "";
+                lblTotal.Text = "";
                 //cbPago.Text = string.Empty;
                 }
         }
 
-
-        void Imprimir(int numTck)
-        {
-
-
-            int Param = 8;
-            // Crear una instancia de ProcessStartInfo
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // impresion devolucion
-
-            // startInfo.Arguments = $"{IdTra}";
-            // startInfo.Arguments = $"{ventaI.NumTck} {Param}";
-            startInfo.Arguments = $"{numTck} {Param}";
-
-            // Ejecutar el programa externo
-            try
-            {
-                Process.Start(startInfo);
-                System.Windows.MessageBox.Show("Devolución realizada con exito! " + _oDevolucionHeader.NumTck + " - " + numTck);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show("Error al imprimir devolución " + _oDevolucionHeader.NumTck + " - " + numTck + "\n" + ex.Message);
-            }
-
-              
-        }
-
-
-
+  
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -259,6 +238,18 @@ namespace Capa_Presentacion.Views
             }
 
         }
+
+        #region teclas rapidas
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                Button_Click(sender, e);
+                //CargarHeader(sender, e);
+            }
+
+        }
+        #endregion
 
         public class GridList
         {
@@ -288,7 +279,7 @@ namespace Capa_Presentacion.Views
             //saldo();
         }
 
-        double total = 0;
+       // double total = 0;
         public void saldo()
         {
             
@@ -314,6 +305,8 @@ namespace Capa_Presentacion.Views
                 
                 lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + _oDevolucionHeader.DocCur;
             }
+            lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
+
         }
 
         private void GridDatos_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -336,12 +329,14 @@ namespace Capa_Presentacion.Views
             {
                 priceUnit = Convert.ToDouble(item.Row[10]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
+            
                 item.Row[17] = LineTotalFinal;
 
             } else
             {
                 priceUnit = Convert.ToDouble(item.Row[11]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
+    
                 item.Row[17] = LineTotalFinal;
             }
 
@@ -364,6 +359,14 @@ namespace Capa_Presentacion.Views
                 Pago = content;
                 textVoucher.IsEnabled = true;
                 
+            }
+        }
+
+        private void tbNumTicket_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Tab)
+            {
+                CargarHeader(sender, e);
             }
         }
     }
