@@ -101,7 +101,7 @@ namespace Capa_Presentacion.SCS.Boxes
             // string sAplTimbrar = @"C:\Users\subdirector.ti\source\repos\TimbradoCCFN40\TimbradoCCFN40\bin\Debug\TimbradoCCFN40.exe";
             ProcessStartInfo StartInfo = new ProcessStartInfo(sAplTimbrar);
             // StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-            StartInfo.Arguments = iDocEntry.ToString() + " " + sRutaXmlFiles + " " + sXmlFiles; 
+            StartInfo.Arguments = iDocEntry.ToString() + " " + sRutaXmlFiles + " " + sXmlFiles + " FA"; 
             process.StartInfo = StartInfo;
             try
             {

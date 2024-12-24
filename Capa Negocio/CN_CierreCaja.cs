@@ -18,9 +18,13 @@ namespace Capa_Negocio
             return _caja.ConsultaDetalle(idCash);
         }
 
-        public bool CierraCaja(int idCash, double TotalDebitCard, double TotalCreditCard, int DebitCardVouchers, int CreditCardVouchers, int Supervisor, string Preview,ref string sMensaje)
+        public bool CierraCaja(int idCash, double TotalDebitCard, double TotalCreditCard, int DebitCardVouchers, int CreditCardVouchers,
+                                   double TotalDebitCard_dev, double TotalCreditCard_dev, int DebitCardVouchers_dev, int CreditCardVouchers_dev,
+                                   int Supervisor, string Preview,ref string sMensaje)
         {
-            return _caja.Cierre(idCash, TotalDebitCard, TotalCreditCard, DebitCardVouchers,CreditCardVouchers,Supervisor,Preview, ref sMensaje);
+            return _caja.Cierre(idCash, TotalDebitCard, TotalCreditCard, DebitCardVouchers,CreditCardVouchers,
+                                TotalDebitCard_dev, TotalCreditCard_dev, DebitCardVouchers_dev, CreditCardVouchers_dev,
+                                Supervisor,Preview, ref sMensaje);
         }
 
     }

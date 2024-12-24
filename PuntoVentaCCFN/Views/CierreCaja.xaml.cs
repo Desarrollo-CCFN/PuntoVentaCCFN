@@ -49,6 +49,11 @@ namespace PuntoVentaCCFN.Views
             tb_totalDebito.Text  = "0";
             tb_TotalCredito.Text = "0";
 
+            tb_Qty_Debito_Dev.Text = "0";
+            tb_qty_Credito_Dev.Text = "0";
+            tb_totalDebito_Dev.Text = "0";
+            tb_TotalCredito_Dev.Text = "0";
+
         }
 
         public void CargarHeader()
@@ -93,12 +98,23 @@ namespace PuntoVentaCCFN.Views
             Int32  iQtyCredito = 0;
             double TotalCredito = 0;
 
+            Int32 iQtyDebito_dev = 0;
+            double totalDebito_dev = 0;
+            Int32 iQtyCredito_dev = 0;
+            double TotalCredito_dev = 0;
+
+
             try
             {
                 iQtyDebito = Convert.ToInt32(tb_Qty_Debito.Text);
                 iQtyCredito = Convert.ToInt32(tb_qty_Credito.Text);
                 totalDebito = Convert.ToDouble(tb_totalDebito.Text);
                 TotalCredito = Convert.ToDouble(tb_TotalCredito.Text);
+
+                iQtyDebito_dev = Convert.ToInt32(tb_Qty_Debito_Dev.Text);
+                iQtyCredito_dev = Convert.ToInt32(tb_qty_Credito_Dev.Text);
+                totalDebito_dev = Convert.ToDouble(tb_totalDebito_Dev.Text);
+                TotalCredito_dev = Convert.ToDouble(tb_TotalCredito_Dev.Text);
             }
             catch (Exception ex)
             {
@@ -121,7 +137,9 @@ namespace PuntoVentaCCFN.Views
                 {
                      CerrarCaja = "N";
                     string sMensaje = "";
-                    if (!obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito, UserSupervisor, CerrarCaja, ref sMensaje))
+                    if (!obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito,
+                                         totalDebito_dev, TotalCredito_dev, iQtyDebito_dev, iQtyCredito_dev,
+                                         UserSupervisor, CerrarCaja, ref sMensaje))
                     {
                         System.Windows.MessageBox.Show(sMensaje);
                         return;
@@ -157,7 +175,9 @@ namespace PuntoVentaCCFN.Views
                 {
                     string sMensaje = "";
 
-                    if (obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito, UserSupervisor, CerrarCaja, ref sMensaje) == false)
+                    if (obC.CierraCaja(infoCaja.IdCash, totalDebito, TotalCredito, iQtyDebito, iQtyCredito,
+                                        totalDebito_dev, TotalCredito_dev, iQtyDebito_dev, iQtyCredito_dev,
+                                        UserSupervisor, CerrarCaja, ref sMensaje) == false)
                     {
                         System.Windows.MessageBox.Show(sMensaje);
                     }
