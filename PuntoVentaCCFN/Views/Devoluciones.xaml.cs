@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using static Capa_Datos.CD_Devoluciones;
 using System.Windows.Input;
+using MiControl = PuntoVentaCCFN.MainWindow.Control;
 
 namespace Capa_Presentacion.Views
 {
@@ -81,6 +82,8 @@ namespace Capa_Presentacion.Views
             lblUSD.Text = "$" +  _oDevolucionHeader.DocTotalFC.ToString("N2");
             lblTotal.Text = "Total: $";
              total = 0;
+
+            MiControl.nPase = 1;
 
             CargarDetalle();
             CargarFormasPago();
