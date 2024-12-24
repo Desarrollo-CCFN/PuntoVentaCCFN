@@ -85,7 +85,9 @@ namespace Capa_Datos
         #endregion
 
         #region venta preview cierre caja
-        public bool Cierre(int idCash, Double TotalDebitCard, Double TotalCreditCard, Double DebitCardVouchers, Double CreditCardVouchers, int Supervisor, string bCerrar, ref string sMensaje)
+        public bool Cierre(int idCash, Double TotalDebitCard, Double TotalCreditCard, Double DebitCardVouchers, Double CreditCardVouchers,
+                              Double TotalDebitCard_dev, Double TotalCreditCard_dev, Double DebitCardVouchers_dev, Double CreditCardVouchers_dev,
+                              int Supervisor, string bCerrar, ref string sMensaje)
         {
             try
             {
@@ -99,6 +101,12 @@ namespace Capa_Datos
                 conm.Parameters.Add("TotalCreditCard_", MySqlDbType.Decimal).Value = TotalCreditCard;
                 conm.Parameters.Add("DebitCardVouchers_", MySqlDbType.Int32).Value = DebitCardVouchers;
                 conm.Parameters.Add("CreditCardVouchers_", MySqlDbType.Int32).Value = CreditCardVouchers;
+
+                conm.Parameters.Add("DevTotalDebitCard_", MySqlDbType.Decimal).Value = TotalDebitCard_dev;
+                conm.Parameters.Add("DevTotalCreditCard_", MySqlDbType.Decimal).Value = TotalCreditCard_dev;
+                conm.Parameters.Add("DevDebitCardVouchers_", MySqlDbType.Int32).Value = DebitCardVouchers_dev;
+                conm.Parameters.Add("DevCreditCardVouchers_", MySqlDbType.Int32).Value = CreditCardVouchers_dev;
+
                 conm.Parameters.Add("User_", MySqlDbType.Int32).Value = Supervisor;
                 conm.Parameters.Add("Cerrar_", MySqlDbType.VarChar).Value = bCerrar;
 

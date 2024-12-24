@@ -199,7 +199,8 @@ namespace Capa_Presentacion.Views
                 if (iRows == 0)
                 {
                     sMensaje = "No existe partidas por procesar !!!";
-                    return ;
+                System.Windows.MessageBox.Show(sMensaje);
+                return ;
                 }
 
                 if (!_oDevoluciones.DevolVentaEjecuta(0, sJson, _oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje))
@@ -284,31 +285,28 @@ namespace Capa_Presentacion.Views
        // double total = 0;
         public void saldo()
         {
-             total = 0;
-
-  
-            int totalRenglones = GridDatos.Items.Count;
-
-            //  System.Windows.MessageBox.Show($"Cantidad de renglones: {totalRenglones}", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            /*
-                        for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
-                        {
-                            DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
-
-                             total += Convert.ToDouble(dataRow.Row[17].ToString());
-
-
-                            //    lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + dataRow.Row[8].ToString();
-                            lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
-                        }*/
-
-            for (int i = 0; i < totalRenglones; i++)
+            
+            for (int i = 0; i < GridDatos.SelectedItems.Count; i++)
             {
-                // Obtener el DataRowView del renglón actual
-                DataRowView dataRow = (DataRowView)GridDatos.Items[i];
+                double priceUnit = 0;
+                DataRowView dataRow = (DataRowView)GridDatos.SelectedItems[i];
 
-                total += Convert.ToDouble(dataRow.Row[17].ToString());
+                if(Convert.ToInt32(dataRow.Row[16]) == 0)
+                {
+                    total = 0;
+                }
+
+                if (_oDevolucionHeader.DocCur == "MXN")
+                {
+                    priceUnit = Convert.ToDouble(dataRow.Row[10]) / Convert.ToInt32(dataRow.Row[7]);
+                    total += priceUnit * Convert.ToInt32(dataRow.Row[16]);
+                } else
+                {
+                    priceUnit = Convert.ToDouble(dataRow.Row[11]) / Convert.ToInt32(dataRow.Row[7]);
+                    total += priceUnit * Convert.ToInt32(dataRow.Row[16]);
+                }
+                
+                lblTotal.Text = "Total: $" + total.ToString("0.00") + " " + _oDevolucionHeader.DocCur;
             }
             lblTotal.Text = "Total: $" + total.ToString("N2") + " " + lblMoneda.Text; // dataRow.Row[8].ToString();
 
@@ -330,8 +328,7 @@ namespace Capa_Presentacion.Views
 
             item.Row[16] = Convert.ToInt32(t);
 
-            // if (item.Row[8].ToString() == "MXN") 
-            if (lblMoneda.Text == "MXN")
+            if (_oDevolucionHeader.DocCur == "MXN") 
             {
                 priceUnit = Convert.ToDouble(item.Row[10]) / Convert.ToInt32(item.Row[7]);
                 LineTotalFinal = priceUnit * Convert.ToInt32(item.Row[16]);
