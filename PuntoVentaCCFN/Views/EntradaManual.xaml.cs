@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySql.Data.MySqlClient;
 using Capa_Datos;
+using DocumentFormat.OpenXml.Vml;
 
 namespace PuntoVentaCCFN.Views
 {
@@ -122,7 +123,7 @@ namespace PuntoVentaCCFN.Views
             dtColumn.DataType = typeof(double);
             dtColumn.ColumnName = "LineTotal";
             dtColumn.Caption = "LineTotal";
-            dtColumn.ReadOnly = true;
+            dtColumn.ReadOnly = false;
             dtColumn.Unique = false;
 
             EMTable.Columns.Add(dtColumn);
@@ -199,6 +200,76 @@ namespace PuntoVentaCCFN.Views
 
         private void GridSt_CellEditEnding(object? sender, DataGridCellEditEndingEventArgs e)
         {
+            //e.Row.Item.["Quantity"];
+            // Verifica si la columna editada es "Cantidad"
+            if (e.Column.Header.ToString() == "Cantidad")
+            {
+                var editingElement = e.EditingElement as System.Windows.Controls.TextBox;
+                decimal can_1;
+                if (editingElement != null)
+                {
+                    string inputValue = editingElement.Text;
+
+                    // Intenta convertir la entrada a un número decimal
+                    if (!decimal.TryParse(inputValue, out decimal cantidad) || cantidad <= 0)
+                    {
+                        // Si no es un número válido o es menor o igual a 0, muestra un mensaje de error
+                        System.Windows.MessageBox.Show("Por favor, ingrese una cantidad numerica mayor a 0.");
+                        // Limpia el valor incorrecto
+                        editingElement.Clear();
+                        return;
+                    }
+
+                    /*  can_1 = cantidad;
+                     // Si la cantidad es válida, actualizamos el total
+                     var item = e.Row.Item as DataRowView;  
+                   if (item != null)
+                     {
+                         decimal cant_ = can_1; //Convert.ToDecimal(item["Quantity"]);
+                         decimal precio = Convert.ToDecimal(item["Price"]);
+                         item["LineTotal"] = cant_ * precio; // Actualizando el total
+                         // Notificar al BindingSource que se ha actualizado el item
+                    //     bs.ResetBindings(false); // Esto refresca el DataGrid
+                     }*/
+                }
+            }
+
+            // Verifica si la columna editada es "Costo"
+            if (e.Column.Header.ToString() == "Costo")
+            {
+                var editingElement = e.EditingElement as System.Windows.Controls.TextBox;
+
+                if (editingElement != null)
+                {
+                    string inputValue = editingElement.Text;
+
+                    // Intenta convertir la entrada a un número decimal
+                    if (!decimal.TryParse(inputValue, out decimal costo) || costo <= 0)
+                    {
+                        // Si no es un número válido o es menor o igual a 0, muestra un mensaje de error
+                        System.Windows.MessageBox.Show("Por favor, ingrese un costo numerico mayor a 0.");
+                        // Limpia el valor incorrecto
+                        editingElement.Clear();
+                        return;
+                    }
+
+                    // Si el costo es válido, actualizamos el total
+                /*    var item = e.Row.Item as DataRowView;  
+                  if (item != null)
+                   {
+                        decimal cant_ = Convert.ToDecimal(item["Quantity"]);
+                        decimal precio = Convert.ToDecimal(item["Price"]);
+                        item["LineTotal"] = cant_ * precio; // Actualizando el total
+                        // Notificar al BindingSource que se ha actualizado el item
+                       // bs.ResetBindings(false); // Esto refresca el DataGrid
+
+                   }*/
+                }
+            }
+
+
+
+
 
             /*
             if (e.Column.DisplayIndex == 1) // Codigo de articulo
