@@ -48,11 +48,7 @@ namespace PuntoVentaCCFN.Views
             tb_qty_Credito.Text  = "0";
             tb_totalDebito.Text  = "0";
             tb_TotalCredito.Text = "0";
-
-            tb_Qty_Debito_Dev.Text = "0";
-            tb_qty_Credito_Dev.Text = "0";
-            tb_totalDebito_Dev.Text = "0";
-            tb_TotalCredito_Dev.Text = "0";
+ 
 
         }
 
