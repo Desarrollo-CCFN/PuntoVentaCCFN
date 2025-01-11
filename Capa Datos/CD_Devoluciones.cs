@@ -427,6 +427,7 @@ namespace Capa_Datos
         public class PayForm
         {
             public string Name { get; set; }
+            public string DisplayList {  get; set; }
         }
     }
 }

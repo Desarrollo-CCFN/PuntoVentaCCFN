@@ -104,8 +104,25 @@ namespace Capa_Presentacion.Views
         private void CargarFormasPago()
         {
             ListPagos = _oDevoluciones.GetPayForms(tbNumTicket.Text, ref sMensaje);
+            foreach (PayForm indexer in ListPagos)
+            {
+                if(indexer.Name == "EF")
+                {
+                    indexer.DisplayList = "Efectivo Pesos";
+                } else if(indexer.Name == "EFU")
+                {
+                    indexer.DisplayList = "Efectivo Dolares";
+                } else if(indexer.Name == "TD")
+                {
+                    indexer.DisplayList = "Tarjeta Debito";
+                } else if(indexer.Name == "TC")
+                {
+                    indexer.DisplayList = "Tarjeta Credito";
+                }
+            }
             cbPago.ItemsSource = ListPagos;
             cbPago.SelectedValuePath = "Name";
+            //cbPago.DisplayMemberPath = "DisplayList";
         }
 
         public void getSelectedItems(ref string smensaje)

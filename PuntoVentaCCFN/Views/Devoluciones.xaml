@@ -491,7 +491,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Column="0" Text="{Binding DisplayList}" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
