@@ -48,7 +48,11 @@ namespace PuntoVentaCCFN.Views
             tb_qty_Credito.Text  = "0";
             tb_totalDebito.Text  = "0";
             tb_TotalCredito.Text = "0";
- 
+
+            tb_Qty_Debito_Dev.Text = "0";
+            tb_qty_Credito_Dev.Text = "0";
+            tb_totalDebito_Dev.Text = "0";
+            tb_TotalCredito_Dev.Text = "0";
 
         }
 
@@ -83,6 +87,12 @@ namespace PuntoVentaCCFN.Views
 
         private void btn_Preview_Click(object sender, RoutedEventArgs e)
         {
+            if (GridHeader.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("No existe caja abierta");
+                return;
+            }
+
             CerrarCaja(true);
          }
 
@@ -184,8 +194,17 @@ namespace PuntoVentaCCFN.Views
                             System.Windows.MessageBox.Show("Proceso Exitoso !!!");
                             GridHeader.ItemsSource = null;
                             GriDDetalle.ItemsSource = null;
-                            GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
-                            GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
+                            tb_Qty_Debito.Text = "0";
+                            tb_qty_Credito.Text = "0";
+                            tb_totalDebito.Text = "0";
+                            tb_TotalCredito.Text = "0";
+
+                            tb_Qty_Debito_Dev.Text = "0";
+                            tb_qty_Credito_Dev.Text = "0";
+                            tb_totalDebito_Dev.Text = "0";
+                            tb_TotalCredito_Dev.Text = "0";
+                            //GridHeader.ItemsSource = obC.CargaHeader(infoCaja.IdCash).DefaultView;
+                            //GriDDetalle.ItemsSource = obC.CargarDetalle(infoCaja.IdCash).DefaultView;
                         }
                     }
                 }
@@ -211,12 +230,19 @@ namespace PuntoVentaCCFN.Views
 
         private void btn_Procesar_Click(object sender, RoutedEventArgs e)
         {
+            if(GriDDetalle.Items.Count == 0)
+            {
+                System.Windows.MessageBox.Show("No existe caja abierta");
+                return;
+            }
+
             MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Esta seguro de cerrar la caja", "Cierre de Caja", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
             
             
             if (dialogResult == MessageBoxResult.Yes)
             {
                 CerrarCaja(false);
+                DataContext = new MainWindow();
             }
            
         }

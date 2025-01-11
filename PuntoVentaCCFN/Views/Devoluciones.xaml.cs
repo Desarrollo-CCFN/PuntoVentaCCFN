@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using static Capa_Datos.CD_Devoluciones;
 using System.Windows.Input;
 using MiControl = PuntoVentaCCFN.MainWindow.Control;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Capa_Presentacion.Views
 {
@@ -222,8 +223,9 @@ namespace Capa_Presentacion.Views
                     lblUSD.Text = "";
                 textVoucher.Text = "";
                 lblTotal.Text = "";
-                //cbPago.Text = string.Empty;
-                }
+                //txtID.Text = String.Empty;
+                cbPago.SelectedItem = null;
+            }
         }
 
   
@@ -349,6 +351,9 @@ namespace Capa_Presentacion.Views
 
         private void cbPago_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            if (cbPago.SelectedValue == null) return;
+
             string content = cbPago.SelectedValue.ToString();
             
             if (content == "EF" || content == "EFU")
