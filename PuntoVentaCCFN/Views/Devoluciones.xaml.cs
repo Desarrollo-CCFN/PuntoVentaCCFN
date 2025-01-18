@@ -148,54 +148,74 @@ namespace Capa_Presentacion.Views
                     return;
                 }
             }
-            /*
-            if (!_oDevoluciones.DevoluacionHeader(_oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje)) {
-                System.Windows.MessageBox.Show(sMensaje);
-                return;
-            } else
+            var Acceso = new Acceso(5);
+            Acceso.ShowDialog();
+            if (Acceso.ReturnValue >= 3)
             {
-                idHeader = Convert.ToInt32(sMensaje);
-                //id devolucion header
-                foreach(DataRowView dr  in GridDatos.ItemsSource) 
+                //Control.nPase = 0;
+                //DataContext = new Devoluciones();
+
+
+                //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                //  var Devoluciones = new Devoluciones();   // Activa el Password de acceso
+                //   Devoluciones.Owner = this; // Establece MainReportes como el propietario
+                // MainReportes.retiros.Visibility = Visibility.Collapsed;
+                //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
+                //MainReportes.Show();
+                // Abre MainReportes como ventana modal
+                //   Devoluciones.ShowDialog();
+
+
+
+
+                /*
+                if (!_oDevoluciones.DevoluacionHeader(_oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje)) {
+                    System.Windows.MessageBox.Show(sMensaje);
+                    return;
+                } else
                 {
-                    if (Convert.ToInt32(dr.Row[16]) != 0)
-                    if (Convert.ToInt32(dr.Row[16]) != 0)
+                    idHeader = Convert.ToInt32(sMensaje);
+                    //id devolucion header
+                    foreach(DataRowView dr  in GridDatos.ItemsSource) 
                     {
-                        
-                        if (!_oDevoluciones.DevolucionDetalle(_oDevolucionHeader.NumTck, Convert.ToInt32(dr.Row[4].ToString()), Convert.ToDouble(dr.Row[16].ToString()), idHeader, total, ref sMensaje))
+                        if (Convert.ToInt32(dr.Row[16]) != 0)
+                        if (Convert.ToInt32(dr.Row[16]) != 0)
                         {
-                            System.Windows.MessageBox.Show(sMensaje);
-                            break;
+
+                            if (!_oDevoluciones.DevolucionDetalle(_oDevolucionHeader.NumTck, Convert.ToInt32(dr.Row[4].ToString()), Convert.ToDouble(dr.Row[16].ToString()), idHeader, total, ref sMensaje))
+                            {
+                                System.Windows.MessageBox.Show(sMensaje);
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            if(!_oDevoluciones.DevolucionCierre(idHeader, 1, ref sMensaje))
-            {
-                System.Windows.MessageBox.Show(sMensaje);
-                return;
-            }
-            */
+                if(!_oDevoluciones.DevolucionCierre(idHeader, 1, ref sMensaje))
+                {
+                    System.Windows.MessageBox.Show(sMensaje);
+                    return;
+                }
+                */
 
-            int iRows = 0;
-                        
-            string sJson = "";
-            
-           // try
-            //{
+                int iRows = 0;
+
+                string sJson = "";
+
+                // try
+                //{
                 foreach (DataRowView dr in GridDatos.ItemsSource)
                 {
-                
-                // System.Windows.MessageBox.Show(Convert.ToString(dr.Row[4]) + "\n" + Convert.ToString(dr.Row[16]));
 
-                if (Convert.ToInt32(dr.Row[16]) != 0)
+                    // System.Windows.MessageBox.Show(Convert.ToString(dr.Row[4]) + "\n" + Convert.ToString(dr.Row[16]));
+
+                    if (Convert.ToInt32(dr.Row[16]) != 0)
                     {
                         iRows++;
 
-                    
 
-                    if (sJson == "")
+
+                        if (sJson == "")
                         {
                             sJson = $@"[[""{Convert.ToString(dr.Row[4])}"", 
                                                {Convert.ToString(dr.Row[16])},
@@ -204,12 +224,12 @@ namespace Capa_Presentacion.Views
                         else
                         {
                             sJson += $@",[""{Convert.ToString(dr.Row[4])}"", 
-                                               { Convert.ToString(dr.Row[16])},
+                                               {Convert.ToString(dr.Row[16])},
                                                ""{Convert.ToString(dr.Row[17])}""]";
                         }
                     }
 
-                        
+
                 }
 
                 sJson += "]";
@@ -217,8 +237,8 @@ namespace Capa_Presentacion.Views
                 if (iRows == 0)
                 {
                     sMensaje = "No existe partidas por procesar !!!";
-                System.Windows.MessageBox.Show(sMensaje);
-                return ;
+                    System.Windows.MessageBox.Show(sMensaje);
+                    return;
                 }
 
                 if (!_oDevoluciones.DevolVentaEjecuta(0, sJson, _oDevolucionHeader.NumTck, Pago, voucher, ref sMensaje))
@@ -228,9 +248,9 @@ namespace Capa_Presentacion.Views
                 }
                 else
                 {
-                   
-                System.Windows.MessageBox.Show("Se realizó con éxito la devolución del TCK de Venta: " + _oDevolucionHeader.NumTck, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                GridDatos.ItemsSource = null;
+
+                    System.Windows.MessageBox.Show("Se realizó con éxito la devolución del TCK de Venta: " + _oDevolucionHeader.NumTck, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    GridDatos.ItemsSource = null;
                     tbNumTicket.Text = "";
                     lblRecibo.Text = "";
                     lblFecha.Text = "";
@@ -238,10 +258,11 @@ namespace Capa_Presentacion.Views
                     lblRate.Text = "";
                     lblMXN.Text = "";
                     lblUSD.Text = "";
-                textVoucher.Text = "";
-                lblTotal.Text = "";
-                //txtID.Text = String.Empty;
-                cbPago.SelectedItem = null;
+                    textVoucher.Text = "";
+                    lblTotal.Text = "";
+                    //txtID.Text = String.Empty;
+                    cbPago.SelectedItem = null;
+                }
             }
         }
 

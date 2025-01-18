@@ -207,11 +207,11 @@ namespace PuntoVentaCCFN
 
         private void Devoluciones_Click(object sender, RoutedEventArgs e)
         {
-            var Acceso = new Acceso(5);
-            Acceso.ShowDialog();
-            if (Acceso.ReturnValue >= 3)
-            {
-                Control.nPase = 0;
+            //var Acceso = new Acceso(5);
+            //Acceso.ShowDialog();
+            //if (Acceso.ReturnValue >= 3)
+            //{
+            //    Control.nPase = 0;
                 DataContext = new Devoluciones();
 
 
@@ -226,7 +226,7 @@ namespace PuntoVentaCCFN
 
 
 
-            }
+            //}
  
 
         }
