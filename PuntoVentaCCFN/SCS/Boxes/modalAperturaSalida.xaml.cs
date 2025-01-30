@@ -651,7 +651,10 @@ namespace Capa_Presentacion.SCS.Boxes
         {
             // Limpia todos los ítems del DataGrid
             GridDatos.Items.Clear();
-
+            Mpesos = 0;
+            MDolares = 0;
+            lbPesos.Content = "Monto Pesos: $ " + Mpesos.ToString("N2");
+            lbDolares.Content = "Monto Dolares: $ " + MDolares.ToString("N2");
         }
 
         private void btnEliminar_Click(object sender, RoutedEventArgs e)

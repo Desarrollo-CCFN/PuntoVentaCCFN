@@ -30,6 +30,7 @@
     <None Remove="SCS\IMG\close.png" />
     <None Remove="SCS\IMG\config.png" />
     <None Remove="SCS\IMG\dashboard.png" />
+    <None Remove="SCS\IMG\Devolucion.png" />
     <None Remove="SCS\IMG\engrane.png" />
     <None Remove="SCS\IMG\entrada.png" />
     <None Remove="SCS\IMG\equis.png" />
@@ -109,6 +110,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\dashboard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SCS\IMG\Devolucion.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SCS\IMG\engrane.png">

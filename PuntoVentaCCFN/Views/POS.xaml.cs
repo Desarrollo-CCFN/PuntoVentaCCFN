@@ -212,7 +212,7 @@ namespace PuntoVentaCCFN.Views
         {
 
             //var tipoCambio = objeto_CN_TipoCambio.Consulta();
-            tbTipoCambio.Text = tipoCambio.ToString();
+            tbTipoCambio.Text = tipoCambio.ToString("F4");
         }
         #endregion
 
@@ -446,25 +446,25 @@ namespace PuntoVentaCCFN.Views
 
             cambio = pagado - total;
 
-            tbImporte.Text = tbMoneda.Text + " $" + total.ToString("0.00");
+            tbImporte.Text = tbMoneda.Text + " $" + total.ToString("N2");
 
             if (tbMoneda.Text == "MXN")
             {
                 lblTotal.Text = "Total USD";
-                tbImporteUSD.Text = "$" + totalUSD.ToString("0.00");
+                tbImporteUSD.Text = "$" + totalUSD.ToString("N2");
                 lblSaldo.Text = "Saldo USD";
                 decimal dSaldo = totalUSD - (pagado / Convert.ToDecimal(tbTipoCambio.Text));
                 if (dSaldo < 0) 
                 {
                     dSaldo = 0;
                 }
-                tbSaldoUSD.Text = "$" + dSaldo.ToString("0.00");
+                tbSaldoUSD.Text = "$" + dSaldo.ToString("N2");
             }
             else
             {
                 lblTotal.Text = "Total MXN";
                 decimal  dImpNacional = totalUSD * Convert.ToDecimal(tbTipoCambio.Text);
-                tbImporteUSD.Text = "$" + dImpNacional.ToString("0.00");
+                tbImporteUSD.Text = "$" + dImpNacional.ToString("N2");
                 lblSaldo.Text = "Saldo MXN";
                 decimal dSaldo = totalUSD - pagado;
                 
@@ -475,13 +475,13 @@ namespace PuntoVentaCCFN.Views
 
                 dSaldo = dSaldo * Convert.ToDecimal(tbTipoCambio.Text);
 
-                tbSaldoUSD.Text = "$" + dSaldo.ToString("0.00");
+                tbSaldoUSD.Text = "$" + dSaldo.ToString("N2");
             }
             
 
-            tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("0.00");
+            tbSubtotal.Text = tbMoneda.Text + " $" + subTotal.ToString("N2");
             tbPagado.Text = tbMoneda.Text + " $" + pagado.ToString("###,###.00");
-            tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("0.00");
+            tbCambio.Text = tbMoneda.Text + " $" + cambio.ToString("N2");
 
             lblTotalPartidas.Text = "Cant. Productos: " + iCount ;
 
@@ -870,6 +870,8 @@ namespace PuntoVentaCCFN.Views
                         return;
                     }
 
+
+                   // System.Windows.MessageBox.Show(Nom_Supervisor.U_Name);
                     string sMensaje = "";
                     if (!objeto_CN_Productos.AnulacionProducto(ventaI.Id, item.LineNum, Convert.ToDecimal(t), ref sMensaje))
                     {
@@ -1231,7 +1233,7 @@ namespace PuntoVentaCCFN.Views
             if (objCe.Tp_ > 0)
             {
                                 
-                tbTipoCambio.Text = objCe.Tp_.ToString(); ;  
+                tbTipoCambio.Text = objCe.Tp_.ToString("F4"); ;  
                 tbTipoCambio.UpdateLayout();
 
             }

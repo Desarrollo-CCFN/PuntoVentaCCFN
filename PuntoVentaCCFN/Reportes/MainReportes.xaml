@@ -204,6 +204,7 @@
                 <Button x:Name="VentaXart" Content="Ventas X Artículo" 
                          Background="#FF136F6D"
                          Foreground="White"
+                        FontWeight="Bold"
                         HorizontalAlignment="Left" 
                         Height="56" Margin="329,174,0,0" Grid.Row="1" 
                         VerticalAlignment="Top" Width="129"
@@ -212,6 +213,7 @@
                 <Button x:Name="Tck_Devolucion" Content="Tck Devolución" 
                          Background="#FF136F6D"
                          Foreground="White"
+                        FontWeight="Bold"
                         HorizontalAlignment="Left" 
                         Height="60" Margin="330,245,0,0" Grid.Row="1" 
                         VerticalAlignment="Top" Width="129" Click="Button_Click_Devolucion"/>

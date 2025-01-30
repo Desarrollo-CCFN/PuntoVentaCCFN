@@ -230,19 +230,20 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id Cash" Width="*" Binding="{Binding IdCash}" />
                     <DataGridTextColumn Header="Almacen" Width="*" Binding="{Binding WhsCode}" />
-                    <DataGridTextColumn Header="Status" Width="*" Binding="{Binding status}" />
-                    <DataGridTextColumn Header="BegAmount" Width="*" Binding="{Binding BegAmount}" />
-                    <DataGridTextColumn Header="EndAmount" Width="*" Binding="{Binding EndAmount}" />
-                    <DataGridTextColumn Header="WdalAmount" Width="*" Binding="{Binding WdalAmount}" />
-                    <DataGridTextColumn Header="BegAmountFC" Width="*" Binding="{Binding BegAmountFC}" />
-                    <DataGridTextColumn Header="EndAmountFC" Width="*" Binding="{Binding EndAmountFC}" />
-                    <DataGridTextColumn Header="WdalAmountFC" Width="*" Binding="{Binding WdalAmountFC}" />
-                    <DataGridTextColumn Header="BegAmountT" Width="*" Binding="{Binding BegAmountT}" />
-                    <DataGridTextColumn Header="EndAmountT" Width="*" Binding="{Binding EndAmountT}" />
-                    <DataGridTextColumn Header="WdalAmountT" Width="*" Binding="{Binding WdalAmountT}" />
-                    <DataGridTextColumn Header="PayAmount" Width="*" Binding="{Binding PayAmount}" />
-                    <DataGridTextColumn Header="PayAmountFC" Width="*" Binding="{Binding PayAmountFC}" />
-                    <DataGridCheckBoxColumn Visibility="Hidden"/>
+                    <DataGridTextColumn Header="Estatus" Width="*" Binding="{Binding status}" />
+                    <DataGridTextColumn Header="Inical" Width="*" Binding="{Binding BegAmount}" />
+                    <DataGridTextColumn Header="Final" Width="*" Binding="{Binding EndAmount}" />
+                    <DataGridTextColumn Header="Retirado" Width="*" Binding="{Binding WdalAmount}" />
+                    <DataGridTextColumn Header="Inicial FC" Width="*" Binding="{Binding BegAmountFC}" />
+                    <DataGridTextColumn Header="Final FC" Width="*" Binding="{Binding EndAmountFC}" />
+                    <DataGridTextColumn Header="Retirado FC" Width="*" Binding="{Binding WdalAmountFC}" />
+                    <DataGridTextColumn Header="Inicial TD" Width="*" Binding="{Binding BegAmountT}" />
+                    <DataGridTextColumn Header="Final TD" Width="*" Binding="{Binding EndAmountT}" />
+                    <DataGridTextColumn Header="Retirado TD" Width="*" Binding="{Binding WdalAmountT}" />
+                    <DataGridTextColumn Header="Pagado" Width="*" Binding="{Binding PayAmount}" />
+                    <DataGridTextColumn Header="Pagado FC" Width="*" Binding="{Binding PayAmountFC}" />
+                    <DataGridTextColumn Header="Ctd. Dev"/>
+                    <DataGridTextColumn Header="Ctd Dev FC"/>
                 </DataGrid.Columns>
             </DataGrid>
             <!--<Frame x:Name="FrameCierre"
@@ -269,15 +270,15 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
                     <Style/>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" Width="*" Binding="{Binding Type}" />
-                    <DataGridTextColumn Header="Remkars" Width="*" Binding="{Binding Remarks}" />
-                    <DataGridTextColumn Header="Currency" Width="*" Binding="{Binding Currency}" />
+                    <DataGridTextColumn Header="Tipo" Width="*" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Comentario" Width="*" Binding="{Binding Remarks}" />
+                    <DataGridTextColumn Header="Moneda" Width="*" Binding="{Binding Currency}" />
                     <DataGridTextColumn Header="Usuario" Width="*" Binding="{Binding Usuario}" />
                     <DataGridTextColumn Header="Sistema" Width="*" Binding="{Binding Sistema}" />
                     <DataGridTextColumn Header="Faltante" Width="*" Binding="{Binding Faltantes}" />
                     <DataGridTextColumn Header="Sobrante" Width="*" Binding="{Binding Sobrante}" />
-                    <DataGridTextColumn Header="SaleAmount" Width="*" Binding="{Binding SaleAmount}" />
-                    <DataGridTextColumn Header="SaleAmountFC" Width="*" Binding="{Binding SaleAmountFC}" />
+                    <DataGridTextColumn Header="Ctd. Venta" Width="*" Binding="{Binding SaleAmount}" />
+                    <DataGridTextColumn Header="Ctd. Venta FC" Width="*" Binding="{Binding SaleAmountFC}" />
                     <DataGridCheckBoxColumn Visibility="Hidden"/>
                 </DataGrid.Columns>
             </DataGrid>
@@ -285,13 +286,13 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
             <TextBlock x:Name="lb_tsr_Copy" 
                 Text="Cant. Voucher Debito" 
                 HorizontalAlignment="Left" 
-                Margin="65,716,0,0"
+                Margin="53,665,0,0"
                 FontSize="15"
                 Foreground="White"
                 VerticalAlignment="Top" Height="20" Width="146" Grid.ColumnSpan="2"/>
             <TextBox x:Name="tb_Qty_Debito" 
                 HorizontalAlignment="Left" 
-                Height="26" Margin="65,741,0,0" 
+                Height="26" Margin="53,690,0,0" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Top" 
                 Width="143" 
@@ -301,13 +302,13 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
             <TextBlock x:Name="lb_tsr_Copy_Copiar" 
                 Text="Total Debito" 
                 HorizontalAlignment="Left" 
-                Margin="145,716,0,0"
+                Margin="133,665,0,0"
                 FontSize="15"
                 Foreground="White"
                 VerticalAlignment="Top" Height="20" Width="84" Grid.Column="1"/>
             <TextBox x:Name="tb_totalDebito" 
                 HorizontalAlignment="Left" 
-                Height="26" Margin="116,741,0,0" 
+                Height="26" Margin="104,690,0,0" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Top" 
                 Width="142" 
@@ -317,29 +318,29 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
             <TextBlock x:Name="lb_tsr_Copy_Copiar1" 
                 Text="Cant. Voucher Credito" 
                 HorizontalAlignment="Left" 
-                Margin="319,716,0,0"
+                Margin="307,665,0,0"
                 FontSize="15"
                 Foreground="White"
                 VerticalAlignment="Top" Height="20" Width="146" Grid.Column="1"/>
             <TextBox x:Name="tb_qty_Credito" 
                 HorizontalAlignment="Left" 
-                Height="26" Margin="319,741,0,0" 
+                Height="26" Margin="309,690,0,0" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Top" 
-                Width="143" 
+                Width="144" 
                 Style="{DynamicResource tbStyle}"
                 RenderTransformOrigin="-0.113,0.822" 
                 AutoWordSelection="True" Grid.Column="1"/>
             <TextBlock x:Name="lb_tsr_Copy_Copiar2" 
                 Text="Total Credito" 
                 HorizontalAlignment="Left" 
-                Margin="534,720,0,0"
+                Margin="522,667,0,0"
                 FontSize="15"
                 Foreground="White"
                 VerticalAlignment="Top" Height="20" Width="84" Grid.Column="1"/>
             <TextBox x:Name="tb_TotalCredito" 
                 HorizontalAlignment="Left" 
-                Height="26" Margin="504,741,0,0" 
+                Height="26" Margin="492,690,0,0" 
                 TextWrapping="Wrap" 
                 VerticalAlignment="Top" 
                 Width="144" 
@@ -384,6 +385,134 @@ HorizontalGridLinesBrush="#35baf6" Margin="22,191,23,220" Grid.ColumnSpan="3">
                 Foreground="White" 
                 FontSize="15" 
                 FontWeight="Bold" Grid.ColumnSpan="2" Click="btn_Cerrar_Click"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar7" 
+                Text="Cant. Voucher Debito Dev." 
+                HorizontalAlignment="Left" 
+                Margin="38,727,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="177" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tb_Qty_Debito_Copiar1" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="53,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="143" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True"  Grid.ColumnSpan="2"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar8" 
+                Text="Total Debito Dev." 
+                HorizontalAlignment="Left" 
+                Margin="113,727,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="124" Grid.Column="1"/>
+            <TextBox x:Name="tb_totalDebito_Copiar1" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="104,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="142" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy_Dev" 
+                Text="Cant. Voucher Credito Dev." 
+                HorizontalAlignment="Left" 
+                Margin="286,727,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="188" Grid.Column="1"/>
+            <TextBox x:Name="tb_qty_Credito_Copiar1" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="309,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="144" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar10" 
+                Text="Total Credito Dev." 
+                HorizontalAlignment="Left" 
+                Margin="506,727,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="130" Grid.Column="1"/>
+            <TextBox x:Name="tb_TotalCredito_Copiar1" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="492,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="144" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBox x:Name="tb_Qty_Debito_Dev" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="53,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="143" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True"  Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tb_totalDebito_Dev" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="104,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="142" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBox x:Name="tb_qty_Credito_Dev" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="309,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="144" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBox x:Name="tb_TotalCredito_Dev" 
+                HorizontalAlignment="Left" 
+                Height="26" Margin="492,752,0,0" 
+                TextWrapping="Wrap" 
+                VerticalAlignment="Top" 
+                Width="144" 
+                Style="{DynamicResource tbStyle}"
+                RenderTransformOrigin="-0.113,0.822" 
+                AutoWordSelection="True" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar3" 
+                Text="$" 
+                HorizontalAlignment="Left" 
+                Margin="474,690,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="13" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar4" 
+                Text="$" 
+                HorizontalAlignment="Left" 
+                Margin="474,753,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="13" Grid.Column="1" RenderTransformOrigin="0.538,4"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar5" 
+                Text="$" 
+                HorizontalAlignment="Left" 
+                Margin="88,689,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="13" Grid.Column="1"/>
+            <TextBlock x:Name="lb_tsr_Copy_Copiar6" 
+                Text="$" 
+                HorizontalAlignment="Left" 
+                Margin="87,752,0,0"
+                FontSize="15"
+                Foreground="White"
+                VerticalAlignment="Top" Height="20" Width="13" Grid.Column="1"/>
         </Grid>
     </Border>
 

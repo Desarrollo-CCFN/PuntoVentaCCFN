@@ -53,6 +53,26 @@ namespace Capa_Presentacion.Views
 
         }
 
+        public static class Nom_Supervisor
+        {
+            public static string Userid { get; set; }
+            public static string User_Code { get; set; }
+
+            public static string U_Name { get; set; }
+
+            public static string DfltsGroup { get; set; }
+
+            public static string Locked { get; set; }
+
+            public static int Superuser { get; set; }
+            public static string password4 { get; set; }
+
+            public static int Sucursal { get; set; }
+
+        }
+
+
+
 
         public LoginView()
         {

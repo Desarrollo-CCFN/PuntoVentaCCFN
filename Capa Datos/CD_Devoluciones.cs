@@ -3,6 +3,8 @@ using System.Data;
 using Capa_Entidad.Devoluciones;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Capa_Datos
 {
@@ -10,17 +12,38 @@ namespace Capa_Datos
     {
         private readonly CD_Conexion conn = new CD_Conexion();
         private readonly CE_DevolucionHeader ce = new CE_DevolucionHeader();
+        // private readonly CE_DevolucionHeader
 
-        public CE_DevolucionHeader CargarHeader(string NumTicket)
+        public CE_DevolucionHeader CargarHeader(string NumTicket, ref string smensaje)
         {
             string _sStoredName = "SP_V_DevoHeader";
 
             try
             {
+
+                /* OUT ErrorCode_ int,
+    OUT ErrorMessage_ TEXT*/
+
                 MySqlDataAdapter da = new MySqlDataAdapter(_sStoredName, conn.AbrirConexion());
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.SelectCommand.Parameters.Add("NumTck_", MySqlDbType.VarChar).Value = NumTicket;
+                
+                MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("ErrorMessage_", MySqlDbType.Text);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorMessage);
+
                 da.SelectCommand.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    smensaje = outErrorMessage.Value.ToString();
+                    return null;
+                }
+
                 DataSet ds = new DataSet();
                 ds.Clear();
                 da.Fill(ds);
@@ -81,6 +104,158 @@ namespace Capa_Datos
             } catch(Exception ex)
             {
                 return null;
+            }
+        }
+
+        public bool DevolVentaEjecuta(int UserId_, string sJson, string _NumTck, string FormaPago, string Folio, ref string sMensaje)
+        {
+            string _sStoredName = "";
+
+            try
+            {
+                _sStoredName = "SP_V_DevolVenta";
+
+                /*`SP_V_DevolVenta`(IN JItems JSON,
+                                                                      IN NumTck_ VARCHAR(45),
+                                                                      IN UserId_ int,
+                                                                      IN FormaPago_  VARCHAR(3),
+																 	  IN FolioElectronico_  VARCHAR(20),
+                                                                      OUT IdHeader_ INT,
+                                                                      out ErrorCode_ int,
+                                                                      out ErrorMessage_ varchar(255) )
+                
+                  cmdprocesa.Parameters.Add("@JItems", MySqlDbType.JSON).Value = sJson;
+                cmdprocesa.Parameters.Add("UserId_", MySqlDbType.Int32).Value = 0;
+                cmdprocesa.Parameters.Add("TransId_", MySqlDbType.Int32).Value = iSequence;
+                cmdprocesa.Parameters.Add("Comentarios_", MySqlDbType.VarChar).Value = sComentario;
+
+
+                MySqlParameter outErrorCode = new MySqlParameter("@ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                cmdprocesa.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("@ErrorMessage_", MySqlDbType.VarChar);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                cmdprocesa.Parameters.Add(outErrorMessage);
+
+                cmdprocesa.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+                    return false;
+                }
+                 */
+
+
+                MySqlDataAdapter da = new MySqlDataAdapter(_sStoredName, conn.AbrirConexion());
+                
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.SelectCommand.Parameters.Add("@JItems", MySqlDbType.JSON).Value = sJson;
+                da.SelectCommand.Parameters.Add("UserId_", MySqlDbType.Int32).Value = UserId_;
+                da.SelectCommand.Parameters.Add("NumTck_", MySqlDbType.VarChar).Value = _NumTck;
+                da.SelectCommand.Parameters.Add("FormaPago_", MySqlDbType.VarChar).Value = FormaPago;
+                da.SelectCommand.Parameters.Add("FolioElectronico_", MySqlDbType.VarChar).Value = Folio;
+
+                MySqlParameter outErrorCode = new MySqlParameter("ErrorCode_", MySqlDbType.Int32);
+                outErrorCode.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorCode);
+
+                MySqlParameter outErrorMessage = new MySqlParameter("ErrorMessage_", MySqlDbType.Text);
+                outErrorMessage.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outErrorMessage);
+
+                MySqlParameter outIdHeader = new MySqlParameter("IdHeader_", MySqlDbType.Int32);
+                outIdHeader.Direction = ParameterDirection.Output;
+                da.SelectCommand.Parameters.Add(outIdHeader);
+
+                da.SelectCommand.ExecuteNonQuery();
+
+                if (outErrorCode.Value.ToString() != "0")
+                {
+                    sMensaje = outErrorMessage.Value.ToString();
+
+                    string mensaje = "Error al imprimir devolución " + sMensaje ;
+                    string Mensaje = mensaje.Replace(" ", "_");
+                    int Param1 = 7;
+
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo1 = new ProcessStartInfo();
+                    startInfo1.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+ 
+                    startInfo1.Arguments = $"{Mensaje} {Param1}";
+                    Process.Start(startInfo1);
+ 
+
+                    return false;
+                }
+                else
+                {
+                    int numTck = 0;
+                    string input = outErrorMessage.Value.ToString();
+
+                    Regex regex = new Regex(@"\[(\d+)\]");
+                    Match match = regex.Match(input);
+                    numTck = int.Parse(match.Groups[1].Value);
+
+
+                    int Param = 8;
+                    // Crear una instancia de ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = @"C:\PuntoVenta\impresora\WindowsTesoreria.exe"; // impresion devolucion
+
+                    // startInfo.Arguments = $"{IdTra}";
+                    // startInfo.Arguments = $"{ventaI.NumTck} {Param}";
+                    startInfo.Arguments = $"{numTck} {Param}";
+
+                    // Ejecutar el programa externo
+                    try
+                    {
+                        Process.Start(startInfo);
+                      //  System.Windows.MessageBox.Show("Devolución realizada con exito! " + _NumTck + " - " + input);
+                    }
+                    catch (Exception ex)
+                    { 
+                        string mensaje = "Error al imprimir devolución " + _NumTck + " - " + input;
+                        string Mensaje = mensaje.Replace(" ", "_");
+                        int Param1 = 7;
+
+                        // Crear una instancia de ProcessStartInfo
+                        ProcessStartInfo startInfo1 = new ProcessStartInfo();
+                        startInfo1.FileName = @"C:\PuntoVenta\Errores\WindowsError.exe"; // Ruta completa al ejecutable de RetirosCaja
+
+
+                        // startInfo.Arguments = $"{IdTra}";
+                        startInfo1.Arguments = $"{Mensaje} {Param1}";
+                        Process.Start(startInfo1);
+ 
+                    }
+                   
+                }
+
+
+
+
+
+
+
+
+                /*
+                else
+                {
+                    sMensaje = outIdHeader.Value.ToString();
+                }
+                */
+
+                da.SelectCommand.Parameters.Clear();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                sMensaje = "Excepcion tipo " + ex.GetType() + " " + ex.Message +
+                               " ERROR mientras se ejecutaba la transacción [" + _sStoredName + "].";
+                return false;
             }
         }
 
@@ -252,6 +427,7 @@ namespace Capa_Datos
         public class PayForm
         {
             public string Name { get; set; }
+            public string DisplayList {  get; set; }
         }
     }
 }

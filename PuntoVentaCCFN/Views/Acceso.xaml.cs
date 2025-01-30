@@ -10,7 +10,8 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
- 
+using static Capa_Presentacion.Views.LoginView;
+
 
 namespace Capa_Presentacion.Views
 {
@@ -69,8 +70,9 @@ namespace Capa_Presentacion.Views
                     string superUserFlag = dtResultado.Rows[0].ItemArray[5]?.ToString();
                     string UserCod       = dtResultado.Rows[0].ItemArray[2]?.ToString();
                     string UserId        = dtResultado.Rows[0].ItemArray[0]?.ToString();
+                    string UserName      = dtResultado.Rows[0].ItemArray[1]?.ToString();
 
-                     SupervisorId = Convert.ToInt32(UserId);
+                SupervisorId = Convert.ToInt32(UserId);
 
                     if (superUserFlag == "Y" || superUserFlag == "N" )
                     {
@@ -78,8 +80,8 @@ namespace Capa_Presentacion.Views
 
                         if (superUserFlag == "Y" && valueToSend_ == 1)
                         {
-                            
-                            var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
+                       
+                        var configuracionWindow = new Capa_Presentacion.SCS.Boxes.configuracionApp();
                             this.Close();
                             configuracionWindow.Show();
                         
@@ -87,15 +89,16 @@ namespace Capa_Presentacion.Views
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 2)     // cuando pide autorizacion para anular caja
                     {
+                       
                         ReturnValue = 1;     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
                         this.Close();                   // EN LA PANTALLA ORIGEN
-
+                        Nom_Supervisor.U_Name = UserName;
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 3)   // cuando pide autorizacion para rendicion de caja
                     {
                         ReturnValue = int.Parse(UserId);     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
                         this.Close();                   // EN LA PANTALLA ORIGEN
-
+                        Nom_Supervisor.U_Name = UserName;
                     }
                     else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 4)   // cuando pide autorizacion para rendicion de caja
                     {
@@ -103,6 +106,14 @@ namespace Capa_Presentacion.Views
                         this.Close();                   // EN LA PANTALLA ORIGEN
 
                     }
+
+                    else if ((superUserFlag == "Y" || UserCod == "SUPERVISOR") && valueToSend_ == 5)   // cuando pide autorizacion para Devolucion TCK
+                    {
+                        ReturnValue = int.Parse(UserId);     // regresa 1 que puede proseguir con acceso         PARA PODER ABRIR DEVOLUCION
+                        this.Close();                   // EN LA PANTALLA ORIGEN
+                        Nom_Supervisor.U_Name = UserName;
+                    }
+ 
 
                     else
                         {

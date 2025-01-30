@@ -138,7 +138,16 @@ namespace PuntoVentaCCFN
             public static string Copia { get; set; }
 
         }
-         
+
+        public static class Control
+        {
+            public static int nPase { get; set; }
+            
+        }
+
+
+
+
         private void TBShow(object sender, RoutedEventArgs e)
         {
             GridContent.Opacity = 0.5;
@@ -187,56 +196,94 @@ namespace PuntoVentaCCFN
 
         private void Usuarios_Click(object sender, RoutedEventArgs e)
         {
+            // Validar Control.nPase
+            if (!ValidarControlPase())
+            {
+                return;
+            }
+
             DataContext = new Usuarios();
         }
 
         private void Devoluciones_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = new Devoluciones();
+            //var Acceso = new Acceso(5);
+            //Acceso.ShowDialog();
+            //if (Acceso.ReturnValue >= 3)
+            //{
+            //    Control.nPase = 0;
+                DataContext = new Devoluciones();
+
+
+                //System.Windows.MessageBox.Show("Este Modulo se encuentra en costrucción", "AVISO", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+              //  var Devoluciones = new Devoluciones();   // Activa el Password de acceso
+             //   Devoluciones.Owner = this; // Establece MainReportes como el propietario
+                                           // MainReportes.retiros.Visibility = Visibility.Collapsed;
+                                           //  MainReportes.Apertura.Visibility = Visibility.Collapsed;
+                                           //MainReportes.Show();
+                                           // Abre MainReportes como ventana modal
+             //   Devoluciones.ShowDialog();
+
+
+
+            //}
+ 
+
         }
 
         private void Pos_Click(object sender, RoutedEventArgs e)
         {
 
-            // obteniendo valores de configuracion de PDV
-           var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
-           string nombreCajaString = MainWindow.AppConfig1.Caja;  
-           string SucursalString = SettingSection.Filler;    
-           string NombreCompany = SettingSection.CompanyName;
-           int nombreCajaInt = int.Parse(nombreCajaString);
-
-            // verificar si existe la caja abierta
-           bool _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
-
-            if (!_status)
+            // Validar Control.nPase
+            if (!ValidarControlPase())
             {
-
-                System.Windows.MessageBox.Show("Caja no abierta comunicarse con el supervisor/a!!");
                 return;
-                  
             }
-            else
-            {
 
-                if (sMensaje == Nom_Cajera.Num_Cajera.Trim())
+            // obteniendo valores de configuracion de PDV
+            var SettingSection = AppConfig.GetSection("App_Preferences") as Capa_Presentacion.App_Preferences;
+                string nombreCajaString = MainWindow.AppConfig1.Caja;
+                string SucursalString = SettingSection.Filler;
+                string NombreCompany = SettingSection.CompanyName;
+                int nombreCajaInt = int.Parse(nombreCajaString);
+
+                // verificar si existe la caja abierta
+                bool _status = objeto_CN_Denominacion.VerificarCaja(nombreCajaInt, SucursalString, ref sMensaje);
+
+                if (!_status)
                 {
-                    InitializeComponent();
-                    DataContext = new POS();
-                    //posButton.IsEnabled = false;
-                    //prodbutton.IsEnabled = false;
+
+                    System.Windows.MessageBox.Show("Caja no abierta comunicarse con el supervisor/a!!");
+                    return;
+
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + " Cod Cajero." + sMensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
-            }
+                    if (sMensaje == Nom_Cajera.Num_Cajera.Trim())
+                    {
+                        InitializeComponent();
+                        DataContext = new POS();
+                        //posButton.IsEnabled = false;
+                        //prodbutton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("El cajera/o que desea ingresar no coincide con el que abrió caja: " + " Cod Cajero." + sMensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                }
+            
 
         }
 
        private void Productos_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidarControlPase())
+            {
+                return;
+            }
             DataContext = new Productos();
         }
 
@@ -271,11 +318,19 @@ namespace PuntoVentaCCFN
 
         private void EntradaClick(object sender, RoutedEventArgs e)
         {
+            if (!ValidarControlPase())
+            {
+                return;
+            }
             DataContext = new EntradaRecibo();
         }
 
         private void EntradaManualClick(object sender, RoutedEventArgs e)
         {
+            if (!ValidarControlPase())
+            {
+                return;
+            }
             DataContext = new EntradaManual();
         }
 
@@ -380,6 +435,10 @@ namespace PuntoVentaCCFN
         #region apertura y cerrado inicial
         private void Caja_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidarControlPase())
+            {
+                return;
+            }
 
             var Acceso = new Acceso(3);
             Acceso.ShowDialog();
@@ -400,6 +459,10 @@ namespace PuntoVentaCCFN
 
         private void Cierre_Caja_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidarControlPase())
+            {
+                return;
+            }
 
             var Acceso = new Acceso(3);
             Acceso.ShowDialog();
@@ -464,6 +527,41 @@ namespace PuntoVentaCCFN
         {
             DataContext = new Devoluciones();
         }
+
+        private bool ValidarControlPase()
+        {
+            // Verificar si Control.nPase es 1
+            if (Control.nPase == 1)
+            {
+                // Preguntar al usuario si desea continuar
+                var result = System.Windows.MessageBox.Show(
+                    "Ejecuto la pantalla de devolución. Perderá la información. ¿Desea continuar?",
+                    "Confirmación",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                // Si el usuario selecciona "No", retornar false
+                if (result != MessageBoxResult.Yes)
+                {
+                    return false;
+                }
+                else
+                {
+                    // Reiniciar el estado de Control.nPase
+                    Control.nPase = 0;
+                }
+            }
+
+            // Retornar true si Control.nPase no es 1 o el usuario aceptó continuar
+            return true;
+        }
+
+
+
+
+
+
     }
 }
 
