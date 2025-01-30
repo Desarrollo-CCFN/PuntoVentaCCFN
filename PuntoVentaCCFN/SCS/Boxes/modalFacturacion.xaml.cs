@@ -23,6 +23,12 @@ using System.Reflection;
 using System.Data;
 using MySql.Data.MySqlClient;
 using Capa_Datos;
+using DocumentFormat.OpenXml.Bibliography;
+using System.Net.Mail;
+using System.Net;
+using FastReport.Data;
+using FastReport.Export.PdfSimple;
+using FastReport;
 
 
 namespace Capa_Presentacion.SCS.Boxes
@@ -61,25 +67,20 @@ namespace Capa_Presentacion.SCS.Boxes
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
-            
+
             this.Close();
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
-        { 
-
+        {
             string sMensaje = "";
             string sCardCode = tbCodigoCliente.Text;
             string sUsoCfdi = cbUsos.SelectedValue.ToString();
             int iDocEntry;
 
-            
-
-
             // public int GenerarFactura(int _IdHeader, string _CardCode, string _UsoCfdi, ref string _Mensaje)
-            iDocEntry = objeto_CD_GeneraFactura.GenerarFactura(idTickNumb, sCardCode, sUsoCfdi,  ref sMensaje);
-            if (iDocEntry == -1)
-            {
+            iDocEntry = objeto_CD_GeneraFactura.GenerarFactura(idTickNumb, sCardCode, sUsoCfdi, ref sMensaje);
+            if (iDocEntry == -1) {
                 System.Windows.MessageBox.Show(sMensaje);
                 return;
             }
@@ -91,8 +92,7 @@ namespace Capa_Presentacion.SCS.Boxes
             string sXmlFiles = sCardCode + "_" + iDocEntry.ToString(); // @"documento";
 
 
-            if (!Directory.Exists(sRutaXmlFiles))
-            {
+            if (!Directory.Exists(sRutaXmlFiles)) {
                 Directory.CreateDirectory(sRutaXmlFiles);
             }
 
@@ -101,10 +101,10 @@ namespace Capa_Presentacion.SCS.Boxes
             // string sAplTimbrar = @"C:\Users\subdirector.ti\source\repos\TimbradoCCFN40\TimbradoCCFN40\bin\Debug\TimbradoCCFN40.exe";
             ProcessStartInfo StartInfo = new ProcessStartInfo(sAplTimbrar);
             // StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-            StartInfo.Arguments = iDocEntry.ToString() + " " + sRutaXmlFiles + " " + sXmlFiles; 
+            StartInfo.Arguments = iDocEntry.ToString() + " " + sRutaXmlFiles + " " + sXmlFiles;
             process.StartInfo = StartInfo;
-            try
-            {
+            try {
+
                 process.Start();
                 process.WaitForExit();
 
@@ -112,17 +112,81 @@ namespace Capa_Presentacion.SCS.Boxes
                 // Reviso si ya esta generado el archivo xml con sus datos
 
                 isFacturado = true;
-                this.Close();
-            }
-            catch (Win32Exception ex)
-            {
-              System.Windows.MessageBox.Show(ex.Message);
-            }
-            finally
-            {
+
+            } catch (Win32Exception ex) {
+                System.Windows.MessageBox.Show(ex.Message);
+            } finally {
                 process.Dispose();
             }
-            
+
+            if (!isFacturado) return;
+
+            FastReport.Utils.RegisteredObjects.AddConnection(typeof(MySqlDataConnection));
+
+            var report = new Report();
+
+            var reportPath = @sRutaAplicacion + @"\Timbrado\Factura.frx";
+            var facturaPath = @sRutaAplicacion + $@"\Timbrado\XmlFiles\{sXmlFiles}.pdf";
+
+            try {
+                report.Load(reportPath);
+
+                report.Dictionary.Connections[0].ConnectionString = Configuracion.CadenaConexion;
+
+                TableDataSource facturaDs = report.GetDataSource("Factura") as TableDataSource;
+
+                facturaDs.Parameters.FindByName("DocEntry").Value = iDocEntry;
+
+                report.Prepare();
+
+                using (MemoryStream ms = new MemoryStream()) {
+                    PDFSimpleExport pdfExport = new PDFSimpleExport();
+                    pdfExport.Export(report, ms);
+                    ms.Flush();
+                    File.WriteAllBytes(facturaPath, ms.ToArray());
+                }
+
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show("Error al intentar exportar factura como PDF\n" + ex.Message);
+                return;
+            }
+
+            var existsXML = File.Exists(sRutaXmlFiles + $@"\\{sXmlFiles}.xml");
+            var existsPDF = File.Exists(facturaPath);
+
+            if (!existsPDF && !existsXML) {
+                System.Windows.MessageBox.Show("¡Factura generada exitosamente!\nNo se encontraron archivos XML o PDF");
+                this.Close();
+                return;
+            }
+
+            try {
+                string to = tbCorreo.Text;
+                string from = "administrador.sap@superchivas.com.mx";
+                MailMessage message = new MailMessage(from, to);
+                message.Subject = "Factura CCFN";
+                message.IsBodyHtml = true;
+                message.Body = "Prueba de envio de factura";
+                if (existsXML) message.Attachments.Add(new Attachment(sRutaXmlFiles + $@"\\{sXmlFiles}.xml"));
+                if (existsPDF) message.Attachments.Add(new Attachment(facturaPath));
+                var smtpClient = new SmtpClient("cas.oseservices.com") {
+                    Port = int.Parse("587"),
+                    Credentials = new NetworkCredential("administrador.sap@superchivas.com.mx", "*ccfn.2022@"),
+                    EnableSsl = true,
+                };
+                // Credentials are necessary if the server requires the client
+                // to authenticate before it will send email on the client's behalf.
+
+                smtpClient.Send(message);
+            } catch (Exception ex) {
+                System.Windows.MessageBox.Show("Error al intentar enviar correo electronico\n" + ex.Message);
+                return;
+            }
+
+            System.Windows.MessageBox.Show("¡Correo enviado exitosamente!");
+            if (!existsPDF) System.Windows.MessageBox.Show("No se encontró PDF");
+            if (!existsXML) System.Windows.MessageBox.Show("No se encontró XML");
+            this.Close();
         }
     }
 }
